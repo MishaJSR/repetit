@@ -11,7 +11,51 @@ const WEEK_CHANGE = 'WEEK_CHANGE'
 const PLUS_WEEK = 'PLUS_WEEK'
 const MINUS_WEEK = 'MINUS_WEEK'
 const GET_WEEK_MASS = 'GET_WEEK_MASS'
+const FILTER_LESSONS_MASS = 'FILTER_LESSONS_MASS'
+const SORT_MASS_FOR_DAY = 'SORT_MASS_FOR_DAY'
 
+const lessonsMass = [
+    {   idYear: 2023,
+        idMonth: 0,
+        idStartDay: 2,
+        idEndDay: 8,
+        idDay: 0,
+        startTime: 6,
+        durationTime: 18,
+        subj: true,
+        namePup: "Masha"},
+
+    {   idYear: 2023,
+        idMonth: 0,
+        idStartDay: 2,
+        idEndDay: 8,
+        idDay: 1,
+        startTime: 12,
+        durationTime: 18,
+        subj: true,
+        namePup: "Vasya"},
+
+    {   idYear: 2023,
+        idMonth: 0,
+        idStartDay: 2,
+        idEndDay: 8,
+        idDay: 2,
+        startTime: 18,
+        durationTime: 12,
+        subj: true,
+        namePup: "Petr"},
+
+    {   idYear: 2023,
+        idMonth: 0,
+        idStartDay: 9,
+        idEndDay: 15,
+        idDay: 2,
+        startTime: 18,
+        durationTime: 12,
+        subj: true,
+        namePup: "Petr"},
+
+]
 
 const monthName = [
     {name: 'January'},
@@ -48,6 +92,14 @@ const defaultState = {
     monthWeek: monthName[new Date().getMonth()].name,
     monthNumber: new Date().getMonth(),
     fullYear: new Date().getFullYear(),
+    lessonsFilter: [],
+    monMass: [],
+    tueMass: [],
+    wenMass: [],
+    thusMass: [],
+    friMass: [],
+    setMass: [],
+    sunMass: [],
     dayMass: [],
     allUsers : [],
     nowUser:[],
@@ -148,12 +200,44 @@ export default  function profileReducer(state= defaultState, action){
                 ...state,
                 dayMass: massDays
             }
-        //
-        // case SET_MY_USER_INFO:
-        //     return {
-        //         ...state,
-        //         nowUserInfo: action.payload
-        //     }
+
+        case FILTER_LESSONS_MASS:
+            let filtMass = [];
+
+            filtMass = lessonsMass.filter(e => e.idYear === state.fullYear && e.idMonth === state.monthNumber && e.idStartDay === state.fDay)
+
+            return {
+                ...state,
+                lessonsFilter: filtMass
+            }
+
+
+        case SORT_MASS_FOR_DAY:
+            let mMass = [];
+            let tuMass = [];
+            let wMass = [];
+            let thMass = [];
+            let frMass = [];
+            let satMass = [];
+            let sunMass = [];
+            state.lessonsFilter.map((e) => {
+                if (e.idDay === 0) mMass.push(e)
+                if (e.idDay === 1) tuMass.push(e)
+                if (e.idDay === 2) wMass.push(e)
+                if (e.idDay === 3) thMass.push(e)
+                if (e.idDay === 4) frMass.push(e)
+                if (e.idDay === 5) satMass.push(e)
+                if (e.idDay === 6) sunMass.push(e)
+            })
+            return {
+                ...state,
+                monMass: mMass,
+                tueMass: tuMass,
+                wenMass: wMass,
+                thusMass: thMass,
+                setMass: satMass,
+                sunMass: sunMass
+            }
         // case SET_PROFILE_ERROR:
         //     return {
         //         ...state,
@@ -195,6 +279,9 @@ export const setNewWeek = (us1, us2) => ({type: WEEK_CHANGE, payload1: us1, payl
 export const plusWeek = () => ({type: PLUS_WEEK})
 export const minusWeek = () => ({type: MINUS_WEEK})
 export const getWeekMass = () => ({type: GET_WEEK_MASS})
+export const filtLessons = () => ({type: FILTER_LESSONS_MASS})
+export const sortLess = () => ({type: SORT_MASS_FOR_DAY})
+
 
 
 

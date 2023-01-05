@@ -5,7 +5,15 @@ import arrowr from '../src/icons/right.png'
 import {Link, NavLink} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {getWeekMass, minusWeek, plusWeek, setNewWeek, setNowDay} from "./reducers/profileReducer";
+import {
+    filtLessons,
+    getWeekMass,
+    minusWeek,
+    plusWeek,
+    setNewWeek,
+    setNowDay,
+    sortLess
+} from "./reducers/profileReducer";
 
 
 const App = () => {
@@ -24,7 +32,8 @@ const App = () => {
     useEffect(() => {
         setThisWeek();
         dispatch(getWeekMass());
-        console.log(new Date(firstWeekDay))
+        dispatch(filtLessons());
+        dispatch(sortLess());
     }, []);
 
     const setThisWeek = () => {
@@ -94,7 +103,8 @@ const App = () => {
                 <div className="timeBar">
 
                 </div>
-                {dayMass.map((e) => {
+                {dayMass.map((e, index) => {
+                    console.log(index)
                     return <div className="dayWeek_field">
                         <div className="monthPart">
                             <span>{e.date}</span>
