@@ -86,3 +86,18 @@
   font-weight: bold;
   font-size: 1.3rem;
 }
+.lessonsPart{
+  height: 95%;
+  width: 100%;
+  background: #5b6ff8;
+  position: relative;
+}
+
+.lesson{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  font-weight: bold;
+  font-size: 16pt;
+}

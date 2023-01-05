@@ -27,6 +27,7 @@ const App = () => {
     const monthWeek = useSelector(state => state.profile.monthWeek);
     const fullYear = useSelector(state => state.profile.fullYear);
     const dayMass = useSelector(state => state.profile.dayMass);
+    const endLessonsMass = useSelector(state => state.profile.endLessonsMass);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -64,12 +65,16 @@ const App = () => {
     const changeWeekPlus = () => {
         dispatch(plusWeek());
         dispatch(getWeekMass());
+        dispatch(filtLessons());
+        dispatch(sortLess());
 
     }
 
     const changeWeekMinus = () => {
         dispatch(minusWeek());
         dispatch(getWeekMass());
+        dispatch(filtLessons());
+        dispatch(sortLess());
     }
 
   return (
@@ -110,6 +115,25 @@ const App = () => {
                             <span>{e.date}</span>
                             <span>.</span>
                             <span>{e.day}</span>
+                        </div>
+                        <div className="lessonsPart">
+                            {endLessonsMass[index].map((e) => {
+                                let currentTimeForFirst = new Date();
+                                currentTimeForFirst.setHours(8, 0);
+                                currentTimeForFirst.setMinutes(currentTimeForFirst.getMinutes() + 5*e.startTime);
+                                let currentTimeForSecond = new Date();
+                                currentTimeForSecond.setHours(8, 0);
+                                currentTimeForSecond.setMinutes(currentTimeForSecond.getMinutes() + 5*e.durationTime + 5*e.startTime);
+                                return <button className="lesson" style={{ top:`${e.startTime*5}px`, height:`${e.durationTime*5}px`, backgroundColor: "#ffd43a"}}>
+                                    <span>{e.namePup}</span>
+                                    <br/>
+                                    <span>{(currentTimeForFirst.getMinutes() === 0)? currentTimeForFirst.getHours()+":"+"00"
+                                        : currentTimeForFirst.getHours()+":"+currentTimeForFirst.getMinutes()}</span>
+                                    <span>-</span>
+                                    <span>{(currentTimeForSecond.getMinutes() === 0)? currentTimeForSecond.getHours()+":"+"00"
+                                        : currentTimeForSecond.getHours()+":"+currentTimeForSecond.getMinutes()}</span>
+                                </button>
+                            })}
                         </div>
                     </div>
                 })}
