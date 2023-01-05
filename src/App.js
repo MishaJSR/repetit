@@ -17,8 +17,11 @@ import {
 
 
 const App = () => {
-    const [one, setOne] = useState(0);
-    const [two, setTwo] = useState(0);
+    const [name, setName] = useState("");
+    const [timeSt, setTimeSt] = useState("");
+    const [timeEn, setTimeEn] = useState("");
+    const [sub, setSub] = useState("");
+    const [cost, setCost] = useState("");
     const nowDay = useSelector(state => state.profile.nowDay);
     const firstWeekDay = useSelector(state => state.profile.firstWeekDay);
     const secondWeekDay = useSelector(state => state.profile.secondWeekDay);
@@ -102,7 +105,16 @@ const App = () => {
       </div>
         <div className="main">
             <div className="activity">
-
+                <input className="input_activity" onChange={(e) => setName(e.target.value)} placeholder="Имя"/>
+                <input className="input_activity" onChange={(e) => setTimeSt(e.target.value)} placeholder="Время начала"/>
+                <input className="input_activity" onChange={(e) => setTimeEn(e.target.value)} placeholder="Время конца"/>
+                <input className="input_activity" onChange={(e) => setSub(e.target.value)} placeholder="Предмет"/>
+                <input className="input_activity" onChange={(e) => setCost(e.target.value)} placeholder="Стоимость"/>
+                <input type="radio"/>
+                <button className="delete">Удалить одно занятие</button>
+                <button className="delete">Удалить все занятия ученика</button>
+                <button className="save">Сохранить изменения</button>
+                <button className="add">Добавить нового ученика</button>
             </div>
             <div className="calendar_field">
                 <div className="timeBar">

@@ -37,9 +37,64 @@
 }
 
 .activity{
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
   width: 17%;
   height: 100%;
   background: #2d5075;
+  gap: 15px;
+  align-items: center;
+}
+
+.input_activity{
+  width: 50%;
+  height: 30px;
+}
+
+.button_activity{
+
+}
+
+input{
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.delete{
+  width: 51%;
+  height: 50px;
+  background: #ff683b;
+  color: white;
+  font-weight: bold;
+}
+.save{
+  margin-top: 150px;
+  width: 51%;
+  height: 120px;
+  margin-bottom: 50px;
+  background: #148c00;
+  color: white;
+  font-weight: bold;
+}
+
+.add{
+  margin-top: 80px;
+  width: 51%;
+  height: 50px;
+  background: #b7a600;
+  color: white;
+  font-weight: bold;
+
+}
+.add:hover{
+  color: black;
+}
+.save:hover{
+  color: black;
+}
+.delete:hover{
+  color: black;
 }
 
 
