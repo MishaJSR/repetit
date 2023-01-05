@@ -5,7 +5,7 @@ import arrowr from '../src/icons/right.png'
 import {Link, NavLink} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {minusWeek, plusWeek, setNewWeek, setNowDay} from "./reducers/profileReducer";
+import {getWeekMass, minusWeek, plusWeek, setNewWeek, setNowDay} from "./reducers/profileReducer";
 
 
 const App = () => {
@@ -18,10 +18,12 @@ const App = () => {
     const sDay = useSelector(state => state.profile.sDay);
     const monthWeek = useSelector(state => state.profile.monthWeek);
     const fullYear = useSelector(state => state.profile.fullYear);
+    const dayMass = useSelector(state => state.profile.dayMass);
     const dispatch = useDispatch();
 
     useEffect(() => {
-        setThisWeek()
+        setThisWeek();
+        dispatch(getWeekMass());
         console.log(new Date(firstWeekDay))
     }, []);
 
@@ -51,33 +53,15 @@ const App = () => {
     }
 
     const changeWeekPlus = () => {
-        dispatch(plusWeek())
-        // dispatch(setNewWeek(6, 6))
+        dispatch(plusWeek());
+        dispatch(getWeekMass());
+
     }
 
     const changeWeekMinus = () => {
-        dispatch(minusWeek())
-        // dispatch(setNewWeek(-6, -6))
+        dispatch(minusWeek());
+        dispatch(getWeekMass());
     }
-
-
-
-
-    // //
-    // const leftClick = (e) => {
-    //     e.preventDefault();
-    //     firstWeekDay.setDate(firstWeekDay.getDate() + 7);
-    //     secondWeekDay.setDate(secondWeekDay.getDate() + 7);
-    //
-    //     let a = firstWeekDay.toLocaleDateString().slice(0,2)
-    //     console.log(a)
-    //     setOne(a);
-    //     // setTwo(secondWeekDay.getDate());
-    //     alert(firstWeekDay.getDate())
-    //     console.log(firstWeekDay.getDate())
-    // }
-
-
 
   return (
     <div className="app">
@@ -110,27 +94,15 @@ const App = () => {
                 <div className="timeBar">
 
                 </div>
-                <div className="dayWeek_field first1">
-
-                </div>
-                <div className="dayWeek_field second2">
-
-                </div>
-                <div className="dayWeek_field third3">
-
-                </div>
-                <div className="dayWeek_field forth4">
-
-                </div>
-                <div className="dayWeek_field fifth5">
-
-                </div>
-                <div className="dayWeek_field sixth6">
-
-                </div>
-                <div className="dayWeek_field seventh7">
-
-                </div>
+                {dayMass.map((e) => {
+                    return <div className="dayWeek_field">
+                        <div className="monthPart">
+                            <span>{e.date}</span>
+                            <span>.</span>
+                            <span>{e.day}</span>
+                        </div>
+                    </div>
+                })}
             </div>
         </div>
     </div>

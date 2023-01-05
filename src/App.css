@@ -75,3 +75,14 @@
   top: 1.5%;
   right: 4%;
 }
+
+.monthPart{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 5%;
+  width: 100%;
+  background: #80fc1b;
+  font-weight: bold;
+  font-size: 1.3rem;
+}

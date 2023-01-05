@@ -10,7 +10,7 @@ const SET_NOW_DAY = 'SET_NOW_DAY'
 const WEEK_CHANGE = 'WEEK_CHANGE'
 const PLUS_WEEK = 'PLUS_WEEK'
 const MINUS_WEEK = 'MINUS_WEEK'
-const CHECK_MONTH = 'CHECK_MONTH'
+const GET_WEEK_MASS = 'GET_WEEK_MASS'
 
 
 const monthName = [
@@ -28,6 +28,16 @@ const monthName = [
     {name: 'December'},
 ]
 
+const weekName = [
+    {name: 'Monday'},
+    {name: 'Tuesday'},
+    {name: 'Wednesday'},
+    {name: 'Thursday'},
+    {name: 'Friday'},
+    {name: 'Saturday'},
+    {name: 'Sunday'},
+]
+
 
 const defaultState = {
     nowDay: Date.now(),
@@ -36,7 +46,9 @@ const defaultState = {
     fDay: null,
     sDay: null,
     monthWeek: monthName[new Date().getMonth()].name,
+    monthNumber: new Date().getMonth(),
     fullYear: new Date().getFullYear(),
+    dayMass: [],
     allUsers : [],
     nowUser:[],
     nowUserInfo:[],
@@ -91,6 +103,7 @@ export default  function profileReducer(state= defaultState, action){
                 fDay: w.getDate() - 1,
                 sDay: y.getDate() - 1,
                 monthWeek: monthName[monthName2].name,
+                monthNumber: monthName2,
                 fullYear: w.getFullYear()
             }
 
@@ -117,15 +130,24 @@ export default  function profileReducer(state= defaultState, action){
                 fDay: w3.getDate() - 1,
                 sDay: y4.getDate() - 1,
                 monthWeek: monthName[monthName1].name,
+                monthNumber: monthName1,
                 fullYear: w3.getFullYear()
             }
 
-        //
-        // case SET_MY_USER:
-        //     return {
-        //         ...state,
-        //         nowUser: action.payload
-        //     }
+
+        case GET_WEEK_MASS:
+            let massDays = []
+            let fir = new Date(state.fullYear, state.monthNumber, state.fDay);
+            massDays.push({date: fir.getDate(), day: weekName[0].name});
+            for (let i = 1; i < 6; i++) {
+                let z = fir.setDate(fir.getDate() + 1)
+                massDays.push({date: fir.getDate(), day: weekName[i].name});
+            }
+            massDays.push({date: state.sDay, day: weekName[6].name});
+            return {
+                ...state,
+                dayMass: massDays
+            }
         //
         // case SET_MY_USER_INFO:
         //     return {
@@ -172,6 +194,8 @@ export const setNowDay = () => ({type: SET_NOW_DAY})
 export const setNewWeek = (us1, us2) => ({type: WEEK_CHANGE, payload1: us1, payload2: us2})
 export const plusWeek = () => ({type: PLUS_WEEK})
 export const minusWeek = () => ({type: MINUS_WEEK})
+export const getWeekMass = () => ({type: GET_WEEK_MASS})
+
 
 
 export const setUsers = (us) => ({type: SET_USERS, payload: us})
