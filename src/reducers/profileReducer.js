@@ -14,6 +14,8 @@ const GET_WEEK_MASS = 'GET_WEEK_MASS'
 const FILTER_LESSONS_MASS = 'FILTER_LESSONS_MASS'
 const SORT_MASS_FOR_DAY = 'SORT_MASS_FOR_DAY'
 
+const exept = []
+
 const lessonsMass = [
     {   idYear: 2023,
         idMonth: 0,
@@ -22,8 +24,10 @@ const lessonsMass = [
         idDay: 0,
         startTime: 6,
         durationTime: 18,
-        subj: true,
-        namePup: "Masha"},
+        subj: "History",
+        namePup: "Masha",
+        cost: 800,
+        every: true},
 
     {   idYear: 2023,
         idMonth: 0,
@@ -32,8 +36,10 @@ const lessonsMass = [
         idDay: 0,
         startTime: 26,
         durationTime: 18,
-        subj: true,
-        namePup: "Andy"},
+        subj: "History",
+        namePup: "Andy",
+        cost: 800,
+        every: true},
 
     {   idYear: 2023,
         idMonth: 0,
@@ -42,8 +48,10 @@ const lessonsMass = [
         idDay: 1,
         startTime: 12,
         durationTime: 18,
-        subj: true,
-        namePup: "Vasya"},
+        subj: "History",
+        namePup: "Vasya",
+        cost: 800,
+        every: true},
 
     {   idYear: 2023,
         idMonth: 0,
@@ -52,8 +60,10 @@ const lessonsMass = [
         idDay: 5,
         startTime: 42,
         durationTime: 18,
-        subj: true,
-        namePup: "Vasya"},
+        subj: "History",
+        namePup: "Vasya",
+        cost: 800,
+        every: true},
 
     {   idYear: 2023,
         idMonth: 0,
@@ -62,8 +72,10 @@ const lessonsMass = [
         idDay: 2,
         startTime: 18,
         durationTime: 12,
-        subj: true,
-        namePup: "Petr"},
+        subj: "History",
+        namePup: "Petr",
+        cost: 800,
+        every: true},
 
     {   idYear: 2023,
         idMonth: 0,
@@ -72,8 +84,10 @@ const lessonsMass = [
         idDay: 6,
         startTime: 26,
         durationTime: 18,
-        subj: true,
-        namePup: "Petr"},
+        subj: "History",
+        namePup: "Petr",
+        every: true
+    },
     {   idYear: 2023,
         idMonth: 0,
         idStartDay: 2,
@@ -81,8 +95,10 @@ const lessonsMass = [
         idDay: 4,
         startTime: 150,
         durationTime: 18,
-        subj: true,
-        namePup: "olya"},
+        subj: "History",
+        namePup: "olya",
+        cost: 800,
+        every: true},
 
     {   idYear: 2023,
         idMonth: 0,
@@ -91,8 +107,10 @@ const lessonsMass = [
         idDay: 2,
         startTime: 160,
         durationTime: 18,
-        subj: true,
-        namePup: "Olya"},
+        subj: "History",
+        namePup: "Olya",
+        cost: 800,
+        every: true},
 
     {   idYear: 2023,
         idMonth: 0,
@@ -101,8 +119,10 @@ const lessonsMass = [
         idDay: 5,
         startTime: 18,
         durationTime: 12,
-        subj: true,
-        namePup: "Petr"},
+        subj: "History",
+        namePup: "Petr",
+        cost: 800,
+        every: true},
 
     {   idYear: 2023,
         idMonth: 0,
@@ -111,8 +131,10 @@ const lessonsMass = [
         idDay: 3,
         startTime: 46,
         durationTime: 18,
-        subj: true,
-        namePup: "Petr"},
+        subj: "History",
+        namePup: "Petr",
+        cost: 800,
+        every: true},
 
     {   idYear: 2023,
         idMonth: 0,
@@ -121,8 +143,10 @@ const lessonsMass = [
         idDay: 2,
         startTime: 0,
         durationTime: 12,
-        subj: true,
-        namePup: "Petr"},
+        subj: "History",
+        namePup: "Petr",
+        cost: 800,
+        every: true},
 
 ]
 
@@ -274,7 +298,7 @@ export default  function profileReducer(state= defaultState, action){
         case FILTER_LESSONS_MASS:
             let filtMass = [];
 
-            filtMass = lessonsMass.filter(e => e.idYear === state.fullYear && e.idMonth === state.monthNumber && e.idStartDay === state.fDay)
+            filtMass = lessonsMass.filter(e => (e.every===true) || (e.idYear === state.fullYear && e.idMonth === state.monthNumber && e.idStartDay === state.fDay))
 
             return {
                 ...state,

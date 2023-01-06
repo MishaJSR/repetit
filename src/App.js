@@ -17,9 +17,11 @@ import {
 
 
 const App = () => {
-    const [name, setName] = useState("");
-    const [timeSt, setTimeSt] = useState("");
-    const [timeEn, setTimeEn] = useState("");
+    const [name, setName] = useState("And");
+    const [timeStH, setTimeStH] = useState("");
+    const [timeStM, setTimeStM] = useState("");
+    const [timeEnH, setTimeEnH] = useState("");
+    const [timeEnM, setTimeEnM] = useState("");
     const [sub, setSub] = useState("");
     const [cost, setCost] = useState("");
     const nowDay = useSelector(state => state.profile.nowDay);
@@ -105,11 +107,13 @@ const App = () => {
       </div>
         <div className="main">
             <div className="activity">
-                <input className="input_activity" onChange={(e) => setName(e.target.value)} placeholder="Имя"/>
-                <input className="input_activity" onChange={(e) => setTimeSt(e.target.value)} placeholder="Время начала"/>
-                <input className="input_activity" onChange={(e) => setTimeEn(e.target.value)} placeholder="Время конца"/>
-                <input className="input_activity" onChange={(e) => setSub(e.target.value)} placeholder="Предмет"/>
-                <input className="input_activity" onChange={(e) => setCost(e.target.value)} placeholder="Стоимость"/>
+                <input className="input_activity" value={name} onChange={(e) => setName(e.target.value)} placeholder="Имя"/>
+                <input className="input_activity" value={timeStH} onChange={(e) => setTimeStH(e.target.value)} placeholder="Время начала часы"/>
+                <input className="input_activity" value={timeStM} onChange={(e) => setTimeStM(e.target.value)} placeholder="Время начала минуты"/>
+                <input className="input_activity" value={timeEnH} onChange={(e) => setTimeEnH(e.target.value)} placeholder="Время конца часы"/>
+                <input className="input_activity" value={timeEnM} onChange={(e) => setTimeEnM(e.target.value)} placeholder="Время конца минуты"/>
+                <input className="input_activity" value={sub} onChange={(e) => setSub(e.target.value)} placeholder="Предмет"/>
+                <input className="input_activity" value={cost} onChange={(e) => setCost(e.target.value)} placeholder="Стоимость"/>
                 <input type="radio"/>
                 <button className="delete">Удалить одно занятие</button>
                 <button className="delete">Удалить все занятия ученика</button>
@@ -136,7 +140,18 @@ const App = () => {
                                 let currentTimeForSecond = new Date();
                                 currentTimeForSecond.setHours(8, 0);
                                 currentTimeForSecond.setMinutes(currentTimeForSecond.getMinutes() + 5*e.durationTime + 5*e.startTime);
-                                return <button className="lesson" style={{ top:`${e.startTime*5}px`, height:`${e.durationTime*5}px`, backgroundColor: "#ffd43a"}}>
+                                return <button className="lesson"
+                                               style={{ top:`${e.startTime*5}px`, height:`${e.durationTime*5}px`, backgroundColor: "#ffd43a"}}
+                                onClick={() => {
+                                    setName(e.namePup);
+                                    setTimeStH(currentTimeForFirst.getHours())
+                                    setTimeStM(currentTimeForFirst.getMinutes())
+                                    setTimeEnH(currentTimeForSecond.getHours())
+                                    setTimeEnM(currentTimeForSecond.getMinutes())
+                                    setSub(e.subj)
+                                    setCost(e.cost)
+                                }
+                                }>
                                     <span>{e.namePup}</span>
                                     <br/>
                                     <span>{(currentTimeForFirst.getMinutes() === 0)? currentTimeForFirst.getHours()+":"+"00"
