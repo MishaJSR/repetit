@@ -14,7 +14,31 @@ const GET_WEEK_MASS = 'GET_WEEK_MASS'
 const FILTER_LESSONS_MASS = 'FILTER_LESSONS_MASS'
 const SORT_MASS_FOR_DAY = 'SORT_MASS_FOR_DAY'
 
-const exept = []
+const exept = [
+    {   idYear: 2023,
+        idMonth: 0,
+        idStartDay: 2,
+        idEndDay: 8,
+        idDay: 0,
+        startTime: 6,
+        durationTime: 18,
+        subj: "History",
+        namePup: "Masha",
+        cost: 800,
+        every: true},
+
+    {   idYear: 2023,
+        idMonth: 0,
+        idStartDay: 9,
+        idEndDay: 15,
+        idDay: 0,
+        startTime: 26,
+        durationTime: 18,
+        subj: "History",
+        namePup: "Andy",
+        cost: 800,
+        every: true},
+]
 
 const lessonsMass = [
     {   idYear: 2023,
@@ -28,6 +52,18 @@ const lessonsMass = [
         namePup: "Masha",
         cost: 800,
         every: true},
+
+    {   idYear: 2023,
+        idMonth: 0,
+        idStartDay: 2,
+        idEndDay: 8,
+        idDay: 3,
+        startTime: 46,
+        durationTime: 18,
+        subj: "History",
+        namePup: "Andy",
+        cost: 800,
+        every: false},
 
     {   idYear: 2023,
         idMonth: 0,
@@ -187,6 +223,7 @@ const defaultState = {
     fullYear: new Date().getFullYear(),
     lessonsFilter: [],
     endLessonsMass: [],
+    filtExt: [],
     monMass: [],
     tueMass: [],
     wenMass: [],
@@ -297,12 +334,19 @@ export default  function profileReducer(state= defaultState, action){
 
         case FILTER_LESSONS_MASS:
             let filtMass = [];
-
+            let filtExtw = [];
+            let endFilt = [];
+            filtExtw = exept.filter((e) => e.idYear === state.fullYear && e.idMonth === state.monthNumber && e.idStartDay === state.fDay)
             filtMass = lessonsMass.filter(e => (e.every===true) || (e.idYear === state.fullYear && e.idMonth === state.monthNumber && e.idStartDay === state.fDay))
+            if (filtExtw.length === 0) endFilt = filtMass;
+            else filtExtw.map((m) => endFilt = lessonsMass.filter(e => (e.idDay !== m.idDay) || (e.startTime !== m.startTime)))
+            // for (let i = 1; i < filtExtw.length; i++){
+            //     endFilt = filtMass.filter((e) => (e.idDay!= filtExtw[i].idDay) && (e.startTime!= filtExtw[i].startTime))
+            // }
 
             return {
                 ...state,
-                lessonsFilter: filtMass
+                lessonsFilter: endFilt
             }
 
 
