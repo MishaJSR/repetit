@@ -13,6 +13,11 @@ const MINUS_WEEK = 'MINUS_WEEK'
 const GET_WEEK_MASS = 'GET_WEEK_MASS'
 const FILTER_LESSONS_MASS = 'FILTER_LESSONS_MASS'
 const SORT_MASS_FOR_DAY = 'SORT_MASS_FOR_DAY'
+const SET_IS_FETCH = 'SET_IS_FETCH'
+const SET_EXT_MASS = 'SET_EXT_MASS'
+const SET_REPEAT_MASS = 'SET_REPEAT_MASS'
+const SET_ERROR_MESS = 'SET_ERROR_MESS'
+const FILTER_END_MASS = 'FILTER_END_MASS'
 
 const exept = [
     {   idYear: 2023,
@@ -25,7 +30,8 @@ const exept = [
         subj: "History",
         namePup: "Masha",
         cost: 800,
-        every: true},
+        every: true,
+        isPayed: false},
 
     {   idYear: 2023,
         idMonth: 0,
@@ -37,7 +43,8 @@ const exept = [
         subj: "History",
         namePup: "Andy",
         cost: 800,
-        every: true},
+        every: true,
+        isPayed: false},
 ]
 
 const lessonsMass = [
@@ -51,7 +58,9 @@ const lessonsMass = [
         subj: "History",
         namePup: "Masha",
         cost: 800,
-        every: true},
+        every: true,
+        isPayed: false},
+
 
     {   idYear: 2023,
         idMonth: 0,
@@ -63,7 +72,8 @@ const lessonsMass = [
         subj: "History",
         namePup: "Andy",
         cost: 800,
-        every: false},
+        every: false,
+        isPayed: false},
 
     {   idYear: 2023,
         idMonth: 0,
@@ -75,7 +85,8 @@ const lessonsMass = [
         subj: "History",
         namePup: "Andy",
         cost: 800,
-        every: true},
+        every: true,
+        isPayed: false},
 
     {   idYear: 2023,
         idMonth: 0,
@@ -87,7 +98,21 @@ const lessonsMass = [
         subj: "History",
         namePup: "Vasya",
         cost: 800,
-        every: true},
+        every: true,
+        isPayed: false},
+
+    {   idYear: 2023,
+        idMonth: 0,
+        idStartDay: 9,
+        idEndDay: 15,
+        idDay: 4,
+        startTime: 68,
+        durationTime: 18,
+        subj: "History",
+        namePup: "Vasya",
+        cost: 800,
+        every: false,
+        isPayed: false},
 
     {   idYear: 2023,
         idMonth: 0,
@@ -99,7 +124,8 @@ const lessonsMass = [
         subj: "History",
         namePup: "Vasya",
         cost: 800,
-        every: true},
+        every: true,
+        isPayed: false},
 
     {   idYear: 2023,
         idMonth: 0,
@@ -111,7 +137,8 @@ const lessonsMass = [
         subj: "History",
         namePup: "Petr",
         cost: 800,
-        every: true},
+        every: true,
+        isPayed: false},
 
     {   idYear: 2023,
         idMonth: 0,
@@ -122,7 +149,8 @@ const lessonsMass = [
         durationTime: 18,
         subj: "History",
         namePup: "Petr",
-        every: true
+        every: true,
+        isPayed: false
     },
     {   idYear: 2023,
         idMonth: 0,
@@ -134,7 +162,8 @@ const lessonsMass = [
         subj: "History",
         namePup: "olya",
         cost: 800,
-        every: true},
+        every: true,
+        isPayed: false},
 
     {   idYear: 2023,
         idMonth: 0,
@@ -146,7 +175,8 @@ const lessonsMass = [
         subj: "History",
         namePup: "Olya",
         cost: 800,
-        every: true},
+        every: true,
+        isPayed: false},
 
     {   idYear: 2023,
         idMonth: 0,
@@ -158,7 +188,8 @@ const lessonsMass = [
         subj: "History",
         namePup: "Petr",
         cost: 800,
-        every: true},
+        every: true,
+        isPayed: false},
 
     {   idYear: 2023,
         idMonth: 0,
@@ -170,7 +201,8 @@ const lessonsMass = [
         subj: "History",
         namePup: "Petr",
         cost: 800,
-        every: true},
+        every: true,
+        isPayed: false},
 
     {   idYear: 2023,
         idMonth: 0,
@@ -182,7 +214,8 @@ const lessonsMass = [
         subj: "History",
         namePup: "Petr",
         cost: 800,
-        every: true},
+        every: true,
+        isPayed: false},
 
 ]
 
@@ -221,6 +254,8 @@ const defaultState = {
     monthWeek: monthName[new Date().getMonth()].name,
     monthNumber: new Date().getMonth(),
     fullYear: new Date().getFullYear(),
+    ext: null,
+    repeateble: null,
     lessonsFilter: [],
     endLessonsMass: [],
     filtExt: [],
@@ -237,7 +272,10 @@ const defaultState = {
     nowUserInfo:[],
     errorMessage: null,
     fullScreen: 8,
-    sliderPosition: 0
+    sliderPosition: 0,
+    isFetch: true,
+    errorMess: null,
+    filterExt: null
 }
 
 
@@ -247,6 +285,47 @@ export default  function profileReducer(state= defaultState, action){
             return {
                 ...state
             }
+
+        case SET_IS_FETCH:
+            return {
+                ...state,
+                isFetch: action.payload
+            }
+        case SET_EXT_MASS:
+            return {
+                ...state,
+                ext: action.payload
+            }
+
+        case SET_REPEAT_MASS:
+            return {
+                ...state,
+                repeateble: action.payload
+            }
+
+        case SET_ERROR_MESS:
+            return {
+                ...state,
+                errorMess: action.payload
+            }
+
+        case FILTER_END_MASS:
+            let filtExt = [];
+            state.repeateble.map((e) => {
+                filtExt = state.ext.filter((m) => (e.idYear !== m.idYear) || (e.idMonth !== m.idMonth) || (e.idDay !== m.idDay) || (e.startTime !== m.startTime))
+            })
+
+            return {
+                ...state,
+                filterExt: filtExt
+            }
+
+
+
+
+
+
+
         case WEEK_CHANGE:
             let f;
             let s;
@@ -422,8 +501,11 @@ export const minusWeek = () => ({type: MINUS_WEEK})
 export const getWeekMass = () => ({type: GET_WEEK_MASS})
 export const filtLessons = () => ({type: FILTER_LESSONS_MASS})
 export const sortLess = () => ({type: SORT_MASS_FOR_DAY})
-
-
+export const setIsFetching = (bol) => ({type: SET_IS_FETCH, payload: bol})
+export const setExtMass = (bol) => ({type: SET_EXT_MASS, payload: bol})
+export const setRepMass = (bol) => ({type: SET_REPEAT_MASS, payload: bol})
+export const setError = (bol) => ({type: SET_ERROR_MESS, payload: bol})
+export const filterEndMass = () => ({type: FILTER_END_MASS})
 
 
 export const setUsers = (us) => ({type: SET_USERS, payload: us})
@@ -433,3 +515,4 @@ export const setProfileError = (err) => ({type: SET_PROFILE_ERROR, payload: err}
 export const setFullScreen = (bool) => ({type: SET_FULL_SCREEN, payload: bool})
 export const setSliderActive = (num, len) => ({type: SET_SLIDER_ACTIVE, payload: num, len: len})
 export const setSliderPosition = (num) => ({type: SET_SLIDER_POSITION, payload: num})
+

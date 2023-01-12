@@ -14,6 +14,7 @@ import {
     setNowDay,
     sortLess
 } from "./reducers/profileReducer";
+import {getWeekExt, getWeekRep} from "./actions/actions";
 
 
 const App = () => {
@@ -33,6 +34,7 @@ const App = () => {
     const fullYear = useSelector(state => state.profile.fullYear);
     const dayMass = useSelector(state => state.profile.dayMass);
     const endLessonsMass = useSelector(state => state.profile.endLessonsMass);
+    const isFetch = useSelector(state => state.profile.isFetch);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -40,6 +42,8 @@ const App = () => {
         dispatch(getWeekMass());
         dispatch(filtLessons());
         dispatch(sortLess());
+        dispatch(getWeekExt(2023, 4, 3))
+        dispatch(getWeekRep(2023, 2, 3))
     }, []);
 
     const setThisWeek = () => {
@@ -82,7 +86,7 @@ const App = () => {
         dispatch(sortLess());
     }
 
-  return (
+  return (!isFetch)?(
     <div className="app">
       <div className="header">
           <div className="pay">
@@ -108,13 +112,20 @@ const App = () => {
         <div className="main">
             <div className="activity">
                 <input className="input_activity" value={name} onChange={(e) => setName(e.target.value)} placeholder="Имя"/>
-                <input className="input_activity" value={timeStH} onChange={(e) => setTimeStH(e.target.value)} placeholder="Время начала часы"/>
-                <input className="input_activity" value={timeStM} onChange={(e) => setTimeStM(e.target.value)} placeholder="Время начала минуты"/>
-                <input className="input_activity" value={timeEnH} onChange={(e) => setTimeEnH(e.target.value)} placeholder="Время конца часы"/>
-                <input className="input_activity" value={timeEnM} onChange={(e) => setTimeEnM(e.target.value)} placeholder="Время конца минуты"/>
+                <div className="timeF">
+                    <input className="timeF_input" value={timeStH} onChange={(e) => setTimeStH(e.target.value)} />
+                    <input className="timeF_input" value={timeStM} onChange={(e) => setTimeStM(e.target.value)} />
+                </div>
+                <div className="timeF">
+                    <input className="timeF_input" value={timeEnH} onChange={(e) => setTimeEnH(e.target.value)} />
+                    <input className="timeF_input" value={timeEnM} onChange={(e) => setTimeEnM(e.target.value)} />
+                </div>
                 <input className="input_activity" value={sub} onChange={(e) => setSub(e.target.value)} placeholder="Предмет"/>
                 <input className="input_activity" value={cost} onChange={(e) => setCost(e.target.value)} placeholder="Стоимость"/>
-                <input type="radio"/>
+                <div className="isRepeat">
+                    <input type="checkbox" id="contactChoice1"/> <label htmlFor="contactChoice1">Повторять каждую неделю</label>
+                </div>
+
                 <button className="delete">Удалить одно занятие</button>
                 <button className="delete">Удалить все занятия ученика</button>
                 <button className="save">Сохранить изменения</button>
@@ -167,7 +178,7 @@ const App = () => {
             </div>
         </div>
     </div>
-  );
+  ): (<div>ERROR</div>)
 }
 
 export default App;

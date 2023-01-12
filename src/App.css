@@ -52,6 +52,22 @@
   height: 30px;
 }
 
+.isRepeat{
+  color: white;
+  font-size: 16px;
+}
+
+.timeF{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.timeF_input{
+  width: 10%;
+  height: 20px;
+}
+
 .button_activity{
 
 }
