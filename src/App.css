@@ -36,6 +36,7 @@
   font-size: 1.5rem;
 }
 
+
 .activity{
   padding-top: 20px;
   display: flex;
@@ -45,73 +46,233 @@
   background: #2d5075;
   gap: 15px;
   align-items: center;
+  font-size: 18px;
 }
 
 .input_activity{
-  width: 50%;
-  height: 30px;
+  width: 170px;
+  padding: 10px 15px;
+}
+
+.homeFiled{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
 }
 
 .isRepeat{
   color: white;
-  font-size: 16px;
+  font-size: 20px;
+}
+
+.saveDZ{
+  padding: 15px 10px;
+  background: #606060;
+  color: white;
+  font-weight: bold;
+}
+
+.saveDZ:hover{
+  background: #000000;
+  color: white;
 }
 
 .timeF{
   display: flex;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
 }
 
 .timeF_input{
-  width: 10%;
+  width: 9%;
   height: 20px;
+}
+
+.text-center{
+  text-align: center;
+}
+
+.padR-10{
+  margin-left: 10px;
+}
+
+.payField{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.payLabel{
+  width: 120px;
+}
+
+.payLabel2{
+  width: 170px;
+}
+
+.payButton{
+  height: 40px;
+  width: 40px;
+  margin-left: 10px;
+}
+
+.payButton:hover{
+  border: 5px solid green;
+}
+
+textarea {
+  font-size: 20px;
+  padding: 5px 5px;
+  font-weight: bold;
+}
+
+.homeSpan{
+  color: white;
+}
+
+.pb-7{
+  margin-bottom: 7px;
 }
 
 .button_activity{
 
 }
 
+.adderField{
+  position: absolute;
+  top: 15%;
+  left: 30%;
+  width: 800px;
+  height: 700px;
+  background: #a6a6a6;
+  border-radius: 8px;
+  border: 3px solid black;
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+  padding: 50px 120px;
+}
+
+.pupData{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  flex: 1 1 50%;
+}
+
+.timeData{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1 1 50%;
+  gap: 20px;
+}
+
+.select-field{
+  width: 200px;
+  padding: 10px 15px;
+  font-size: 20px;
+}
+
+.scale-check{
+  transform:scale(1.5);
+}
+
+.top-auto{
+  margin-top: auto;
+  width: 200px;
+  padding: 10px 15px;
+  font-size: 20px;
+  font-weight: bold;
+  background: green;
+  color: white;
+}
+
+.top-auto-close{
+  margin-top: auto;
+  width: 200px;
+  padding: 10px 15px;
+  font-size: 20px;
+  font-weight: bold;
+  background: #ffffff;
+  color: black;
+}
+
+.time-center{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.big-pad{
+  padding: 5px 10px;
+}
+
+
 input{
-  font-size: 16px;
+  font-size: 20px;
   font-weight: bold;
 }
 
-.delete{
-  width: 51%;
-  height: 50px;
+.activity-buttons{
+  padding: 10px 20px;
+  font-size: 18px;
+}
+
+
+.activity-buttons:hover{
+  color: black;
+}
+
+.correct{
+  width: 70%;
+  height: 60px;
+  background: #9f9700;
+  color: white;
+  font-weight: bold;
+}
+
+.delete-one{
+  width: 70%;
+  height: 60px;
   background: #ff683b;
   color: white;
   font-weight: bold;
 }
-.save{
-  margin-top: 150px;
-  width: 51%;
-  height: 120px;
+.create-new{
+  width: 70%;
+  height: 60px;
   margin-bottom: 50px;
-  background: #148c00;
+  background: #0f63c5;
   color: white;
   font-weight: bold;
+}
+.end-work{
+  width: 70%;
+  height: 60px;
+  margin-bottom: 50px;
+  background: #8f000c;
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
 }
 
 .add{
   margin-top: 80px;
-  width: 51%;
-  height: 50px;
+  width: 70%;
+  height: 60px;
   background: #b7a600;
   color: white;
   font-weight: bold;
 
 }
-.add:hover{
-  color: black;
-}
-.save:hover{
-  color: black;
-}
-.delete:hover{
-  color: black;
-}
+
 
 
 .calendar_field{

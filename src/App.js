@@ -23,6 +23,7 @@ const App = () => {
     const [timeStM, setTimeStM] = useState("");
     const [timeEnH, setTimeEnH] = useState("");
     const [timeEnM, setTimeEnM] = useState("");
+    const [dur, setDur] = useState("");
     const [sub, setSub] = useState("");
     const [cost, setCost] = useState("");
     const nowDay = useSelector(state => state.profile.nowDay);
@@ -110,25 +111,33 @@ const App = () => {
       </div>
         <div className="main">
             <div className="activity">
-                <input className="input_activity" value={name} onChange={(e) => setName(e.target.value)} placeholder="Имя"/>
+                <input className="input_activity text-center" value={name} onChange={(e) => setName(e.target.value)} placeholder="Имя"/>
                 <div className="timeF">
-                    <input className="timeF_input" value={timeStH} onChange={(e) => setTimeStH(e.target.value)} />
-                    <input className="timeF_input" value={timeStM} onChange={(e) => setTimeStM(e.target.value)} />
+                    <input className="timeF_input text-center" value={timeStH} onChange={(e) => setTimeStH(e.target.value)} />
+                    <input className="timeF_input text-center" value={timeStM} onChange={(e) => setTimeStM(e.target.value)} />
+                    <input className="timeF_input padR-10 text-center" value={timeEnH} onChange={(e) => setTimeEnH(e.target.value)} />
+                    <input className="timeF_input text-center" value={timeEnM} onChange={(e) => setTimeEnM(e.target.value)} />
                 </div>
-                <div className="timeF">
-                    <input className="timeF_input" value={timeEnH} onChange={(e) => setTimeEnH(e.target.value)} />
-                    <input className="timeF_input" value={timeEnM} onChange={(e) => setTimeEnM(e.target.value)} />
+                <input className="input_activity text-center" value={dur} onChange={(e) => setDur(e.target.value)} placeholder="Длительность"/>
+                <input className="input_activity text-center" value={sub} onChange={(e) => setSub(e.target.value)} placeholder="Предмет"/>
+                <div className="payField">
+                    <input className="input_activity text-center payLabel" value={cost} onChange={(e) => setCost(e.target.value)} placeholder="Стоимость"/>
+                    <button className="payButton"></button>
                 </div>
-                <input className="input_activity" value={sub} onChange={(e) => setSub(e.target.value)} placeholder="Предмет"/>
-                <input className="input_activity" value={cost} onChange={(e) => setCost(e.target.value)} placeholder="Стоимость"/>
-                <div className="isRepeat">
-                    <input type="checkbox" id="contactChoice1"/> <label htmlFor="contactChoice1">Повторять каждую неделю</label>
+                <div className="homeFiled">
+                    <div className="homeSpan text-center">
+                        Homework
+                    </div>
+                    <textarea name="" id="" cols="27" rows="8"></textarea>
+                    <button className="saveDZ">Сохранить</button>
                 </div>
 
-                <button className="delete">Удалить одно занятие</button>
-                <button className="delete">Удалить все занятия ученика</button>
-                <button className="save">Сохранить изменения</button>
-                <button className="add">Добавить нового ученика</button>
+
+
+                <button className="correct activity-buttons">Коррекция занятия</button>
+                <button className="create-new activity-buttons">Создать новое занятие</button>
+                <button className="delete-one activity-buttons">Удалить текущее занятие</button>
+                <button className="end-work activity-buttons">Удалить текущее и закончить работу с учеником</button>
             </div>
             <div className="calendar_field">
                 <div className="timeBar">
@@ -177,6 +186,43 @@ const App = () => {
                 }
             </div>
         </div>
+
+        <div className="adderField">
+            <div className="pupData">
+                <input className="input_activity text-center" value={name} onChange={(e) => setName(e.target.value)} placeholder="Имя"/>
+                <div className="time-center">
+                    <input className="timeF_input big-pad text-center" value={timeStH} onChange={(e) => setTimeStH(e.target.value)} />
+                    <input className="timeF_input big-pad text-center" value={timeStM} onChange={(e) => setTimeStM(e.target.value)} />
+                    <input className="timeF_input big-pad padR-10 text-center" value={timeEnH} onChange={(e) => setTimeEnH(e.target.value)} />
+                    <input className="timeF_input big-pad text-center" value={timeEnM} onChange={(e) => setTimeEnM(e.target.value)} />
+                </div>
+                <input className="input_activity text-center" value={dur} onChange={(e) => setDur(e.target.value)} placeholder="Длительность"/>
+                <input className="input_activity text-center" value={sub} onChange={(e) => setSub(e.target.value)} placeholder="Предмет"/>
+                <input className="input_activity text-center payLabel2" value={cost} onChange={(e) => setCost(e.target.value)} placeholder="Стоимость"/>
+                <button className="top-auto">Сохранить</button>
+            </div>
+            <div className="timeData">
+                <select className="select-field" name="" id="">
+                    <option value="this">Эта неделя</option>
+                    <option value="next">Следующая</option>
+                </select>
+                <select className="select-field" name="" id="">
+                    <option value="mon">Понедельник</option>
+                    <option value="thu">Вторник</option>
+                    <option value="wen">Среда</option>
+                    <option value="thus">Четверг</option>
+                    <option value="fri">Пятница</option>
+                    <option value="set">Суббота</option>
+                    <option value="sun">Воскресенье</option>
+                </select>
+                <div className="isRepeat">
+                  <input className="scale-check" type="checkbox" id="contactChoice1"/> <label htmlFor="contactChoice1">Повторять каждую неделю</label>
+                </div>
+                <button className="top-auto-close">Закрыть</button>
+            </div>
+        </div>
+
+
     </div>
   ): (<div>ERROR</div>)
 }
