@@ -322,6 +322,7 @@ export default  function profileReducer(state= defaultState, action){
             }
 
             let difference = extM.filter(x => !toDeleteIdMass.includes(x));
+            let dif2 = difference.concat(state.repeateble)
 
             let mMass = [];
             let tuMass = [];
@@ -330,7 +331,7 @@ export default  function profileReducer(state= defaultState, action){
             let frMass = [];
             let satMass = [];
             let sunMass = [];
-            difference.map((e) => {
+            dif2.map((e) => {
                 if (e.idDay === 0) mMass.push(e)
                 if (e.idDay === 1) tuMass.push(e)
                 if (e.idDay === 2) wMass.push(e)
@@ -342,7 +343,7 @@ export default  function profileReducer(state= defaultState, action){
             return {
                 ...state,
                 errorMess: toDeleteIdMass,
-                filterExt: difference,
+                filterExt: dif2,
                 monMass: mMass,
                 tueMass: tuMass,
                 wenMass: wMass,
@@ -390,6 +391,11 @@ export default  function profileReducer(state= defaultState, action){
             let y = new Date(year2, mon2, da2)
             y.setDate(y.getDate() + 8);
             let monthName2 = w.getMonth();
+            let letToLSW = (w.getDate() - 1).toString()
+            let letToLSY = (y.getDate() - 1).toString()
+            localStorage.setItem('fDay', letToLSW);
+            localStorage.setItem('sDay', letToLSY);
+            localStorage.setItem('monthNumber', monthName2)
 
             return {
                 ...state,
@@ -418,6 +424,13 @@ export default  function profileReducer(state= defaultState, action){
             y4.setDate(y4.getDate() - 6);
             let monthName1 = w3.getMonth();
 
+            let letToLSW2 = (w3.getDate() - 1).toString()
+            let letToLSY2 = (y4.getDate() - 1).toString()
+
+            localStorage.setItem('fDay', letToLSW2);
+            localStorage.setItem('sDay', letToLSY2);
+            localStorage.setItem('monthNumber', monthName1)
+
             return {
                 ...state,
                 firstWeekDay: w3.toISOString(),
@@ -431,7 +444,7 @@ export default  function profileReducer(state= defaultState, action){
 
 
         case GET_WEEK_MASS:
-            let massDays = []
+            let massDays = [];
             let fir = new Date(state.fullYear, state.monthNumber, state.fDay);
             massDays.push({date: fir.getDate(), day: weekName[0].name});
             for (let i = 1; i < 6; i++) {
@@ -439,6 +452,12 @@ export default  function profileReducer(state= defaultState, action){
                 massDays.push({date: fir.getDate(), day: weekName[i].name});
             }
             massDays.push({date: state.sDay, day: weekName[6].name});
+            let a = state.monthNumber.toString()
+            let b = state.fDay.toString()
+            let c = state.sDay.toString()
+            localStorage.setItem('monthNumber', a);
+            localStorage.setItem('fDay', b);
+            localStorage.setItem('sDay', c);
             return {
                 ...state,
                 dayMass: massDays

@@ -26,10 +26,10 @@ export const getWeekExt = (idYear, idMonth, idStartDayWeek) => {
     }
 }
 
-export const getWeekRep = (idYear, idMonth, idStartDayWeek) => {
+export const getWeekRep = () => {
     return async (dispatch) => {
         dispatch(setIsFetching(true))
-        await axios.post("http://localhost:5000/repeateble/getWeek", {idYear: idYear, idMonth: idMonth, idStartDayWeek: idStartDayWeek})
+        await axios.get("http://localhost:5000/repeateble/getWeek")
             .then(response => {
                 dispatch(setRepMass(response.data))
             })

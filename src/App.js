@@ -31,6 +31,7 @@ const App = () => {
     const fDay = useSelector(state => state.profile.fDay);
     const sDay = useSelector(state => state.profile.sDay);
     const monthWeek = useSelector(state => state.profile.monthWeek);
+    const monthNumber = useSelector(state => state.profile.monthNumber);
     const fullYear = useSelector(state => state.profile.fullYear);
     const dayMass = useSelector(state => state.profile.dayMass);
     const endLessonsMass = useSelector(state => state.profile.endLessonsMass);
@@ -40,8 +41,8 @@ const App = () => {
     useEffect(() => {
         setThisWeek();
         dispatch(getWeekMass());
-        dispatch(getWeekExt(2023, 4, 3))
-        dispatch(getWeekRep(2023, 4, 3));
+        dispatch(getWeekExt(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
+        dispatch(getWeekRep())
     }, []);
 
     const setThisWeek = () => {
@@ -72,16 +73,16 @@ const App = () => {
     const changeWeekPlus = () => {
         dispatch(plusWeek());
         dispatch(getWeekMass());
-        dispatch(filtLessons());
-        dispatch(sortLess());
+        dispatch(getWeekExt(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
+        dispatch(getWeekRep())
 
     }
 
     const changeWeekMinus = () => {
         dispatch(minusWeek());
         dispatch(getWeekMass());
-        dispatch(filtLessons());
-        dispatch(sortLess());
+        dispatch(getWeekExt(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
+        dispatch(getWeekRep())
     }
 
   return (!isFetch && endLessonsMass.length > 0)?(
