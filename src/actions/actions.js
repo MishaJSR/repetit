@@ -1,6 +1,14 @@
 import axios from "axios";
 import React from "react";
-import {filterEndMass, setError, setExtMass, setIsFetching, setRepMass} from "../reducers/profileReducer";
+import {
+    filterEndMass,
+    setError,
+    setExtMass,
+    setIsFetching,
+    setNewWeek,
+    setRepMass,
+    sortLess
+} from "../reducers/profileReducer";
 
 export const getWeekExt = (idYear, idMonth, idStartDayWeek) => {
     return async (dispatch) => {
@@ -34,3 +42,4 @@ export const getWeekRep = (idYear, idMonth, idStartDayWeek) => {
             })
     }
 }
+

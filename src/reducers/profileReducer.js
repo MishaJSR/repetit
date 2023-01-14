@@ -323,10 +323,34 @@ export default  function profileReducer(state= defaultState, action){
 
             let difference = extM.filter(x => !toDeleteIdMass.includes(x));
 
+            let mMass = [];
+            let tuMass = [];
+            let wMass = [];
+            let thMass = [];
+            let frMass = [];
+            let satMass = [];
+            let sunMass = [];
+            difference.map((e) => {
+                if (e.idDay === 0) mMass.push(e)
+                if (e.idDay === 1) tuMass.push(e)
+                if (e.idDay === 2) wMass.push(e)
+                if (e.idDay === 3) thMass.push(e)
+                if (e.idDay === 4) frMass.push(e)
+                if (e.idDay === 5) satMass.push(e)
+                if (e.idDay === 6) sunMass.push(e)
+            })
             return {
                 ...state,
                 errorMess: toDeleteIdMass,
-                filterExt: difference
+                filterExt: difference,
+                monMass: mMass,
+                tueMass: tuMass,
+                wenMass: wMass,
+                thusMass: thMass,
+                friMass: frMass,
+                setMass: satMass,
+                sunMass: sunMass,
+                endLessonsMass: [mMass, tuMass, wMass, thMass,frMass, satMass, sunMass, ]
             }
 
 
@@ -420,55 +444,53 @@ export default  function profileReducer(state= defaultState, action){
                 dayMass: massDays
             }
 
-        case FILTER_LESSONS_MASS:
-            let filtMass = [];
-            let filtExtw = [];
-            let endFilt = [];
+        // case FILTER_LESSONS_MASS:
+        //     let filtMass = [];
+        //     let filtExtw = [];
+        //     let endFilt = [];
+        //
+        //
+        //     filtExtw = exept.filter((e) => e.idYear === state.fullYear && e.idMonth === state.monthNumber && e.idStartDay === state.fDay)
+        //     filtMass = lessonsMass.filter(e => (e.every===true) || (e.idYear === state.fullYear && e.idMonth === state.monthNumber && e.idStartDay === state.fDay))
+        //     if (filtExtw.length === 0) endFilt = filtMass;
+        //     else filtExtw.map((m) => endFilt = lessonsMass.filter(e => (e.idDay !== m.idDay) || (e.startTime !== m.startTime)))
+        //
+        //
+        //     return {
+        //         ...state,
+        //         lessonsFilter: endFilt
+        //     }
 
 
-            filtExtw = exept.filter((e) => e.idYear === state.fullYear && e.idMonth === state.monthNumber && e.idStartDay === state.fDay)
-            filtMass = lessonsMass.filter(e => (e.every===true) || (e.idYear === state.fullYear && e.idMonth === state.monthNumber && e.idStartDay === state.fDay))
-            if (filtExtw.length === 0) endFilt = filtMass;
-            else filtExtw.map((m) => endFilt = lessonsMass.filter(e => (e.idDay !== m.idDay) || (e.startTime !== m.startTime)))
-            // for (let i = 1; i < filtExtw.length; i++){
-            //     endFilt = filtMass.filter((e) => (e.idDay!= filtExtw[i].idDay) && (e.startTime!= filtExtw[i].startTime))
-            // }
-
-            return {
-                ...state,
-                lessonsFilter: endFilt
-            }
-
-
-        case SORT_MASS_FOR_DAY:
-            let mMass = [];
-            let tuMass = [];
-            let wMass = [];
-            let thMass = [];
-            let frMass = [];
-            let satMass = [];
-            let sunMass = [];
-            state.lessonsFilter.map((e) => {
-                if (e.idDay === 0) mMass.push(e)
-                if (e.idDay === 1) tuMass.push(e)
-                if (e.idDay === 2) wMass.push(e)
-                if (e.idDay === 3) thMass.push(e)
-                if (e.idDay === 4) frMass.push(e)
-                if (e.idDay === 5) satMass.push(e)
-                if (e.idDay === 6) sunMass.push(e)
-            })
-
-            return {
-                ...state,
-                monMass: mMass,
-                tueMass: tuMass,
-                wenMass: wMass,
-                thusMass: thMass,
-                friMass: frMass,
-                setMass: satMass,
-                sunMass: sunMass,
-                endLessonsMass: [mMass, tuMass, wMass, thMass,frMass, satMass, sunMass, ]
-            }
+        // case SORT_MASS_FOR_DAY:
+        //     let mMass = [];
+        //     let tuMass = [];
+        //     let wMass = [];
+        //     let thMass = [];
+        //     let frMass = [];
+        //     let satMass = [];
+        //     let sunMass = [];
+        //     state.filterExt.map((e) => {
+        //         if (e.idDay === 0) mMass.push(e)
+        //         if (e.idDay === 1) tuMass.push(e)
+        //         if (e.idDay === 2) wMass.push(e)
+        //         if (e.idDay === 3) thMass.push(e)
+        //         if (e.idDay === 4) frMass.push(e)
+        //         if (e.idDay === 5) satMass.push(e)
+        //         if (e.idDay === 6) sunMass.push(e)
+        //     })
+        //
+        //     return {
+        //         ...state,
+        //         monMass: mMass,
+        //         tueMass: tuMass,
+        //         wenMass: wMass,
+        //         thusMass: thMass,
+        //         friMass: frMass,
+        //         setMass: satMass,
+        //         sunMass: sunMass,
+        //         endLessonsMass: [mMass, tuMass, wMass, thMass,frMass, satMass, sunMass, ]
+        //     }
         // case SET_PROFILE_ERROR:
         //     return {
         //         ...state,

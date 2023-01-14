@@ -40,10 +40,8 @@ const App = () => {
     useEffect(() => {
         setThisWeek();
         dispatch(getWeekMass());
-        dispatch(filtLessons());
-        dispatch(sortLess());
         dispatch(getWeekExt(2023, 4, 3))
-        dispatch(getWeekRep(2023, 4, 3))
+        dispatch(getWeekRep(2023, 4, 3));
     }, []);
 
     const setThisWeek = () => {
@@ -86,7 +84,7 @@ const App = () => {
         dispatch(sortLess());
     }
 
-  return (!isFetch)?(
+  return (!isFetch && endLessonsMass.length > 0)?(
     <div className="app">
       <div className="header">
           <div className="pay">
@@ -174,7 +172,8 @@ const App = () => {
                             })}
                         </div>
                     </div>
-                })}
+                })
+                }
             </div>
         </div>
     </div>
