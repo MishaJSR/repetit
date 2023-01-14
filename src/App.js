@@ -43,7 +43,7 @@ const App = () => {
         dispatch(filtLessons());
         dispatch(sortLess());
         dispatch(getWeekExt(2023, 4, 3))
-        dispatch(getWeekRep(2023, 2, 3))
+        dispatch(getWeekRep(2023, 4, 3))
     }, []);
 
     const setThisWeek = () => {

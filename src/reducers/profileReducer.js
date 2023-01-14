@@ -310,14 +310,23 @@ export default  function profileReducer(state= defaultState, action){
             }
 
         case FILTER_END_MASS:
-            let filtExt = [];
-            state.repeateble.map((e) => {
-                filtExt = state.ext.filter((m) => (e.idYear !== m.idYear) || (e.idMonth !== m.idMonth) || (e.idDay !== m.idDay) || (e.startTime !== m.startTime))
-            })
+            let extM = state.ext;
+            let toDeleteIdMass = []
+            for (let i = 0; i < state.repeateble.length; i++) {
+                state.ext.map((m) => {
+                    if ((state.repeateble[i].idYear === m.idYear) && (state.repeateble[i].idMonth === m.idMonth) && (state.repeateble[i].idDay === m.idDay)
+                        && (state.repeateble[i].startTime === m.startTime)) {
+                        if (!toDeleteIdMass.includes(m)) toDeleteIdMass.push(m);
+                    }
+                })
+            }
+
+            let difference = extM.filter(x => !toDeleteIdMass.includes(x));
 
             return {
                 ...state,
-                filterExt: filtExt
+                errorMess: toDeleteIdMass,
+                filterExt: difference
             }
 
 
@@ -415,6 +424,8 @@ export default  function profileReducer(state= defaultState, action){
             let filtMass = [];
             let filtExtw = [];
             let endFilt = [];
+
+
             filtExtw = exept.filter((e) => e.idYear === state.fullYear && e.idMonth === state.monthNumber && e.idStartDay === state.fDay)
             filtMass = lessonsMass.filter(e => (e.every===true) || (e.idYear === state.fullYear && e.idMonth === state.monthNumber && e.idStartDay === state.fDay))
             if (filtExtw.length === 0) endFilt = filtMass;
