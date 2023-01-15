@@ -1,7 +1,7 @@
 import axios from "axios";
 import React from "react";
 import {
-    filterEndMass,
+    filterEndMass, setDecMass,
     setError,
     setExtMass,
     setIsFetching,
@@ -26,6 +26,22 @@ export const getWeekExt = (idYear, idMonth, idStartDayWeek) => {
     }
 }
 
+export const getWeekDec = (idYear, idMonth, idStartDayWeek) => {
+    return async (dispatch) => {
+        dispatch(setIsFetching(true))
+        await axios.post("http://localhost:5000/extentions/getWeekDecayed", {idYear: idYear, idMonth: idMonth, idStartDayWeek: idStartDayWeek})
+            .then(response => {
+                dispatch(setDecMass(response.data));
+            })
+            .catch(err => {
+                dispatch(setError(err.response.data.message))
+            })
+            .finally(() => {
+                dispatch(setIsFetching(false));
+            })
+    }
+}
+
 export const getWeekRep = () => {
     return async (dispatch) => {
         dispatch(setIsFetching(true))
@@ -38,6 +54,38 @@ export const getWeekRep = () => {
             })
             .finally(() => {
                 dispatch(filterEndMass())
+                dispatch(setIsFetching(false));
+            })
+    }
+}
+
+
+
+export const correctLess = (idYear, idMonth, idStartDayWeek, idDay, startTime, durationTime, subj, namePup, cost, homework, isPayed, isDecayed) => {
+    return async (dispatch) => {
+        dispatch(setIsFetching(true))
+        await axios.post("http://localhost:5000/extentions/reduct",
+            {
+                idYear: idYear,
+                idMonth: idMonth,
+                idStartDayWeek: idStartDayWeek,
+                idDay: idDay,
+                startTime: startTime,
+                durationTime: durationTime,
+                subj: subj,
+                namePup: namePup,
+                cost: cost,
+                homework: homework,
+                isPayed: isPayed,
+                isDecayed: isDecayed
+            }
+        )
+            .then(response => {
+            })
+            .catch(err => {
+                dispatch(setError(err.response.data.message))
+            })
+            .finally(() => {
                 dispatch(setIsFetching(false));
             })
     }

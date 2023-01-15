@@ -158,6 +158,12 @@ textarea {
   padding: 50px 120px;
 }
 
+.adderField-none {
+  display: none;
+}
+
+
+
 .pupData{
   display: flex;
   flex-direction: column;
@@ -194,6 +200,10 @@ textarea {
   color: white;
 }
 
+.top-auto:hover{
+  background: #004d00;
+}
+
 .top-auto-close{
   margin-top: auto;
   width: 200px;
@@ -202,6 +212,11 @@ textarea {
   font-weight: bold;
   background: #ffffff;
   color: black;
+}
+
+.top-auto-close:hover{
+  background: #000000;
+  color: #ffffff;
 }
 
 .time-center{

@@ -15,209 +15,11 @@ const FILTER_LESSONS_MASS = 'FILTER_LESSONS_MASS'
 const SORT_MASS_FOR_DAY = 'SORT_MASS_FOR_DAY'
 const SET_IS_FETCH = 'SET_IS_FETCH'
 const SET_EXT_MASS = 'SET_EXT_MASS'
+const SET_DEC_EXT_MASS = 'SET_DEC_EXT_MASS'
 const SET_REPEAT_MASS = 'SET_REPEAT_MASS'
 const SET_ERROR_MESS = 'SET_ERROR_MESS'
 const FILTER_END_MASS = 'FILTER_END_MASS'
 
-const exept = [
-    {   idYear: 2023,
-        idMonth: 0,
-        idStartDay: 2,
-        idEndDay: 8,
-        idDay: 0,
-        startTime: 6,
-        durationTime: 18,
-        subj: "History",
-        namePup: "Masha",
-        cost: 800,
-        every: true,
-        isPayed: false},
-
-    {   idYear: 2023,
-        idMonth: 0,
-        idStartDay: 9,
-        idEndDay: 15,
-        idDay: 0,
-        startTime: 26,
-        durationTime: 18,
-        subj: "History",
-        namePup: "Andy",
-        cost: 800,
-        every: true,
-        isPayed: false},
-]
-
-const lessonsMass = [
-    {   idYear: 2023,
-        idMonth: 0,
-        idStartDay: 2,
-        idEndDay: 8,
-        idDay: 0,
-        startTime: 6,
-        durationTime: 18,
-        subj: "History",
-        namePup: "Masha",
-        cost: 800,
-        every: true,
-        isPayed: false},
-
-
-    {   idYear: 2023,
-        idMonth: 0,
-        idStartDay: 2,
-        idEndDay: 8,
-        idDay: 3,
-        startTime: 46,
-        durationTime: 18,
-        subj: "History",
-        namePup: "Andy",
-        cost: 800,
-        every: false,
-        isPayed: false},
-
-    {   idYear: 2023,
-        idMonth: 0,
-        idStartDay: 2,
-        idEndDay: 8,
-        idDay: 0,
-        startTime: 26,
-        durationTime: 18,
-        subj: "History",
-        namePup: "Andy",
-        cost: 800,
-        every: true,
-        isPayed: false},
-
-    {   idYear: 2023,
-        idMonth: 0,
-        idStartDay: 2,
-        idEndDay: 8,
-        idDay: 1,
-        startTime: 12,
-        durationTime: 18,
-        subj: "History",
-        namePup: "Vasya",
-        cost: 800,
-        every: true,
-        isPayed: false},
-
-    {   idYear: 2023,
-        idMonth: 0,
-        idStartDay: 9,
-        idEndDay: 15,
-        idDay: 4,
-        startTime: 68,
-        durationTime: 18,
-        subj: "History",
-        namePup: "Vasya",
-        cost: 800,
-        every: false,
-        isPayed: false},
-
-    {   idYear: 2023,
-        idMonth: 0,
-        idStartDay: 2,
-        idEndDay: 8,
-        idDay: 5,
-        startTime: 42,
-        durationTime: 18,
-        subj: "History",
-        namePup: "Vasya",
-        cost: 800,
-        every: true,
-        isPayed: false},
-
-    {   idYear: 2023,
-        idMonth: 0,
-        idStartDay: 2,
-        idEndDay: 8,
-        idDay: 2,
-        startTime: 18,
-        durationTime: 12,
-        subj: "History",
-        namePup: "Petr",
-        cost: 800,
-        every: true,
-        isPayed: false},
-
-    {   idYear: 2023,
-        idMonth: 0,
-        idStartDay: 2,
-        idEndDay: 8,
-        idDay: 6,
-        startTime: 26,
-        durationTime: 18,
-        subj: "History",
-        namePup: "Petr",
-        every: true,
-        isPayed: false
-    },
-    {   idYear: 2023,
-        idMonth: 0,
-        idStartDay: 2,
-        idEndDay: 8,
-        idDay: 4,
-        startTime: 150,
-        durationTime: 18,
-        subj: "History",
-        namePup: "olya",
-        cost: 800,
-        every: true,
-        isPayed: false},
-
-    {   idYear: 2023,
-        idMonth: 0,
-        idStartDay: 2,
-        idEndDay: 8,
-        idDay: 2,
-        startTime: 160,
-        durationTime: 18,
-        subj: "History",
-        namePup: "Olya",
-        cost: 800,
-        every: true,
-        isPayed: false},
-
-    {   idYear: 2023,
-        idMonth: 0,
-        idStartDay: 9,
-        idEndDay: 15,
-        idDay: 5,
-        startTime: 18,
-        durationTime: 12,
-        subj: "History",
-        namePup: "Petr",
-        cost: 800,
-        every: true,
-        isPayed: false},
-
-    {   idYear: 2023,
-        idMonth: 0,
-        idStartDay: 9,
-        idEndDay: 15,
-        idDay: 3,
-        startTime: 46,
-        durationTime: 18,
-        subj: "History",
-        namePup: "Petr",
-        cost: 800,
-        every: true,
-        isPayed: false},
-
-    {   idYear: 2023,
-        idMonth: 0,
-        idStartDay: 9,
-        idEndDay: 15,
-        idDay: 2,
-        startTime: 0,
-        durationTime: 12,
-        subj: "History",
-        namePup: "Petr",
-        cost: 800,
-        every: true,
-        isPayed: false},
-
-]
 
 const monthName = [
     {name: 'January'},
@@ -255,6 +57,8 @@ const defaultState = {
     monthNumber: new Date().getMonth(),
     fullYear: new Date().getFullYear(),
     ext: null,
+    decExt: null,
+    filtDecRep: null,
     repeateble: null,
     lessonsFilter: [],
     endLessonsMass: [],
@@ -302,6 +106,13 @@ export default  function profileReducer(state= defaultState, action){
                 ...state,
                 repeateble: action.payload
             }
+        case SET_DEC_EXT_MASS:
+            return {
+                ...state,
+                decExt: action.payload
+            }
+
+
 
         case SET_ERROR_MESS:
             return {
@@ -310,19 +121,33 @@ export default  function profileReducer(state= defaultState, action){
             }
 
         case FILTER_END_MASS:
+            let toDelRep = []
+            let toRep = [];
+            for (let j = 0; j < state.decExt.length; j++) {
+                state.repeateble.map((e) => {
+                    if ((state.decExt[j].idDay === e.idDay) && (state.decExt[j].startTime === e.startTime)) {
+                        if (!toDelRep.includes(e)) toDelRep.push(e);
+                    }
+                })
+            }
+
+            let differenceRep = state.repeateble.filter(x => !toDelRep.includes(x));
+
+
+
             let extM = state.ext;
             let toDeleteIdMass = []
-            for (let i = 0; i < state.repeateble.length; i++) {
+            for (let i = 0; i < differenceRep.length; i++) {
                 state.ext.map((m) => {
-                    if ((state.repeateble[i].idYear === m.idYear) && (state.repeateble[i].idMonth === m.idMonth) && (state.repeateble[i].idDay === m.idDay)
-                        && (state.repeateble[i].startTime === m.startTime)) {
+                    if ((differenceRep[i].idYear === m.idYear) && (differenceRep.idMonth === m.idMonth) && (differenceRep.idDay === m.idDay)
+                        && (differenceRep.startTime === m.startTime)) {
                         if (!toDeleteIdMass.includes(m)) toDeleteIdMass.push(m);
                     }
                 })
             }
 
             let difference = extM.filter(x => !toDeleteIdMass.includes(x));
-            let dif2 = difference.concat(state.repeateble)
+            let dif2 = difference.concat(differenceRep)
 
             let mMass = [];
             let tuMass = [];
@@ -351,6 +176,7 @@ export default  function profileReducer(state= defaultState, action){
                 friMass: frMass,
                 setMass: satMass,
                 sunMass: sunMass,
+                filtDecRep: differenceRep,
                 endLessonsMass: [mMass, tuMass, wMass, thMass,frMass, satMass, sunMass, ]
             }
 
@@ -463,84 +289,6 @@ export default  function profileReducer(state= defaultState, action){
                 dayMass: massDays
             }
 
-        // case FILTER_LESSONS_MASS:
-        //     let filtMass = [];
-        //     let filtExtw = [];
-        //     let endFilt = [];
-        //
-        //
-        //     filtExtw = exept.filter((e) => e.idYear === state.fullYear && e.idMonth === state.monthNumber && e.idStartDay === state.fDay)
-        //     filtMass = lessonsMass.filter(e => (e.every===true) || (e.idYear === state.fullYear && e.idMonth === state.monthNumber && e.idStartDay === state.fDay))
-        //     if (filtExtw.length === 0) endFilt = filtMass;
-        //     else filtExtw.map((m) => endFilt = lessonsMass.filter(e => (e.idDay !== m.idDay) || (e.startTime !== m.startTime)))
-        //
-        //
-        //     return {
-        //         ...state,
-        //         lessonsFilter: endFilt
-        //     }
-
-
-        // case SORT_MASS_FOR_DAY:
-        //     let mMass = [];
-        //     let tuMass = [];
-        //     let wMass = [];
-        //     let thMass = [];
-        //     let frMass = [];
-        //     let satMass = [];
-        //     let sunMass = [];
-        //     state.filterExt.map((e) => {
-        //         if (e.idDay === 0) mMass.push(e)
-        //         if (e.idDay === 1) tuMass.push(e)
-        //         if (e.idDay === 2) wMass.push(e)
-        //         if (e.idDay === 3) thMass.push(e)
-        //         if (e.idDay === 4) frMass.push(e)
-        //         if (e.idDay === 5) satMass.push(e)
-        //         if (e.idDay === 6) sunMass.push(e)
-        //     })
-        //
-        //     return {
-        //         ...state,
-        //         monMass: mMass,
-        //         tueMass: tuMass,
-        //         wenMass: wMass,
-        //         thusMass: thMass,
-        //         friMass: frMass,
-        //         setMass: satMass,
-        //         sunMass: sunMass,
-        //         endLessonsMass: [mMass, tuMass, wMass, thMass,frMass, satMass, sunMass, ]
-        //     }
-        // case SET_PROFILE_ERROR:
-        //     return {
-        //         ...state,
-        //         errorMessage: action.payload
-        //     }
-        // case SET_FULL_SCREEN:
-        //     return {
-        //         ...state,
-        //         fullScreen: action.payload
-        //     }
-        // case SET_SLIDER_ACTIVE:
-        //     if (action.payload < 0) return {
-        //         ...state,
-        //         sliderPosition: action.len - 1
-        //     };
-        //     if (action.payload >= action.len) return {
-        //         ...state,
-        //         sliderPosition: 0
-        //     }; else
-        //     return {
-        //         ...state,
-        //         sliderPosition: action.payload
-        //     }
-        //
-        // case SET_SLIDER_POSITION:
-        //     return {
-        //         ...state,
-        //         sliderPosition: action.payload
-        //     }
-
-
         default:
             return state
     }
@@ -558,6 +306,7 @@ export const setExtMass = (bol) => ({type: SET_EXT_MASS, payload: bol})
 export const setRepMass = (bol) => ({type: SET_REPEAT_MASS, payload: bol})
 export const setError = (bol) => ({type: SET_ERROR_MESS, payload: bol})
 export const filterEndMass = () => ({type: FILTER_END_MASS})
+export const setDecMass = (bol) => ({type: SET_DEC_EXT_MASS, payload: bol})
 
 
 export const setUsers = (us) => ({type: SET_USERS, payload: us})

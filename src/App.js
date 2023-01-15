@@ -14,7 +14,7 @@ import {
     setNowDay,
     sortLess
 } from "./reducers/profileReducer";
-import {getWeekExt, getWeekRep} from "./actions/actions";
+import {correctLess, getWeekDec, getWeekExt, getWeekRep} from "./actions/actions";
 
 
 const App = () => {
@@ -24,8 +24,14 @@ const App = () => {
     const [timeEnH, setTimeEnH] = useState("");
     const [timeEnM, setTimeEnM] = useState("");
     const [dur, setDur] = useState("");
+    const [durMin, setDurMin] = useState("");
     const [sub, setSub] = useState("");
     const [cost, setCost] = useState("");
+    const [idDay1, setIdDay1] = useState("");
+    const [startTime1, setStartTime1] = useState("");
+    const [displaySpan, setDisplaySpan] = useState(false);
+    const [homeW, setHome] = useState("");
+    const [flagReset, setFlagReset] = useState(0);
     const nowDay = useSelector(state => state.profile.nowDay);
     const firstWeekDay = useSelector(state => state.profile.firstWeekDay);
     const secondWeekDay = useSelector(state => state.profile.secondWeekDay);
@@ -42,9 +48,21 @@ const App = () => {
     useEffect(() => {
         setThisWeek();
         dispatch(getWeekMass());
-        dispatch(getWeekExt(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
-        dispatch(getWeekRep())
+        dispatch(getWeekExt(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
+        dispatch(getWeekDec(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
+        dispatch(getWeekRep());
     }, []);
+
+    const reductButton = () => {
+        dispatch(correctLess(fullYear, monthNumber, localStorage.getItem('fDay'), idDay1, startTime1, dur, sub, name, cost, homeW, false, true));
+        setTimeout(() => {
+            dispatch(getWeekMass());
+            dispatch(getWeekExt(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
+            dispatch(getWeekDec(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
+            dispatch(getWeekRep())
+        }, 1000)
+
+    }
 
     const setThisWeek = () => {
         let weekNowDay = new Date().getDay()
@@ -75,6 +93,7 @@ const App = () => {
         dispatch(plusWeek());
         dispatch(getWeekMass());
         dispatch(getWeekExt(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
+        dispatch(getWeekDec(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
         dispatch(getWeekRep())
 
     }
@@ -83,6 +102,7 @@ const App = () => {
         dispatch(minusWeek());
         dispatch(getWeekMass());
         dispatch(getWeekExt(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
+        dispatch(getWeekDec(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
         dispatch(getWeekRep())
     }
 
@@ -118,7 +138,7 @@ const App = () => {
                     <input className="timeF_input padR-10 text-center" value={timeEnH} onChange={(e) => setTimeEnH(e.target.value)} />
                     <input className="timeF_input text-center" value={timeEnM} onChange={(e) => setTimeEnM(e.target.value)} />
                 </div>
-                <input className="input_activity text-center" value={dur} onChange={(e) => setDur(e.target.value)} placeholder="Длительность"/>
+                <input className="input_activity text-center" value={durMin} onChange={(e) => setDurMin(e.target.value)} placeholder="Длительность"/>
                 <input className="input_activity text-center" value={sub} onChange={(e) => setSub(e.target.value)} placeholder="Предмет"/>
                 <div className="payField">
                     <input className="input_activity text-center payLabel" value={cost} onChange={(e) => setCost(e.target.value)} placeholder="Стоимость"/>
@@ -128,15 +148,16 @@ const App = () => {
                     <div className="homeSpan text-center">
                         Homework
                     </div>
-                    <textarea name="" id="" cols="27" rows="8"></textarea>
+                    <textarea name="" id="" cols="27" rows="8" value={homeW} onChange={(e) => setHome(e.target.value)}></textarea>
                     <button className="saveDZ">Сохранить</button>
                 </div>
 
 
 
-                <button className="correct activity-buttons">Коррекция занятия</button>
-                <button className="create-new activity-buttons">Создать новое занятие</button>
-                <button className="delete-one activity-buttons">Удалить текущее занятие</button>
+                <button className="correct activity-buttons" onClick={() => setDisplaySpan(true)}>Коррекция занятия</button>
+                <button className="create-new activity-buttons" onClick={() => setDisplaySpan(true)}>Создать новое занятие</button>
+                <button className="delete-one activity-buttons" onClick={() => reductButton()}
+                >Удалить текущее занятие</button>
                 <button className="end-work activity-buttons">Удалить текущее и закончить работу с учеником</button>
             </div>
             <div className="calendar_field">
@@ -144,7 +165,6 @@ const App = () => {
 
                 </div>
                 {dayMass.map((e, index) => {
-                    console.log(index)
                     return <div className="dayWeek_field">
                         <div className="monthPart">
                             <span>{e.date}</span>
@@ -169,6 +189,12 @@ const App = () => {
                                     setTimeEnM(currentTimeForSecond.getMinutes())
                                     setSub(e.subj)
                                     setCost(e.cost)
+                                    setIdDay1(e.idDay);
+                                    setStartTime1(e.startTime);
+                                    setDurMin(Number(e.durationTime)*5);
+                                    setHome(e.homework)
+                                    setDur(e.durationTime)
+                                    if (!e.homework) setHome("Пусто")
                                 }
                                 }>
                                     <span>{e.namePup}</span>
@@ -187,7 +213,7 @@ const App = () => {
             </div>
         </div>
 
-        <div className="adderField">
+        <div className={displaySpan? "adderField" : "adderField-none"}>
             <div className="pupData">
                 <input className="input_activity text-center" value={name} onChange={(e) => setName(e.target.value)} placeholder="Имя"/>
                 <div className="time-center">
@@ -196,14 +222,14 @@ const App = () => {
                     <input className="timeF_input big-pad padR-10 text-center" value={timeEnH} onChange={(e) => setTimeEnH(e.target.value)} />
                     <input className="timeF_input big-pad text-center" value={timeEnM} onChange={(e) => setTimeEnM(e.target.value)} />
                 </div>
-                <input className="input_activity text-center" value={dur} onChange={(e) => setDur(e.target.value)} placeholder="Длительность"/>
+                <input className="input_activity text-center" value={durMin} onChange={(e) => setDur(e.target.value)} placeholder="Длительность"/>
                 <input className="input_activity text-center" value={sub} onChange={(e) => setSub(e.target.value)} placeholder="Предмет"/>
                 <input className="input_activity text-center payLabel2" value={cost} onChange={(e) => setCost(e.target.value)} placeholder="Стоимость"/>
                 <button className="top-auto">Сохранить</button>
             </div>
             <div className="timeData">
                 <select className="select-field" name="" id="">
-                    <option value="this">Эта неделя</option>
+                    <option value="this">{monthWeek} {localStorage.getItem('fDay')} - {localStorage.getItem('sDay')}</option>
                     <option value="next">Следующая</option>
                 </select>
                 <select className="select-field" name="" id="">
@@ -218,7 +244,7 @@ const App = () => {
                 <div className="isRepeat">
                   <input className="scale-check" type="checkbox" id="contactChoice1"/> <label htmlFor="contactChoice1">Повторять каждую неделю</label>
                 </div>
-                <button className="top-auto-close">Закрыть</button>
+                <button className="top-auto-close" onClick={() => setDisplaySpan(false)}>Закрыть</button>
             </div>
         </div>
 
