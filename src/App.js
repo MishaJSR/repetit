@@ -3,7 +3,7 @@ import './App.css';
 import arrowl from '../src/icons/left.png'
 import arrowr from '../src/icons/right.png'
 import {Link, NavLink} from "react-router-dom";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {
     filtLessons,
@@ -14,7 +14,15 @@ import {
     setNowDay,
     sortLess
 } from "./reducers/profileReducer";
-import {correctLess, getWeekDec, getWeekExt, getWeekRep} from "./actions/actions";
+import {
+    correctLess,
+    correctLessWithDel,
+    createExt,
+    decExt,
+    getWeekDec,
+    getWeekExt,
+    getWeekRep
+} from "./actions/actions";
 
 
 const App = () => {
@@ -27,14 +35,18 @@ const App = () => {
     const [durMin, setDurMin] = useState("");
     const [sub, setSub] = useState("");
     const [cost, setCost] = useState("");
+    const [isPay, setIsPay] = useState("");
     const [idDay1, setIdDay1] = useState("");
     const [startTime1, setStartTime1] = useState("");
     const [displaySpan, setDisplaySpan] = useState(false);
     const [homeW, setHome] = useState("");
-    const [flagReset, setFlagReset] = useState(0);
+    const [selected, setSelected] = useState("");
+    const [idSelected, setIdSelected] = useState("");
+    const refUser = useRef();
     const nowDay = useSelector(state => state.profile.nowDay);
     const firstWeekDay = useSelector(state => state.profile.firstWeekDay);
     const secondWeekDay = useSelector(state => state.profile.secondWeekDay);
+    const [checked, setChecked] = useState(false);
     const fDay = useSelector(state => state.profile.fDay);
     const sDay = useSelector(state => state.profile.sDay);
     const monthWeek = useSelector(state => state.profile.monthWeek);
@@ -53,8 +65,44 @@ const App = () => {
         dispatch(getWeekRep());
     }, []);
 
+    const delayButton = () => {
+        let numDay = Number(selected);
+        //dispatch(createExt(fullYear, monthNumber, localStorage.getItem('fDay'), idDay1, startTime1, dur, sub, name, cost, homeW, isPay, false))
+        dispatch(correctLessWithDel(fullYear, monthNumber, localStorage.getItem('fDay'), numDay, startTime1, dur, sub, name, cost, homeW, isPay, false, idDay1));
+        setTimeout(() => {
+            dispatch(getWeekMass());
+            dispatch(getWeekExt(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
+            dispatch(getWeekDec(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
+            dispatch(getWeekRep())
+        }, 1000)
+
+    }
+
     const reductButton = () => {
-        dispatch(correctLess(fullYear, monthNumber, localStorage.getItem('fDay'), idDay1, startTime1, dur, sub, name, cost, homeW, false, true));
+        dispatch(correctLess(fullYear, monthNumber, localStorage.getItem('fDay'), idDay1, startTime1, dur, sub, name, cost, homeW, isPay, false));
+        setTimeout(() => {
+            dispatch(getWeekMass());
+            dispatch(getWeekExt(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
+            dispatch(getWeekDec(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
+            dispatch(getWeekRep())
+        }, 1000)
+
+    }
+
+    const reductButtonDec = () => {
+        dispatch(correctLess(fullYear, monthNumber, localStorage.getItem('fDay'), idDay1, startTime1, dur, sub, name, cost, homeW, isPay, true));
+        setTimeout(() => {
+            dispatch(getWeekMass());
+            dispatch(getWeekExt(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
+            dispatch(getWeekDec(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
+            dispatch(getWeekRep())
+        }, 1000)
+
+    }
+
+    const saveD = () => {
+
+        dispatch(correctLess(fullYear, monthNumber, localStorage.getItem('fDay'), 2, startTime1, dur, sub, name, cost, homeW, false, false));
         setTimeout(() => {
             dispatch(getWeekMass());
             dispatch(getWeekExt(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
@@ -149,14 +197,17 @@ const App = () => {
                         Homework
                     </div>
                     <textarea name="" id="" cols="27" rows="8" value={homeW} onChange={(e) => setHome(e.target.value)}></textarea>
-                    <button className="saveDZ">Сохранить</button>
+                    <button className="saveDZ" onClick={() => saveD()}>Сохранить</button>
                 </div>
 
 
 
-                <button className="correct activity-buttons" onClick={() => setDisplaySpan(true)}>Коррекция занятия</button>
+                <button className="correct activity-buttons" onClick={() => {
+                    reductButton();
+                    setDisplaySpan(true)
+                }}>Коррекция занятия</button>
                 <button className="create-new activity-buttons" onClick={() => setDisplaySpan(true)}>Создать новое занятие</button>
-                <button className="delete-one activity-buttons" onClick={() => reductButton()}
+                <button className="delete-one activity-buttons" onClick={() => reductButtonDec()}
                 >Удалить текущее занятие</button>
                 <button className="end-work activity-buttons">Удалить текущее и закончить работу с учеником</button>
             </div>
@@ -192,7 +243,9 @@ const App = () => {
                                     setIdDay1(e.idDay);
                                     setStartTime1(e.startTime);
                                     setDurMin(Number(e.durationTime)*5);
-                                    setHome(e.homework)
+                                    setHome(e.homework);
+                                    if (!e.id) setIdSelected(0); else setIdSelected(e.id)
+                                    if (!e.isPayed) setIsPay(false); else setIsPay(e.isPayed)
                                     setDur(e.durationTime)
                                     if (!e.homework) setHome("Пусто")
                                 }
@@ -225,24 +278,26 @@ const App = () => {
                 <input className="input_activity text-center" value={durMin} onChange={(e) => setDur(e.target.value)} placeholder="Длительность"/>
                 <input className="input_activity text-center" value={sub} onChange={(e) => setSub(e.target.value)} placeholder="Предмет"/>
                 <input className="input_activity text-center payLabel2" value={cost} onChange={(e) => setCost(e.target.value)} placeholder="Стоимость"/>
-                <button className="top-auto">Сохранить</button>
+                <button className="top-auto" onClick={() => {
+                    delayButton()
+                }}>Сохранить</button>
             </div>
             <div className="timeData">
                 <select className="select-field" name="" id="">
                     <option value="this">{monthWeek} {localStorage.getItem('fDay')} - {localStorage.getItem('sDay')}</option>
                     <option value="next">Следующая</option>
                 </select>
-                <select className="select-field" name="" id="">
-                    <option value="mon">Понедельник</option>
-                    <option value="thu">Вторник</option>
-                    <option value="wen">Среда</option>
-                    <option value="thus">Четверг</option>
-                    <option value="fri">Пятница</option>
-                    <option value="set">Суббота</option>
-                    <option value="sun">Воскресенье</option>
+                <select className="select-field" name="" id="" onChange={(e) => setSelected(e.target.value)} >
+                    <option value="0">Понедельник</option>
+                    <option value="1">Вторник</option>
+                    <option value="2">Среда</option>
+                    <option value="3">Четверг</option>
+                    <option value="4">Пятница</option>
+                    <option value="5">Суббота</option>
+                    <option value="6">Воскресенье</option>
                 </select>
                 <div className="isRepeat">
-                  <input className="scale-check" type="checkbox" id="contactChoice1"/> <label htmlFor="contactChoice1">Повторять каждую неделю</label>
+                  <input className="scale-check" type="checkbox" id="contactChoice1" checked={checked} onChange={() => setChecked(!checked)}/> <label htmlFor="contactChoice1">Повторять каждую неделю</label>
                 </div>
                 <button className="top-auto-close" onClick={() => setDisplaySpan(false)}>Закрыть</button>
             </div>

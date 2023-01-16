@@ -123,31 +123,38 @@ export default  function profileReducer(state= defaultState, action){
         case FILTER_END_MASS:
             let toDelRep = []
             let toRep = [];
+            let differenceRep = state.repeateble;
             for (let j = 0; j < state.decExt.length; j++) {
                 state.repeateble.map((e) => {
                     if ((state.decExt[j].idDay === e.idDay) && (state.decExt[j].startTime === e.startTime)) {
-                        if (!toDelRep.includes(e)) toDelRep.push(e);
+                        if (!toDelRep.includes(e)) toDelRep.push(e.id);
                     }
                 })
             }
 
-            let differenceRep = state.repeateble.filter(x => !toDelRep.includes(x));
+            for (let i = 0; i < toDelRep.length; i++) {
+                differenceRep = differenceRep.filter(e => e.id !== toDelRep[i])
+            }
 
 
 
             let extM = state.ext;
-            let toDeleteIdMass = []
-            for (let i = 0; i < differenceRep.length; i++) {
-                state.ext.map((m) => {
-                    if ((differenceRep[i].idYear === m.idYear) && (differenceRep.idMonth === m.idMonth) && (differenceRep.idDay === m.idDay)
-                        && (differenceRep.startTime === m.startTime)) {
-                        if (!toDeleteIdMass.includes(m)) toDeleteIdMass.push(m);
-                    }
-                })
-            }
+            let toDeleteIdMass = [];
+            let dif2 = []
+            if (differenceRep.length > 1) {
+                for (let i = 0; i < differenceRep.length; i++) {
+                    state.ext.map((m) => {
+                        if ((differenceRep[i].idDay === m.idDay) && (differenceRep[i].startTime === m.startTime)) {
+                            if (!toDeleteIdMass.includes(differenceRep[i])) toDeleteIdMass.push(differenceRep[i]);
+                        }
+                    })
+                }
+                let difference = differenceRep.filter(x => !toDeleteIdMass.includes(x));
+                dif2 = difference.concat(extM)
+            } else dif2 = differenceRep.concat(extM)
 
-            let difference = extM.filter(x => !toDeleteIdMass.includes(x));
-            let dif2 = difference.concat(differenceRep)
+
+
 
             let mMass = [];
             let tuMass = [];
