@@ -1,3 +1,5 @@
+import {difference} from "lodash";
+import _ from 'lodash';
 const SET_USERS = 'SET_USERS'
 const SET_MY_USER = 'SET_MY_USER'
 const SET_MY_USER_INFO = 'SET_MY_USER_INFO'
@@ -19,6 +21,7 @@ const SET_DEC_EXT_MASS = 'SET_DEC_EXT_MASS'
 const SET_REPEAT_MASS = 'SET_REPEAT_MASS'
 const SET_ERROR_MESS = 'SET_ERROR_MESS'
 const FILTER_END_MASS = 'FILTER_END_MASS'
+
 
 
 const monthName = [
@@ -121,39 +124,23 @@ export default  function profileReducer(state= defaultState, action){
             }
 
         case FILTER_END_MASS:
-            let toDelRep = []
-            let toRep = [];
-            let differenceRep = state.repeateble;
-            for (let j = 0; j < state.decExt.length; j++) {
-                state.repeateble.map((e) => {
-                    if ((state.decExt[j].idDay === e.idDay) && (state.decExt[j].startTime === e.startTime)) {
-                        if (!toDelRep.includes(e)) toDelRep.push(e.id);
-                    }
-                })
-            }
 
-            for (let i = 0; i < toDelRep.length; i++) {
-                differenceRep = differenceRep.filter(e => e.id !== toDelRep[i])
-            }
+            let errRep = [] // надо удалить из repeat
+            let dif = [] //будет итоговый совмещенный массив
 
-
-
-            let extM = state.ext;
-            let toDeleteIdMass = [];
-            let dif2 = []
-            if (differenceRep.length > 1) {
-                for (let i = 0; i < differenceRep.length; i++) {
-                    state.ext.map((m) => {
-                        if ((differenceRep[i].idDay === m.idDay) && (differenceRep[i].startTime === m.startTime)) {
-                            if (!toDeleteIdMass.includes(differenceRep[i])) toDeleteIdMass.push(differenceRep[i]);
+            if (state.decExt.length > 0) {
+                for (let i = 0; i < state.decExt.length; i++) {
+                    state.repeateble.map((e) => {
+                        if ((state.decExt[i].idDay === e.idDay) && (state.decExt[i].startTime === e.startTime)) {
+                            if (!errRep.includes(e)) errRep.push(e);
                         }
                     })
                 }
-                let difference = differenceRep.filter(x => !toDeleteIdMass.includes(x));
-                dif2 = difference.concat(extM)
-            } else dif2 = differenceRep.concat(extM)
-
-
+                let filtRep = _.difference(state.repeateble, errRep);
+                console.log(filtRep)
+                dif = filtRep.concat(state.ext);
+                console.log("yes")
+            } else dif = state.repeateble.concat(state.ext)
 
 
             let mMass = [];
@@ -163,7 +150,7 @@ export default  function profileReducer(state= defaultState, action){
             let frMass = [];
             let satMass = [];
             let sunMass = [];
-            dif2.map((e) => {
+            dif.map((e) => {
                 if (e.idDay === 0) mMass.push(e)
                 if (e.idDay === 1) tuMass.push(e)
                 if (e.idDay === 2) wMass.push(e)
@@ -174,8 +161,6 @@ export default  function profileReducer(state= defaultState, action){
             })
             return {
                 ...state,
-                errorMess: toDeleteIdMass,
-                filterExt: dif2,
                 monMass: mMass,
                 tueMass: tuMass,
                 wenMass: wMass,
@@ -183,7 +168,7 @@ export default  function profileReducer(state= defaultState, action){
                 friMass: frMass,
                 setMass: satMass,
                 sunMass: sunMass,
-                filtDecRep: differenceRep,
+                filtDecRep: dif,
                 endLessonsMass: [mMass, tuMass, wMass, thMass,frMass, satMass, sunMass, ]
             }
 
