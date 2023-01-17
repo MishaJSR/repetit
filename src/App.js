@@ -40,6 +40,7 @@ const App = () => {
     const [idDay1, setIdDay1] = useState("");
     const [startTime1, setStartTime1] = useState("");
     const [displaySpan, setDisplaySpan] = useState(false);
+    const [displaySpanNew, setDisplaySpanNew] = useState(false);
     const [homeW, setHome] = useState("");
     const [selected, setSelected] = useState("");
     const [idSelected, setIdSelected] = useState("");
@@ -82,13 +83,15 @@ const App = () => {
         let numDay = Number(selected);
         //dispatch(createExt(fullYear, monthNumber, localStorage.getItem('fDay'), idDay1, startTime1, dur, sub, name, cost, homeW, isPay, false))
         dispatch(onSaveCorrect(fullYear, monthNumber, localStorage.getItem('fDay'), numDay, startTime1, dur, sub, name, cost, homeW, isPay));
-        setTimeout(() => {
+
+        // setTimeout(() => {
             dispatch(getWeekMass());
             dispatch(getWeekExt(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
             dispatch(getWeekDec(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
             dispatch(getWeekRep())
-        }, 5000)
 
+        // }, 5000)
+        setDisplaySpan(false);
     }
 
     const reductButton = () => {//при клике на корректировать
@@ -208,7 +211,7 @@ const App = () => {
                     reductButton();
                     setDisplaySpan(true)
                 }}>Коррекция занятия</button>
-                <button className="create-new activity-buttons" onClick={() => setDisplaySpan(true)}>Создать новое занятие</button>
+                <button className="create-new activity-buttons" onClick={() => setDisplaySpanNew(true)}>Создать новое занятие</button>
                 <button className="delete-one activity-buttons" onClick={() => reductButtonDec()}
                 >Удалить текущее занятие</button>
                 <button className="end-work activity-buttons">Удалить текущее и закончить работу с учеником</button>
@@ -302,6 +305,43 @@ const App = () => {
                   <input className="scale-check" type="checkbox" id="contactChoice1" checked={checked} onChange={() => setChecked(!checked)}/> <label htmlFor="contactChoice1">Повторять каждую неделю</label>
                 </div>
                 <button className="top-auto-close" onClick={() => setDisplaySpan(false)}>Закрыть</button>
+            </div>
+        </div>
+
+        <div className={displaySpanNew? "adderFieldNew" : "adderField-none"}>
+            <div className="pupData">
+                <input className="input_activity text-center" value={name} onChange={(e) => setName(e.target.value)} placeholder="Имя"/>
+                <div className="time-center">
+                    <input className="timeF_input big-pad text-center" value={timeStH} onChange={(e) => setTimeStH(e.target.value)} />
+                    <input className="timeF_input big-pad text-center" value={timeStM} onChange={(e) => setTimeStM(e.target.value)} />
+                    <input className="timeF_input big-pad padR-10 text-center" value={timeEnH} onChange={(e) => setTimeEnH(e.target.value)} />
+                    <input className="timeF_input big-pad text-center" value={timeEnM} onChange={(e) => setTimeEnM(e.target.value)} />
+                </div>
+                <input className="input_activity text-center" value={durMin} onChange={(e) => setDur(e.target.value)} placeholder="Длительность"/>
+                <input className="input_activity text-center" value={sub} onChange={(e) => setSub(e.target.value)} placeholder="Предмет"/>
+                <input className="input_activity text-center payLabel2" value={cost} onChange={(e) => setCost(e.target.value)} placeholder="Стоимость"/>
+                <button className="top-auto" onClick={() => {
+                    delayButton()
+                }}>Сохранить</button>
+            </div>
+            <div className="timeData">
+                <select className="select-field" name="" id="">
+                    <option value="this">{monthWeek} {localStorage.getItem('fDay')} - {localStorage.getItem('sDay')}</option>
+                    <option value="next">Следующая</option>
+                </select>
+                <select className="select-field" name="" id="" onChange={(e) => setSelected(e.target.value)} >
+                    <option value="0">Понедельник</option>
+                    <option value="1">Вторник</option>
+                    <option value="2">Среда</option>
+                    <option value="3">Четверг</option>
+                    <option value="4">Пятница</option>
+                    <option value="5">Суббота</option>
+                    <option value="6">Воскресенье</option>
+                </select>
+                <div className="isRepeat">
+                    <input className="scale-check" type="checkbox" id="contactChoice1" checked={checked} onChange={() => setChecked(!checked)}/> <label htmlFor="contactChoice1">Повторять каждую неделю</label>
+                </div>
+                <button className="top-auto-close" onClick={() => setDisplaySpanNew(false)}>Закрыть</button>
             </div>
         </div>
 

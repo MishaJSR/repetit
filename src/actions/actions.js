@@ -131,7 +131,7 @@ export const decayLess = (idYear, idMonth, idStartDayWeek, idDay, startTime, dur
             .then(response => {
                 //alert('уже существует, будем его редактировать');
                 localStorage.setItem('idReductLess', response.data.id);
-                axios.post("http://localhost:5000/extentions/redcutByID", { //простое редактирование по айди и всеми параметрами
+                axios.post("http://localhost:5000/extentions/reductByID", { //простое редактирование по айди и всеми параметрами
                     idYear: idYear,
                     idMonth: idMonth,
                     idStartDayWeek: idStartDayWeek,
