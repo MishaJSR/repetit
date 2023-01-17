@@ -15,13 +15,14 @@ import {
     sortLess
 } from "./reducers/profileReducer";
 import {
+    checkIsRead,
     correctLess,
     correctLessWithDel,
     createExt, decayLess,
     decExt,
     getWeekDec,
     getWeekExt,
-    getWeekRep
+    getWeekRep, onSaveCorrect
 } from "./actions/actions";
 
 
@@ -65,31 +66,31 @@ const App = () => {
         dispatch(getWeekRep());
     }, []);
 
-    const delayButton = () => {
+    const delayButton = () => {//при корректирвке и нажатии на сохранить
         let numDay = Number(selected);
         //dispatch(createExt(fullYear, monthNumber, localStorage.getItem('fDay'), idDay1, startTime1, dur, sub, name, cost, homeW, isPay, false))
-        dispatch(correctLessWithDel(fullYear, monthNumber, localStorage.getItem('fDay'), numDay, startTime1, dur, sub, name, cost, homeW, isPay, false, idDay1));
+        dispatch(onSaveCorrect(fullYear, monthNumber, localStorage.getItem('fDay'), numDay, startTime1, dur, sub, name, cost, homeW, isPay));
         setTimeout(() => {
             dispatch(getWeekMass());
             dispatch(getWeekExt(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
             dispatch(getWeekDec(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
             dispatch(getWeekRep())
-        }, 1000)
+        }, 5000)
 
     }
 
-    const reductButton = () => {
-        dispatch(correctLess(fullYear, monthNumber, localStorage.getItem('fDay'), idDay1, startTime1, dur, sub, name, cost, homeW, isPay, false));
+    const reductButton = () => {//при клике на корректировать
+        dispatch(checkIsRead(fullYear, monthNumber, localStorage.getItem('fDay'), idDay1, startTime1, dur, sub, name, cost, homeW, isPay));
         setTimeout(() => {
             dispatch(getWeekMass());
             dispatch(getWeekExt(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
             dispatch(getWeekDec(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
             dispatch(getWeekRep())
-        }, 1000)
+        }, 5000)
 
     }
 
-    const reductButtonDec = () => {
+    const reductButtonDec = () => {//при клике на отмену
         dispatch(decayLess(fullYear, monthNumber, localStorage.getItem('fDay'), idDay1, startTime1, dur, sub, name, cost, homeW, isPay));
         setTimeout(() => {
             dispatch(getWeekMass());

@@ -121,6 +121,85 @@ export const decayLess = (idYear, idMonth, idStartDayWeek, idDay, startTime, dur
     }
 }
 
+export const checkIsRead = (idYear, idMonth, idStartDayWeek, idDay, startTime, durationTime, subj, namePup, cost, homework, isPayed) => { // проверяет есть ли занятие в массиве Ext, если нет, то создает новое со всеми данными значениями и записывает в ЛС айди рабочего занятия
+    return async (dispatch) => {
+        dispatch(setIsFetching(true))
+        await axios.post("http://localhost:5000/extentions/checkIsRead", {idYear: idYear, idMonth: idMonth, idStartDayWeek: idStartDayWeek, idDay: idDay, startTime: startTime})
+            .then(response => {
+                localStorage.setItem('idNowLesson', response.data.id);
+                alert('уже существует');
+            })
+            .catch(err => {
+                alert('занятия еще не существует, будем добавлять')
+                dispatch(setError(err.response.data.message))
+                axios.post("http://localhost:5000/extentions", {
+                    idYear: idYear,
+                    idMonth: idMonth,
+                    idStartDayWeek: idStartDayWeek,
+                    idDay: idDay,
+                    startTime: startTime,
+                    durationTime: durationTime,
+                    subj: subj,
+                    namePup: namePup,
+                    cost: cost,
+                    homework: homework,
+                    isPayed: isPayed,
+                    isDecayed: false
+                })
+                    .then(response => {
+                        localStorage.setItem('idNowLesson', response.data.id);
+                        alert('создал новое');
+
+                    })
+                    .catch(err => {
+                        dispatch(setError(err.response.data.message))
+                        alert("не смог создать новое")
+                    })
+            })
+            .finally(() => {
+                dispatch(setIsFetching(false));
+            })
+    }
+}
+
+export const onSaveCorrect = (idYear, idMonth, idStartDayWeek, idDay, startTime, durationTime, subj, namePup, cost, homework, isPayed) => { // декеит старое занятие по айди из ЛС и добавляет новое со всеми данными значениями
+    return async (dispatch) => {
+        dispatch(setIsFetching(true))
+        await axios.post("http://localhost:5000/extentions", {
+            idYear: idYear,
+            idMonth: idMonth,
+            idStartDayWeek: idStartDayWeek,
+            idDay: idDay,
+            startTime: startTime,
+            durationTime: durationTime,
+            subj: subj,
+            namePup: namePup,
+            cost: cost,
+            homework: homework,
+            isPayed: isPayed,
+            isDecayed: false
+            })
+            .then(response => {
+                alert('Заредактированно успешно');
+                axios.post("http://localhost:5000/extentions/decayID", {idExt: localStorage.getItem('idNowLesson')})
+                    .then(response => {
+                        alert('Прошлое занятие отменено');
+                    })
+                    .catch(err => {
+                        alert('Ошибка при удалении прошлого занятия')
+                        dispatch(setError(err.response.data.message))
+                    })
+            })
+            .catch(err => {
+                dispatch(setError(err.response.data.message))
+                alert("не смог создать новое заредактированное")
+            })
+            .finally(() => {
+                dispatch(setIsFetching(false));
+            })
+    }
+}
+
 export const decExt = (idExt) => {
     return async (dispatch) => {
         dispatch(setIsFetching(true))

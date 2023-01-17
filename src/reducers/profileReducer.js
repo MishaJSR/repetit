@@ -161,6 +161,7 @@ export default  function profileReducer(state= defaultState, action){
             })
             return {
                 ...state,
+                errorMess: errRep,
                 monMass: mMass,
                 tueMass: tuMass,
                 wenMass: wMass,
