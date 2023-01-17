@@ -173,11 +173,6 @@ export default  function profileReducer(state= defaultState, action){
             }
 
 
-
-
-
-
-
         case WEEK_CHANGE:
             let f;
             let s;

@@ -17,7 +17,7 @@ import {
 import {
     correctLess,
     correctLessWithDel,
-    createExt,
+    createExt, decayLess,
     decExt,
     getWeekDec,
     getWeekExt,
@@ -90,13 +90,13 @@ const App = () => {
     }
 
     const reductButtonDec = () => {
-        dispatch(correctLess(fullYear, monthNumber, localStorage.getItem('fDay'), idDay1, startTime1, dur, sub, name, cost, homeW, isPay, true));
+        dispatch(decayLess(fullYear, monthNumber, localStorage.getItem('fDay'), idDay1, startTime1, dur, sub, name, cost, homeW, isPay));
         setTimeout(() => {
             dispatch(getWeekMass());
             dispatch(getWeekExt(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
             dispatch(getWeekDec(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
             dispatch(getWeekRep())
-        }, 1000)
+        }, 5000)
 
     }
 

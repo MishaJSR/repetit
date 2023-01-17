@@ -59,6 +59,68 @@ export const getWeekRep = () => {
     }
 }
 
+export const decayLess = (idYear, idMonth, idStartDayWeek, idDay, startTime, durationTime, subj, namePup, cost, homework, isPayed) => { // проверяет есть ли занятие в массиве Ext, если нет, то создает занятия с декеем равным фолс, если есть то редактирует с деккеем фолс
+    return async (dispatch) => {
+        dispatch(setIsFetching(true))
+        await axios.post("http://localhost:5000/extentions/checkIsRead", {idYear: idYear, idMonth: idMonth, idStartDayWeek: idStartDayWeek, idDay: idDay, startTime: startTime})
+            .then(response => {
+                //alert('уже существует, будем его редактировать');
+                localStorage.setItem('idReductLess', response.data.id);
+                axios.post("http://localhost:5000/extentions/redcutByID", { //простое редактирование по айди и всеми параметрами
+                    idYear: idYear,
+                    idMonth: idMonth,
+                    idStartDayWeek: idStartDayWeek,
+                    idDay: idDay,
+                    startTime: startTime,
+                    durationTime: durationTime,
+                    subj: subj,
+                    namePup: namePup,
+                    cost: cost,
+                    homework: homework,
+                    isPayed: isPayed,
+                    isDecayed: true,
+                    idDecayed: localStorage.getItem('idReductLess')
+                })
+                    .then(response => {
+                        //alert('заредактировал старое с декей фолс');
+
+                    })
+                    .catch(err => {
+                        dispatch(setError(err.response.data.message))
+                        alert("не смог заредактировать старое")
+                    })
+            })
+            .catch(err => {
+                //alert('занятия еще не существует, будем добавлять и ставить декей фолс')
+                dispatch(setError(err.response.data.message))
+                axios.post("http://localhost:5000/extentions", {
+                    idYear: idYear,
+                    idMonth: idMonth,
+                    idStartDayWeek: idStartDayWeek,
+                    idDay: idDay,
+                    startTime: startTime,
+                    durationTime: durationTime,
+                    subj: subj,
+                    namePup: namePup,
+                    cost: cost,
+                    homework: homework,
+                    isPayed: isPayed,
+                    isDecayed: true
+                })
+                    .then(response => {
+                        //alert('создал новое с декеем фолс');
+                    })
+                    .catch(err => {
+                        dispatch(setError(err.response.data.message))
+                        alert("не смог создать новое с декеем фолс")
+                    })
+            })
+            .finally(() => {
+                dispatch(setIsFetching(false));
+            })
+    }
+}
+
 export const decExt = (idExt) => {
     return async (dispatch) => {
         dispatch(setIsFetching(true))
