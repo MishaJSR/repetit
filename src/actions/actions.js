@@ -59,6 +59,71 @@ export const getWeekRep = () => {
     }
 }
 
+export const correctField = (idYear, idMonth, idStartDayWeek, idDay, startTime, durationTime, subj, namePup, cost, homework, isPayed) => { // корректирует
+    return async (dispatch) => {
+        dispatch(setIsFetching(true))
+        await axios.post("http://localhost:5000/extentions/checkIsRead", {idYear: idYear, idMonth: idMonth, idStartDayWeek: idStartDayWeek, idDay: idDay, startTime: startTime})
+            .then(response => {
+                localStorage.setItem('idNowLesson', response.data.id);
+                alert('уже существует, начинаем коррекцию');
+                axios.post("http://localhost:5000/extentions/reductByID", {
+                    idYear: idYear,
+                    idMonth: idMonth,
+                    idStartDayWeek: idStartDayWeek,
+                    idDay: idDay,
+                    startTime: startTime,
+                    durationTime: durationTime,
+                    subj: subj,
+                    namePup: namePup,
+                    cost: cost,
+                    homework: homework,
+                    isPayed: isPayed,
+                    isDecayed: false,
+                    idDecayed: localStorage.getItem('idNowLesson')
+                })
+                    .then(response => {
+                        localStorage.setItem('idNowLesson', response.data.id);
+                        alert('откорректировал');
+
+                    })
+                    .catch(err => {
+                        dispatch(setError(err.response.data.message))
+                        alert("не смог скорректировать")
+                    })
+            })
+            .catch(err => {
+                alert('занятия еще не существует, будем добавлять')
+                dispatch(setError(err.response.data.message))
+                axios.post("http://localhost:5000/extentions", {
+                    idYear: idYear,
+                    idMonth: idMonth,
+                    idStartDayWeek: idStartDayWeek,
+                    idDay: idDay,
+                    startTime: startTime,
+                    durationTime: durationTime,
+                    subj: subj,
+                    namePup: namePup,
+                    cost: cost,
+                    homework: homework,
+                    isPayed: isPayed,
+                    isDecayed: false
+                })
+                    .then(response => {
+                        localStorage.setItem('idNowLesson', response.data.id);
+                        alert('создал новое');
+
+                    })
+                    .catch(err => {
+                        dispatch(setError(err.response.data.message))
+                        alert("не смог создать новое")
+                    })
+            })
+            .finally(() => {
+                dispatch(setIsFetching(false));
+            })
+    }
+}
+
 export const decayLess = (idYear, idMonth, idStartDayWeek, idDay, startTime, durationTime, subj, namePup, cost, homework, isPayed) => { // проверяет есть ли занятие в массиве Ext, если нет, то создает занятия с декеем равным фолс, если есть то редактирует с деккеем фолс
     return async (dispatch) => {
         dispatch(setIsFetching(true))

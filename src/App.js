@@ -15,7 +15,7 @@ import {
     sortLess
 } from "./reducers/profileReducer";
 import {
-    checkIsRead,
+    checkIsRead, correctField,
     correctLess,
     correctLessWithDel,
     createExt, decayLess,
@@ -66,6 +66,18 @@ const App = () => {
         dispatch(getWeekRep());
     }, []);
 
+    const correctSome = () => {//при сохранении дз
+        //dispatch(createExt(fullYear, monthNumber, localStorage.getItem('fDay'), idDay1, startTime1, dur, sub, name, cost, homeW, isPay, false))
+        dispatch(correctField(fullYear, monthNumber, localStorage.getItem('fDay'), idDay1, startTime1, dur, sub, name, cost, homeW, isPay));
+        setTimeout(() => {
+            dispatch(getWeekMass());
+            dispatch(getWeekExt(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
+            dispatch(getWeekDec(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
+            dispatch(getWeekRep())
+        }, 5000)
+
+    }
+
     const delayButton = () => {//при корректирвке и нажатии на сохранить
         let numDay = Number(selected);
         //dispatch(createExt(fullYear, monthNumber, localStorage.getItem('fDay'), idDay1, startTime1, dur, sub, name, cost, homeW, isPay, false))
@@ -101,17 +113,6 @@ const App = () => {
 
     }
 
-    const saveD = () => {
-
-        dispatch(correctLess(fullYear, monthNumber, localStorage.getItem('fDay'), 2, startTime1, dur, sub, name, cost, homeW, false, false));
-        setTimeout(() => {
-            dispatch(getWeekMass());
-            dispatch(getWeekExt(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
-            dispatch(getWeekDec(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
-            dispatch(getWeekRep())
-        }, 1000)
-
-    }
 
     const setThisWeek = () => {
         let weekNowDay = new Date().getDay()
@@ -198,7 +199,7 @@ const App = () => {
                         Homework
                     </div>
                     <textarea name="" id="" cols="27" rows="8" value={homeW} onChange={(e) => setHome(e.target.value)}></textarea>
-                    <button className="saveDZ" onClick={() => saveD()}>Сохранить</button>
+                    <button className="saveDZ" onClick={() => correctSome()}>Сохранить</button>
                 </div>
 
 
