@@ -124,7 +124,7 @@ export default  function profileReducer(state= defaultState, action){
             }
 
         case FILTER_END_MASS:
-
+            let errExtRep = [] // надо удалить из ext
             let errRep = [] // надо удалить из repeat
             let dif = [] //будет итоговый совмещенный массив
 
@@ -135,10 +135,16 @@ export default  function profileReducer(state= defaultState, action){
                             if (!errRep.includes(e)) errRep.push(e);
                         }
                     })
+                    state.ext.map((e) => {
+                        if ((state.decExt[i].idDay === e.idDay) && (state.decExt[i].startTime === e.startTime)  && (state.decExt[i].id > e.id)) {
+                            if (!errExtRep.includes(e)) errExtRep.push(e);
+                        }
+                    })
                 }
+                let extFilt = _.difference(state.ext, errExtRep);
                 let filtRep = _.difference(state.repeateble, errRep);
                 console.log(filtRep)
-                dif = filtRep.concat(state.ext);
+                dif = filtRep.concat(extFilt);
                 console.log("yes")
             } else dif = state.repeateble.concat(state.ext)
 

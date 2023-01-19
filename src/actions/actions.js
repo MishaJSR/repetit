@@ -65,7 +65,7 @@ export const correctField = (idYear, idMonth, idStartDayWeek, idDay, startTime, 
         await axios.post("http://localhost:5000/extentions/checkIsRead", {idYear: idYear, idMonth: idMonth, idStartDayWeek: idStartDayWeek, idDay: idDay, startTime: startTime})
             .then(response => {
                 localStorage.setItem('idNowLesson', response.data.id);
-                alert('уже существует, начинаем коррекцию');
+                //alert('уже существует, начинаем коррекцию');
                 axios.post("http://localhost:5000/extentions/reductByID", {
                     idYear: idYear,
                     idMonth: idMonth,
@@ -83,7 +83,7 @@ export const correctField = (idYear, idMonth, idStartDayWeek, idDay, startTime, 
                 })
                     .then(response => {
                         localStorage.setItem('idNowLesson', response.data.id);
-                        alert('откорректировал');
+                        //alert('откорректировал');
 
                     })
                     .catch(err => {
@@ -92,7 +92,7 @@ export const correctField = (idYear, idMonth, idStartDayWeek, idDay, startTime, 
                     })
             })
             .catch(err => {
-                alert('занятия еще не существует, будем добавлять')
+                //alert('занятия еще не существует, будем добавлять')
                 dispatch(setError(err.response.data.message))
                 axios.post("http://localhost:5000/extentions", {
                     idYear: idYear,
@@ -110,7 +110,7 @@ export const correctField = (idYear, idMonth, idStartDayWeek, idDay, startTime, 
                 })
                     .then(response => {
                         localStorage.setItem('idNowLesson', response.data.id);
-                        alert('создал новое');
+                        //alert('создал новое');
 
                     })
                     .catch(err => {
@@ -245,10 +245,10 @@ export const onSaveCorrect = (idYear, idMonth, idStartDayWeek, idDay, startTime,
             isDecayed: false
             })
             .then(response => {
-                alert('Заредактированно успешно');
+                //alert('Заредактированно успешно');
                 axios.post("http://localhost:5000/extentions/decayID", {idExt: localStorage.getItem('idNowLesson')})
                     .then(response => {
-                        alert('Прошлое занятие отменено');
+                        //alert('Прошлое занятие отменено');
                     })
                     .catch(err => {
                         alert('Ошибка при удалении прошлого занятия')
