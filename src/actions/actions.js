@@ -192,10 +192,10 @@ export const checkIsRead = (idYear, idMonth, idStartDayWeek, idDay, startTime, d
         await axios.post("http://localhost:5000/extentions/checkIsRead", {idYear: idYear, idMonth: idMonth, idStartDayWeek: idStartDayWeek, idDay: idDay, startTime: startTime})
             .then(response => {
                 localStorage.setItem('idNowLesson', response.data.id);
-                alert('уже существует');
+                //alert('уже существует');
             })
             .catch(err => {
-                alert('занятия еще не существует, будем добавлять')
+                //alert('занятия еще не существует, будем добавлять')
                 dispatch(setError(err.response.data.message))
                 axios.post("http://localhost:5000/extentions", {
                     idYear: idYear,
@@ -213,7 +213,7 @@ export const checkIsRead = (idYear, idMonth, idStartDayWeek, idDay, startTime, d
                 })
                     .then(response => {
                         localStorage.setItem('idNowLesson', response.data.id);
-                        alert('создал новое');
+                        //alert('создал новое');
 
                     })
                     .catch(err => {
@@ -235,7 +235,7 @@ export const onSaveCorrect = (idYear, idMonth, idStartDayWeek, idDay, startTime,
             idMonth: idMonth,
             idStartDayWeek: idStartDayWeek,
             idDay: idDay,
-            startTime: startTime,
+            startTime: localStorage.getItem('newStartTime'),
             durationTime: durationTime,
             subj: subj,
             namePup: namePup,

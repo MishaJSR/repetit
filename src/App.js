@@ -24,9 +24,14 @@ import {
     getWeekExt,
     getWeekRep, onSaveCorrect
 } from "./actions/actions";
+import moment from "moment";
 
 
 const App = () => {
+    const refStH = useRef()
+    const refStM = useRef()
+    const refEnH = useRef()
+    const refEnM = useRef()
     const [name, setName] = useState("And");
     const [timeStH, setTimeStH] = useState("");
     const [timeStM, setTimeStM] = useState("");
@@ -39,12 +44,12 @@ const App = () => {
     const [isPay, setIsPay] = useState("");
     const [idDay1, setIdDay1] = useState("");
     const [startTime1, setStartTime1] = useState("");
+    const [toPushStartTime, setToPushStartTime] = useState(0);
     const [displaySpan, setDisplaySpan] = useState(false);
     const [displaySpanNew, setDisplaySpanNew] = useState(false);
     const [homeW, setHome] = useState("");
     const [selected, setSelected] = useState("");
     const [idSelected, setIdSelected] = useState("");
-    const refUser = useRef();
     const nowDay = useSelector(state => state.profile.nowDay);
     const firstWeekDay = useSelector(state => state.profile.firstWeekDay);
     const secondWeekDay = useSelector(state => state.profile.secondWeekDay);
@@ -65,54 +70,64 @@ const App = () => {
         dispatch(getWeekExt(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
         dispatch(getWeekDec(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
         dispatch(getWeekRep());
+
+
     }, []);
+
+    const createDate = () => {//при формировании даты занятий
+        let a = moment({ year :2023, month :0, day :1, hour :8, minute: 0, second :0, millisecond :0});
+        let b = moment({ year :2023, month :0, day :1, hour :refStH.current.value, minute: refStM.current.value, second :0, millisecond :0});
+        let diffMin = b.diff(a, 'minutes');
+        let pushStartTime = diffMin / 5;
+        localStorage.setItem('newStartTime', pushStartTime)
+        alert(pushStartTime)
+    }
 
     const correctSome = () => {//при сохранении дз
         //dispatch(createExt(fullYear, monthNumber, localStorage.getItem('fDay'), idDay1, startTime1, dur, sub, name, cost, homeW, isPay, false))
-        dispatch(correctField(fullYear, monthNumber, localStorage.getItem('fDay'), idDay1, startTime1, dur, sub, name, cost, homeW, isPay));
+        dispatch(correctField(fullYear, monthNumber, localStorage.getItem('fDay'), idDay1, startTime1, durMin/5, sub, name, cost, homeW, isPay));
         setTimeout(() => {
             dispatch(getWeekMass());
             dispatch(getWeekExt(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
             dispatch(getWeekDec(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
             dispatch(getWeekRep())
-        }, 5000)
+        }, 1000)
 
     }
 
     const delayButton = () => {//при корректирвке и нажатии на сохранить
         let numDay = Number(selected);
-        //dispatch(createExt(fullYear, monthNumber, localStorage.getItem('fDay'), idDay1, startTime1, dur, sub, name, cost, homeW, isPay, false))
-        dispatch(onSaveCorrect(fullYear, monthNumber, localStorage.getItem('fDay'), numDay, startTime1, dur, sub, name, cost, homeW, isPay));
+        dispatch(onSaveCorrect(fullYear, monthNumber, localStorage.getItem('fDay'), numDay, toPushStartTime, durMin/5, sub, name, cost, homeW, isPay));
 
-        // setTimeout(() => {
+         setTimeout(() => {
             dispatch(getWeekMass());
             dispatch(getWeekExt(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
             dispatch(getWeekDec(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
             dispatch(getWeekRep())
 
-        // }, 5000)
+         }, 1000)
         setDisplaySpan(false);
     }
 
     const reductButton = () => {//при клике на корректировать
-        dispatch(checkIsRead(fullYear, monthNumber, localStorage.getItem('fDay'), idDay1, startTime1, dur, sub, name, cost, homeW, isPay));
+        dispatch(checkIsRead(fullYear, monthNumber, localStorage.getItem('fDay'), idDay1, startTime1, durMin/5, sub, name, cost, homeW, isPay));
         setTimeout(() => {
             dispatch(getWeekMass());
             dispatch(getWeekExt(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
             dispatch(getWeekDec(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
             dispatch(getWeekRep())
-        }, 5000)
+        }, 1000)
 
     }
 
     const reductButtonDec = () => {//при клике на отмену
-        dispatch(decayLess(fullYear, monthNumber, localStorage.getItem('fDay'), idDay1, startTime1, dur, sub, name, cost, homeW, isPay));
+        dispatch(decayLess(fullYear, monthNumber, localStorage.getItem('fDay'), idDay1, startTime1, durMin/5, sub, name, cost, homeW, isPay));
         setTimeout(() => {
             dispatch(getWeekMass());
             dispatch(getWeekExt(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
             dispatch(getWeekDec(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
             dispatch(getWeekRep())
-        }, 5000)
+        }, 1000)
 
     }
 
@@ -186,10 +201,10 @@ const App = () => {
             <div className="activity">
                 <input className="input_activity text-center" value={name} onChange={(e) => setName(e.target.value)} placeholder="Имя"/>
                 <div className="timeF">
-                    <input className="timeF_input text-center" value={timeStH} onChange={(e) => setTimeStH(e.target.value)} />
-                    <input className="timeF_input text-center" value={timeStM} onChange={(e) => setTimeStM(e.target.value)} />
-                    <input className="timeF_input padR-10 text-center" value={timeEnH} onChange={(e) => setTimeEnH(e.target.value)} />
-                    <input className="timeF_input text-center" value={timeEnM} onChange={(e) => setTimeEnM(e.target.value)} />
+                    <input className="timeF_input text-center" ref={refStH} value={timeStH} onChange={(e) => setTimeStH(e.target.value)} />
+                    <input className="timeF_input text-center" ref={refStM} value={timeStM} onChange={(e) => setTimeStM(e.target.value)} />
+                    <input className="timeF_input padR-10 text-center" ref={refEnH} value={timeEnH} onChange={(e) => setTimeEnH(e.target.value)} />
+                    <input className="timeF_input text-center" ref={refEnM} value={timeEnM} onChange={(e) => setTimeEnM(e.target.value)} />
                 </div>
                 <input className="input_activity text-center" value={durMin} onChange={(e) => setDurMin(e.target.value)} placeholder="Длительность"/>
                 <input className="input_activity text-center" value={sub} onChange={(e) => setSub(e.target.value)} placeholder="Предмет"/>
@@ -280,10 +295,11 @@ const App = () => {
                     <input className="timeF_input big-pad padR-10 text-center" value={timeEnH} onChange={(e) => setTimeEnH(e.target.value)} />
                     <input className="timeF_input big-pad text-center" value={timeEnM} onChange={(e) => setTimeEnM(e.target.value)} />
                 </div>
-                <input className="input_activity text-center" value={durMin} onChange={(e) => setDur(e.target.value)} placeholder="Длительность"/>
+                <input className="input_activity text-center" value={durMin} onChange={(e) => setDurMin(e.target.value)} placeholder="Длительность"/>
                 <input className="input_activity text-center" value={sub} onChange={(e) => setSub(e.target.value)} placeholder="Предмет"/>
                 <input className="input_activity text-center payLabel2" value={cost} onChange={(e) => setCost(e.target.value)} placeholder="Стоимость"/>
                 <button className="top-auto" onClick={() => {
+                    createDate()
                     delayButton()
                 }}>Сохранить</button>
             </div>
