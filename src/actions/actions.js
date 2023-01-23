@@ -229,7 +229,9 @@ export const checkIsRead = (idYear, idMonth, idStartDayWeek, idDay, startTime, d
 
 export const onSaveCorrect = (idYear, idMonth, idStartDayWeek, idDay, startTime, durationTime, subj, namePup, cost, homework, isPayed) => { // декеит старое занятие по айди из ЛС и добавляет новое со всеми данными значениями
     return async (dispatch) => {
-        dispatch(setIsFetching(true))
+        dispatch(setIsFetching(true));
+        //alert(idDay);
+        //alert(localStorage.getItem('dayWeekSelected'))
         await axios.post("http://localhost:5000/extentions", {
             idYear: idYear,
             idMonth: idMonth,
@@ -282,7 +284,7 @@ export const decExt = (idExt) => {
     }
 }
 
-export const createExt = (idYear, idMonth, idStartDayWeek, idDay, startTime, durationTime, subj, namePup, cost, homework, isPayed, isDecayed) => {
+export const createExt = (idYear, idMonth, idStartDayWeek, idDay, startTime, durationTime, subj, namePup, cost) => {
     return async (dispatch) => {
         dispatch(setIsFetching(true))
         await axios.post("http://localhost:5000/extentions",             {
@@ -295,9 +297,9 @@ export const createExt = (idYear, idMonth, idStartDayWeek, idDay, startTime, dur
             subj: subj,
             namePup: namePup,
             cost: cost,
-            homework: homework,
-            isPayed: isPayed,
-            isDecayed: isDecayed
+            homework: "",
+            isPayed: false,
+            isDecayed: false
         })
             .then(response => {
                 alert("kk")
@@ -305,6 +307,34 @@ export const createExt = (idYear, idMonth, idStartDayWeek, idDay, startTime, dur
             .catch(err => {
                 dispatch(setError(err.response.data.message))
                 alert("bad")
+            })
+            .finally(() => {
+                dispatch(setIsFetching(false));
+            })
+    }
+}
+
+export const createRep = (idYear, idMonth, idStartDayWeek, idDay, startTime, durationTime, subj, namePup, cost) => {
+    return async (dispatch) => {
+        dispatch(setIsFetching(true))
+        await axios.post("http://localhost:5000/repeateble",             {
+            idYear: idYear,
+            idMonth: idMonth,
+            idStartDayWeek: idStartDayWeek,
+            idDay: idDay,
+            startTime: startTime,
+            durationTime: durationTime,
+            subj: subj,
+            namePup: namePup,
+            cost: cost,
+            isDecayed: false
+        })
+            .then(response => {
+                alert("rep")
+            })
+            .catch(err => {
+                dispatch(setError(err.response.data.message))
+                alert("badrep")
             })
             .finally(() => {
                 dispatch(setIsFetching(false));

@@ -18,7 +18,7 @@ import {
     checkIsRead, correctField,
     correctLess,
     correctLessWithDel,
-    createExt, decayLess,
+    createExt, createRep, decayLess,
     decExt,
     getWeekDec,
     getWeekExt,
@@ -32,12 +32,31 @@ const App = () => {
     const refStM = useRef()
     const refEnH = useRef()
     const refEnM = useRef()
+
+        //create
+
+    const refStHNew = useRef()
+    const refStMNew = useRef()
+    const refEnHNew = useRef()
+    const refEnMNew = useRef()
+
+    const [nameNew, setNameNew] = useState("");
+    const [timeStHNew, setTimeStHNew] = useState("");
+    const [timeStMNew, setTimeStMNew] = useState("");
+    const [durMinNew, setDurMinNew] = useState("");
+    const [subNew, setSubNew] = useState("");
+    const [costNew, setCostNew] = useState("");
+    const [idDay1New, setIdDay1New] = useState("");
+    const [selectedWeekNew, setSelectedWeekNew] = useState("");
+    const [checkedNew, setCheckedNew] = useState(false);
+
+        //create
+
     const [name, setName] = useState("And");
     const [timeStH, setTimeStH] = useState("");
     const [timeStM, setTimeStM] = useState("");
     const [timeEnH, setTimeEnH] = useState("");
     const [timeEnM, setTimeEnM] = useState("");
-    const [dur, setDur] = useState("");
     const [durMin, setDurMin] = useState("");
     const [sub, setSub] = useState("");
     const [cost, setCost] = useState("");
@@ -82,8 +101,15 @@ const App = () => {
         localStorage.setItem('newStartTime', pushStartTime)
     }
 
+    const createNewDate = () => {//при формировании даты занятий для новых
+        let a = moment({ year :2023, month :0, day :1, hour :8, minute: 0, second :0, millisecond :0});
+        let b = moment({ year :2023, month :0, day :1, hour :refStHNew.current.value, minute: refStMNew.current.value, second :0, millisecond :0});
+        let diffMin = b.diff(a, 'minutes');
+        let pushNew = diffMin / 5;
+        localStorage.setItem('newCreateStartTime', pushNew)
+    }
+
     const correctSome = () => {//при сохранении дз
-        //dispatch(createExt(fullYear, monthNumber, localStorage.getItem('fDay'), idDay1, startTime1, dur, sub, name, cost, homeW, isPay, false))
         dispatch(correctField(fullYear, monthNumber, localStorage.getItem('fDay'), idDay1, startTime1, durMin/5, sub, name, cost, homeW, isPay));
         setTimeout(() => {
             dispatch(getWeekMass());
@@ -108,14 +134,26 @@ const App = () => {
         setDisplaySpan(false);
     }
 
+    const createNewButton = () => {//при клике на сохранить в новом занятии
+        console.log(checkedNew)
+        if (!checkedNew) {
+            dispatch(createExt(fullYear, monthNumber, localStorage.getItem('fDay'), localStorage.getItem('createDayWeekSelected'), localStorage.getItem('newCreateStartTime'), durMinNew/5, subNew, nameNew, costNew));
+        } else {
+            dispatch(createRep(fullYear, monthNumber, localStorage.getItem('fDay'), localStorage.getItem('createDayWeekSelected'), localStorage.getItem('newCreateStartTime'), durMinNew/5, subNew, nameNew, costNew))
+        }
+        dispatch(getWeekMass());
+        dispatch(getWeekExt(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
+        dispatch(getWeekDec(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
+        dispatch(getWeekRep())
+
+    }
+
     const reductButton = () => {//при клике на корректировать
         dispatch(checkIsRead(fullYear, monthNumber, localStorage.getItem('fDay'), idDay1, startTime1, durMin/5, sub, name, cost, homeW, isPay));
-        setTimeout(() => {
             dispatch(getWeekMass());
             dispatch(getWeekExt(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
             dispatch(getWeekDec(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
             dispatch(getWeekRep())
-        }, 1000)
 
     }
 
@@ -265,7 +303,6 @@ const App = () => {
                                     setHome(e.homework);
                                     if (!e.id) setIdSelected(0); else setIdSelected(e.id)
                                     if (!e.isPayed) setIsPay(false); else setIsPay(e.isPayed)
-                                    setDur(e.durationTime)
                                     if (!e.homework) setHome("Пусто")
                                 }
                                 }>
@@ -305,7 +342,10 @@ const App = () => {
                     <option value="this">{monthWeek} {localStorage.getItem('fDay')} - {localStorage.getItem('sDay')}</option>
                     <option value="next">Следующая</option>
                 </select>
-                <select className="select-field" name="" id="" onChange={(e) => setSelected(e.target.value)} >
+                <select className="select-field" name="" id="" onChange={(e) => {
+                    localStorage.setItem('dayWeekSelected', e.target.value)
+                    setSelected(e.target.value)
+                }} >
                     <option value="0">Понедельник</option>
                     <option value="1">Вторник</option>
                     <option value="2">Среда</option>
@@ -323,16 +363,17 @@ const App = () => {
 
         <div className={displaySpanNew? "adderFieldNew" : "adderField-none"}>
             <div className="pupData">
-                <input className="input_activity text-center" value={name} onChange={(e) => setName(e.target.value)} placeholder="Имя"/>
+                <input className="input_activity text-center" value={nameNew} onChange={(e) => setNameNew(e.target.value)} placeholder="Имя"/>
                 <div className="time-center">
-                    <input className="timeF_input big-pad text-center" value={timeStH} onChange={(e) => setTimeStH(e.target.value)} />
-                    <input className="timeF_input big-pad text-center" value={timeStM} onChange={(e) => setTimeStM(e.target.value)} />
+                    <input className="timeF_input big-pad text-center" ref={refStHNew} value={timeStHNew} onChange={(e) => setTimeStHNew(e.target.value)} />
+                    <input className="timeF_input big-pad text-center" ref={refStMNew} value={timeStMNew} onChange={(e) => setTimeStMNew(e.target.value)} />
                 </div>
-                <input className="input_activity text-center" value={durMin} onChange={(e) => setDur(e.target.value)} placeholder="Длительность"/>
-                <input className="input_activity text-center" value={sub} onChange={(e) => setSub(e.target.value)} placeholder="Предмет"/>
-                <input className="input_activity text-center payLabel2" value={cost} onChange={(e) => setCost(e.target.value)} placeholder="Стоимость"/>
+                <input className="input_activity text-center" value={durMinNew} onChange={(e) => setDurMinNew(e.target.value)} placeholder="Длительность"/>
+                <input className="input_activity text-center" value={subNew} onChange={(e) => setSubNew(e.target.value)} placeholder="Предмет"/>
+                <input className="input_activity text-center payLabel2" value={costNew} onChange={(e) => setCostNew(e.target.value)} placeholder="Стоимость"/>
                 <button className="top-auto" onClick={() => {
-                    delayButton()
+                    createNewDate()
+                    createNewButton()
                 }}>Сохранить</button>
             </div>
             <div className="timeData">
@@ -340,7 +381,10 @@ const App = () => {
                     <option value="this">{monthWeek} {localStorage.getItem('fDay')} - {localStorage.getItem('sDay')}</option>
                     <option value="next">Следующая</option>
                 </select>
-                <select className="select-field" name="" id="" onChange={(e) => setSelected(e.target.value)} >
+                <select className="select-field" name="" id="" onChange={(e) => {
+                    localStorage.setItem('createDayWeekSelected', e.target.value)
+                    setSelectedWeekNew(e.target.value)
+                }} >
                     <option value="0">Понедельник</option>
                     <option value="1">Вторник</option>
                     <option value="2">Среда</option>
@@ -350,7 +394,7 @@ const App = () => {
                     <option value="6">Воскресенье</option>
                 </select>
                 <div className="isRepeat">
-                    <input className="scale-check" type="checkbox" id="contactChoice1" checked={checked} onChange={() => setChecked(!checked)}/> <label htmlFor="contactChoice1">Повторять каждую неделю</label>
+                    <input className="scale-check" type="checkbox" id="contactChoice1" checked={checkedNew} onChange={() => setCheckedNew(!checkedNew)}/> <label htmlFor="contactChoice1">Повторять каждую неделю</label>
                 </div>
                 <button className="top-auto-close" onClick={() => setDisplaySpanNew(false)}>Закрыть</button>
             </div>
