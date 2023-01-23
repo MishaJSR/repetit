@@ -355,9 +355,6 @@ const App = () => {
                     <option value="5">Суббота</option>
                     <option value="6">Воскресенье</option>
                 </select>
-                <div className="isRepeat">
-                  <input className="scale-check" type="checkbox" id="contactChoice1" checked={checked} onChange={() => setChecked(!checked)}/> <label htmlFor="contactChoice1">Повторять каждую неделю</label>
-                </div>
                 <button className="top-auto-close" onClick={() => setDisplaySpan(false)}>Закрыть</button>
             </div>
         </div>
@@ -369,8 +366,18 @@ const App = () => {
                     <input className="timeF_input big-pad text-center" ref={refStHNew} value={timeStHNew} onChange={(e) => setTimeStHNew(e.target.value)} />
                     <input className="timeF_input big-pad text-center" ref={refStMNew} value={timeStMNew} onChange={(e) => setTimeStMNew(e.target.value)} />
                 </div>
+                {/*<select className="input_activity text-center" name="" id="" onChange={(e) => setDurMinNew(e.target.value)}>*/}
+                {/*    <option selected disabled>-----</option>*/}
+                {/*    <option value="12">1 час</option>*/}
+                {/*    <option value="18">1.5 часа</option>*/}
+                {/*</select>*/}
                 <input className="input_activity text-center" value={durMinNew} onChange={(e) => setDurMinNew(e.target.value)} placeholder="Длительность"/>
-                <input className="input_activity text-center" value={subNew} onChange={(e) => setSubNew(e.target.value)} placeholder="Предмет"/>
+                <select className="select-field" name="" id="" onChange={(e) => setSubNew(e.target.value)}>
+                    <option selected disabled>-----</option>
+                    <option value="History">История</option>
+                    <option value="Society">Общество</option>
+                </select>
+                
                 <input className="input_activity text-center payLabel2" value={costNew} onChange={(e) => setCostNew(e.target.value)} placeholder="Стоимость"/>
                 <button className="top-auto" onClick={() => {
                     createNewDate()
