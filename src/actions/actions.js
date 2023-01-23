@@ -230,8 +230,6 @@ export const checkIsRead = (idYear, idMonth, idStartDayWeek, idDay, startTime, d
 export const onSaveCorrect = (idYear, idMonth, idStartDayWeek, idDay, startTime, durationTime, subj, namePup, cost, homework, isPayed) => { // декеит старое занятие по айди из ЛС и добавляет новое со всеми данными значениями
     return async (dispatch) => {
         dispatch(setIsFetching(true));
-        //alert(idDay);
-        //alert(localStorage.getItem('dayWeekSelected'))
         await axios.post("http://localhost:5000/extentions", {
             idYear: idYear,
             idMonth: idMonth,
@@ -262,7 +260,6 @@ export const onSaveCorrect = (idYear, idMonth, idStartDayWeek, idDay, startTime,
                 alert("не смог создать новое заредактированное")
             })
             .finally(() => {
-                dispatch(setIsFetching(false));
             })
     }
 }
@@ -272,7 +269,7 @@ export const decExt = (idExt) => {
         dispatch(setIsFetching(true))
         await axios.post("http://localhost:5000/extentions/decayID", {idExt: idExt})
             .then(response => {
-                alert("kk")
+                //alert("kk")
             })
             .catch(err => {
                 dispatch(setError(err.response.data.message))
@@ -302,7 +299,7 @@ export const createExt = (idYear, idMonth, idStartDayWeek, idDay, startTime, dur
             isDecayed: false
         })
             .then(response => {
-                alert("kk")
+                //alert("kk")
             })
             .catch(err => {
                 dispatch(setError(err.response.data.message))
@@ -330,7 +327,7 @@ export const createRep = (idYear, idMonth, idStartDayWeek, idDay, startTime, dur
             isDecayed: false
         })
             .then(response => {
-                alert("rep")
+                //alert("rep")
             })
             .catch(err => {
                 dispatch(setError(err.response.data.message))

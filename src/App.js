@@ -1,6 +1,7 @@
 
 import './App.css';
 import arrowl from '../src/icons/left.png'
+import loader from '../src/preloader/loader.png'
 import arrowr from '../src/icons/right.png'
 import {Link, NavLink} from "react-router-dom";
 import {useEffect, useRef, useState} from "react";
@@ -25,6 +26,7 @@ import {
     getWeekRep, onSaveCorrect
 } from "./actions/actions";
 import moment from "moment";
+import PreloaderLogin from "./preloader/Preloader";
 
 
 const App = () => {
@@ -51,7 +53,6 @@ const App = () => {
     const [checkedNew, setCheckedNew] = useState(false);
 
         //create
-
     const [name, setName] = useState("And");
     const [timeStH, setTimeStH] = useState("");
     const [timeStM, setTimeStM] = useState("");
@@ -121,8 +122,7 @@ const App = () => {
     }
 
     const delayButton = () => {//при корректирвке и нажатии на сохранить
-        let numDay = Number(selected);
-        dispatch(onSaveCorrect(fullYear, monthNumber, localStorage.getItem('fDay'), numDay, toPushStartTime, durMin/5, sub, name, cost, homeW, isPay));
+        dispatch(onSaveCorrect(fullYear, monthNumber, localStorage.getItem('fDay'), localStorage.getItem('dayWeekSelected'), toPushStartTime, durMin/5, sub, name, cost, homeW, isPay));
 
          setTimeout(() => {
             dispatch(getWeekMass());
@@ -145,7 +145,7 @@ const App = () => {
         dispatch(getWeekExt(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
         dispatch(getWeekDec(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
         dispatch(getWeekRep())
-
+        setDisplaySpanNew(false)
     }
 
     const reductButton = () => {//при клике на корректировать
@@ -346,6 +346,7 @@ const App = () => {
                     localStorage.setItem('dayWeekSelected', e.target.value)
                     setSelected(e.target.value)
                 }} >
+                    <option selected disabled>-------</option>
                     <option value="0">Понедельник</option>
                     <option value="1">Вторник</option>
                     <option value="2">Среда</option>
@@ -385,6 +386,7 @@ const App = () => {
                     localStorage.setItem('createDayWeekSelected', e.target.value)
                     setSelectedWeekNew(e.target.value)
                 }} >
+                    <option selected disabled>-----</option>
                     <option value="0">Понедельник</option>
                     <option value="1">Вторник</option>
                     <option value="2">Среда</option>
@@ -402,7 +404,9 @@ const App = () => {
 
 
     </div>
-  ): (<div>ERROR</div>)
+  ): (<>
+      <PreloaderLogin img={loader}></PreloaderLogin>
+  </>)
 }
 
 export default App;

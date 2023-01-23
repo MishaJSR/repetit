@@ -143,10 +143,12 @@ export default  function profileReducer(state= defaultState, action){
                 }
                 let extFilt = _.difference(state.ext, errExtRep);
                 let filtRep = _.difference(state.repeateble, errRep);
-                console.log(filtRep)
+                console.log(extFilt)
                 dif = filtRep.concat(extFilt);
                 console.log("yes")
             } else dif = state.repeateble.concat(state.ext)
+
+
 
 
             let mMass = [];
