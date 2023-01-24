@@ -61,7 +61,7 @@ export const getWeekRep = () => {
 
 export const correctField = (idYear, idMonth, idStartDayWeek, idDay, startTime, durationTime, subj, namePup, cost, homework, isPayed) => { // корректирует
     return async (dispatch) => {
-        dispatch(setIsFetching(true))
+        dispatch(setIsFetching(true));
         await axios.post("http://localhost:5000/extentions/checkIsRead", {idYear: idYear, idMonth: idMonth, idStartDayWeek: idStartDayWeek, idDay: idDay, startTime: startTime})
             .then(response => {
                 localStorage.setItem('idNowLesson', response.data.id);

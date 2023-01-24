@@ -121,6 +121,10 @@
   margin-left: 10px;
 }
 
+.green-but{
+  background: green;
+}
+
 .payButton:hover{
   border: 5px solid green;
 }
@@ -362,6 +366,17 @@ input{
   width: 100%;
   font-weight: bold;
   font-size: 16pt;
+  border: 5px solid #0afd00;
+}
+
+.lesson-not-payed{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  font-weight: bold;
+  font-size: 16pt;
+  border: 5px solid firebrick;
 }
 
 .preloader-back{

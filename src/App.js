@@ -123,6 +123,17 @@ const App = () => {
 
     }
 
+    const payedLesson = () => {//при клике на оплатить
+        dispatch(correctField(fullYear, monthNumber, localStorage.getItem('fDay'), idDay1, startTime1, durMin/5, sub, name, cost, homeW, true));
+        setTimeout(() => {
+            dispatch(getWeekMass());
+            dispatch(getWeekExt(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
+            dispatch(getWeekDec(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
+            dispatch(getWeekRep())
+        }, 2000)
+
+    }
+
     const delayButton = () => {//при корректирвке и нажатии на сохранить
         let dur2 = Number(durMin)
         let cos2 = Number(cost)
@@ -255,7 +266,11 @@ const App = () => {
                 <input className="input_activity text-center" value={sub} onChange={(e) => setSub(e.target.value)} placeholder="Предмет"/>
                 <div className="payField">
                     <input className="input_activity text-center payLabel" value={cost} onChange={(e) => setCost(e.target.value)} placeholder="Стоимость"/>
-                    <button className="payButton"></button>
+                    <button className={(isPay)? "payButton green-but": "payButton"} onClick={() => {
+                        setIsPay(true)
+                        payedLesson()
+                    }
+                    }></button>
                 </div>
                 <div className="homeFiled">
                     <div className="homeSpan text-center">
@@ -295,7 +310,7 @@ const App = () => {
                                 let currentTimeForSecond = new Date();
                                 currentTimeForSecond.setHours(8, 0);
                                 currentTimeForSecond.setMinutes(currentTimeForSecond.getMinutes() + 5*e.durationTime + 5*e.startTime);
-                                return <button className="lesson"
+                                return <button className={(e.isPayed)? "lesson" : "lesson-not-payed"}
                                                style={{ top:`${e.startTime*5}px`, height:`${e.durationTime*5}px`, backgroundColor: "#ffd43a"}}
                                 onClick={() => {
                                     setName(e.namePup);
