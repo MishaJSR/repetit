@@ -310,8 +310,8 @@ const App = () => {
                                 let currentTimeForSecond = new Date();
                                 currentTimeForSecond.setHours(8, 0);
                                 currentTimeForSecond.setMinutes(currentTimeForSecond.getMinutes() + 5*e.durationTime + 5*e.startTime);
-                                return <button className={(e.isPayed)? "lesson" : "lesson-not-payed"}
-                                               style={{ top:`${e.startTime*5}px`, height:`${e.durationTime*5}px`, backgroundColor: "#ffd43a"}}
+                                return <button className={(e.isPayed && e.subj === 'History')? "lesson-history-payed" : (!e.isPayed && e.subj === 'History')? "lesson-history-not-payed" : (e.isPayed)?"lesson-social-payed" : "lesson-social-not-payed" }
+                                               style={{ top:`${e.startTime*5}px`, height:`${e.durationTime*5}px`}}
                                 onClick={() => {
                                     setName(e.namePup);
                                     setTimeStH(currentTimeForFirst.getHours())

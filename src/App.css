@@ -359,17 +359,30 @@ input{
   position: relative;
 }
 
-.lesson{
+.lesson-history-payed{
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   font-weight: bold;
   font-size: 16pt;
-  border: 5px solid #0afd00;
+  border: 3px solid #ffffff;
+  background: #ffb44d;
 }
 
-.lesson-not-payed{
+.lesson-social-payed{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  font-weight: bold;
+  font-size: 16pt;
+  border: 3px solid #ffffff;
+  background: blueviolet;
+  color: white;
+}
+
+.lesson-social-not-payed{
   position: absolute;
   top: 0;
   left: 0;
@@ -377,6 +390,23 @@ input{
   font-weight: bold;
   font-size: 16pt;
   border: 5px solid firebrick;
+  background: blueviolet;
+  color: white;
+}
+
+
+
+
+
+.lesson-history-not-payed{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  font-weight: bold;
+  font-size: 16pt;
+  border: 5px solid firebrick;
+  background: #ffb44d;
 }
 
 .preloader-back{
