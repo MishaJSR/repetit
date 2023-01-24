@@ -21,6 +21,7 @@ const SET_DEC_EXT_MASS = 'SET_DEC_EXT_MASS'
 const SET_REPEAT_MASS = 'SET_REPEAT_MASS'
 const SET_ERROR_MESS = 'SET_ERROR_MESS'
 const FILTER_END_MASS = 'FILTER_END_MASS'
+const FAKE_PLUS_WEEK = 'FAKE_PLUS_WEEK'
 
 
 
@@ -198,6 +199,32 @@ export default  function profileReducer(state= defaultState, action){
                 sDay: s
             }
 
+
+        case FAKE_PLUS_WEEK:
+            let yer = state.firstWeekDay.slice(0,4);
+            let monh = state.firstWeekDay.slice(5,7);
+            let monh2  = Number(monh) - 1;
+            let day2 = state.firstWeekDay.slice(8,10);
+            let w11 = new Date(yer, monh2, day2)
+            w11.setDate(w11.getDate() + 8);
+
+            let year211 = state.secondWeekDay.slice(0,4);
+            let month211 = state.secondWeekDay.slice(5,7);
+            let mon211  = Number(month211) - 1;
+            let da211 = state.secondWeekDay.slice(8,10);
+            let y11 = new Date(year211, mon211, da211)
+            y11.setDate(y11.getDate() + 8);
+            let monthNameNext = w11.getMonth();
+            let letToLSWNext = (w11.getDate() - 1).toString()
+            let letToLSYNext = (y11.getDate() - 1).toString()
+            localStorage.setItem('fDayNext', letToLSWNext);
+            localStorage.setItem('sDayNext', letToLSYNext);
+            localStorage.setItem('monthNumberNext', monthName[monthNameNext].name )
+            localStorage.setItem('monthNumberN',  monthNameNext)
+            return {
+                ...state
+            }
+
         case PLUS_WEEK:
             let year = state.firstWeekDay.slice(0,4);
             let month = state.firstWeekDay.slice(5,7);
@@ -303,6 +330,7 @@ export const setRepMass = (bol) => ({type: SET_REPEAT_MASS, payload: bol})
 export const setError = (bol) => ({type: SET_ERROR_MESS, payload: bol})
 export const filterEndMass = () => ({type: FILTER_END_MASS})
 export const setDecMass = (bol) => ({type: SET_DEC_EXT_MASS, payload: bol})
+export const fakePlusWeek = () => ({type: FAKE_PLUS_WEEK})
 
 
 export const setUsers = (us) => ({type: SET_USERS, payload: us})

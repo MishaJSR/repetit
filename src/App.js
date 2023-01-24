@@ -7,6 +7,7 @@ import {Link, NavLink} from "react-router-dom";
 import {useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {
+    fakePlusWeek,
     filtLessons,
     getWeekMass,
     minusWeek,
@@ -68,6 +69,7 @@ const App = () => {
     const [displaySpan, setDisplaySpan] = useState(false);
     const [displaySpanNew, setDisplaySpanNew] = useState(false);
     const [homeW, setHome] = useState("");
+    const [selectedWeek, setSlectedWeek] = useState(0);
     const [selected, setSelected] = useState("");
     const [idSelected, setIdSelected] = useState("");
     const nowDay = useSelector(state => state.profile.nowDay);
@@ -90,7 +92,7 @@ const App = () => {
         dispatch(getWeekExt(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
         dispatch(getWeekDec(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
         dispatch(getWeekRep());
-
+        dispatch(fakePlusWeek())
 
     }, []);
 
@@ -122,7 +124,11 @@ const App = () => {
     }
 
     const delayButton = () => {//при корректирвке и нажатии на сохранить
-        dispatch(onSaveCorrect(fullYear, monthNumber, localStorage.getItem('fDay'), localStorage.getItem('dayWeekSelected'), toPushStartTime, durMin/5, sub, name, cost, homeW, isPay));
+        let dur2 = Number(durMin)
+        let cos2 = Number(cost)
+        let selWeek = Number(selectedWeek)
+        if (selWeek > 0 ) dispatch(onSaveCorrect(fullYear, localStorage.getItem('monthNumberN'), localStorage.getItem('fDayNext'), localStorage.getItem('dayWeekSelected'), toPushStartTime, dur2, sub, name, cos2, homeW, isPay));
+        else dispatch(onSaveCorrect(fullYear, monthNumber, localStorage.getItem('fDay'), localStorage.getItem('dayWeekSelected'), toPushStartTime, dur2, sub, name, cos2, homeW, isPay));
 
          setTimeout(() => {
             dispatch(getWeekMass());
@@ -135,11 +141,13 @@ const App = () => {
     }
 
     const createNewButton = () => {//при клике на сохранить в новом занятии
+        let dur = Number(durMinNew)
+        let cos = Number(costNew)
         console.log(checkedNew)
         if (!checkedNew) {
-            dispatch(createExt(fullYear, monthNumber, localStorage.getItem('fDay'), localStorage.getItem('createDayWeekSelected'), localStorage.getItem('newCreateStartTime'), durMinNew/5, subNew, nameNew, costNew));
+            dispatch(createExt(fullYear, monthNumber, localStorage.getItem('fDay'), localStorage.getItem('createDayWeekSelected'), localStorage.getItem('newCreateStartTime'), dur, subNew, nameNew, cos));
         } else {
-            dispatch(createRep(fullYear, monthNumber, localStorage.getItem('fDay'), localStorage.getItem('createDayWeekSelected'), localStorage.getItem('newCreateStartTime'), durMinNew/5, subNew, nameNew, costNew))
+            dispatch(createRep(fullYear, monthNumber, localStorage.getItem('fDay'), localStorage.getItem('createDayWeekSelected'), localStorage.getItem('newCreateStartTime'), dur, subNew, nameNew, cos))
         }
         dispatch(getWeekMass());
         dispatch(getWeekExt(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
@@ -329,18 +337,30 @@ const App = () => {
                     <input className="timeF_input big-pad text-center" value={timeStH} onChange={(e) => setTimeStH(e.target.value)} />
                     <input className="timeF_input big-pad text-center" value={timeStM} onChange={(e) => setTimeStM(e.target.value)} />
                 </div>
-                <input className="input_activity text-center" value={durMin} onChange={(e) => setDurMin(e.target.value)} placeholder="Длительность"/>
-                <input className="input_activity text-center" value={sub} onChange={(e) => setSub(e.target.value)} placeholder="Предмет"/>
-                <input className="input_activity text-center payLabel2" value={cost} onChange={(e) => setCost(e.target.value)} placeholder="Стоимость"/>
+                <select className="select-field" name="" id="" onChange={(e) => setDurMin(e.target.value)}>
+                    <option selected disabled>-----</option>
+                    <option value="12">1 час</option>
+                    <option value="18">1.5 часа</option>
+                </select>
+                <select className="select-field" name="" id="" onChange={(e) => setSub(e.target.value)}>
+                    <option selected disabled>-----</option>
+                    <option value="History">История</option>
+                    <option value="Society">Общество</option>
+                </select>
+                <select className="select-field" name="" id="" onChange={(e) => setCostNew(e.target.value)}>
+                    <option selected disabled>-----</option>
+                    <option value="800">800</option>
+                    <option value="1200">1200</option>
+                </select>
                 <button className="top-auto" onClick={() => {
                     createDate()
                     delayButton()
                 }}>Сохранить</button>
             </div>
             <div className="timeData">
-                <select className="select-field" name="" id="">
-                    <option value="this">{monthWeek} {localStorage.getItem('fDay')} - {localStorage.getItem('sDay')}</option>
-                    <option value="next">Следующая</option>
+                <select className="select-field" name="" id="" onChange={(e) => setSlectedWeek(e.target.value)}>
+                    <option value="0">{monthWeek} {localStorage.getItem('fDay')} - {localStorage.getItem('sDay')}</option>
+                    <option value="1">{localStorage.getItem('monthNumberNext')} {localStorage.getItem('fDayNext')} - {localStorage.getItem('sDayNext')}</option>
                 </select>
                 <select className="select-field" name="" id="" onChange={(e) => {
                     localStorage.setItem('dayWeekSelected', e.target.value)
@@ -366,19 +386,21 @@ const App = () => {
                     <input className="timeF_input big-pad text-center" ref={refStHNew} value={timeStHNew} onChange={(e) => setTimeStHNew(e.target.value)} />
                     <input className="timeF_input big-pad text-center" ref={refStMNew} value={timeStMNew} onChange={(e) => setTimeStMNew(e.target.value)} />
                 </div>
-                {/*<select className="input_activity text-center" name="" id="" onChange={(e) => setDurMinNew(e.target.value)}>*/}
-                {/*    <option selected disabled>-----</option>*/}
-                {/*    <option value="12">1 час</option>*/}
-                {/*    <option value="18">1.5 часа</option>*/}
-                {/*</select>*/}
-                <input className="input_activity text-center" value={durMinNew} onChange={(e) => setDurMinNew(e.target.value)} placeholder="Длительность"/>
+                <select className="select-field" name="" id="" onChange={(e) => setDurMinNew(e.target.value)}>
+                    <option selected disabled>-----</option>
+                  <option value="12">1 час</option>
+                  <option value="18">1.5 часа</option>
+                </select>
                 <select className="select-field" name="" id="" onChange={(e) => setSubNew(e.target.value)}>
                     <option selected disabled>-----</option>
                     <option value="History">История</option>
                     <option value="Society">Общество</option>
                 </select>
-                
-                <input className="input_activity text-center payLabel2" value={costNew} onChange={(e) => setCostNew(e.target.value)} placeholder="Стоимость"/>
+                <select className="select-field" name="" id="" onChange={(e) => setCostNew(e.target.value)}>
+                    <option selected disabled>-----</option>
+                    <option value="800">800</option>
+                    <option value="1200">1200</option>
+                </select>
                 <button className="top-auto" onClick={() => {
                     createNewDate()
                     createNewButton()
