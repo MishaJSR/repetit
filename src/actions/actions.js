@@ -181,7 +181,7 @@ export const decayLess = (idYear, idMonth, idStartDayWeek, idDay, startTime, dur
                     })
             })
             .finally(() => {
-                dispatch(setIsFetching(false));
+
             })
     }
 }
@@ -306,7 +306,7 @@ export const createExt = (idYear, idMonth, idStartDayWeek, idDay, startTime, dur
                 alert("bad")
             })
             .finally(() => {
-                dispatch(setIsFetching(false));
+
             })
     }
 }
@@ -334,7 +334,7 @@ export const createRep = (idYear, idMonth, idStartDayWeek, idDay, startTime, dur
                 alert("badrep")
             })
             .finally(() => {
-                dispatch(setIsFetching(false));
+
             })
     }
 }
