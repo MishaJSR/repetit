@@ -160,6 +160,7 @@ textarea {
   flex-direction: row;
   gap: 30px;
   padding: 50px 120px;
+  z-index: 200;
 }
 
 .adderFieldNew{
@@ -175,6 +176,7 @@ textarea {
   flex-direction: row;
   gap: 30px;
   padding: 50px 120px;
+  z-index: 200;
 }
 
 .adderField-none {
@@ -307,9 +309,121 @@ input{
 
 }
 
+.lines8{
+  position: absolute;
+  top: calc(5%);
+  left: 0;
+  width: 83vw;
+  height: 1px;
+  background: black;
+  z-index: 100;
+}
+
+.lines8::after{
+  content: "8";
+}
+
+.lines10{
+  position: absolute;
+  top: calc(5% + 120px);
+  left: 0;
+  width: 83vw;
+  height: 1px;
+  background: black;
+  z-index: 100;
+}
+
+.lines10::after{
+  content: "10";
+}
+
+.lines12{
+  position: absolute;
+  top: calc(5% + 240px);
+  left: 0;
+  width: 83vw;
+  height: 1px;
+  background: black;
+  z-index: 100;
+}
+
+.lines12::after{
+  content: "12";
+}
+
+.lines14{
+  position: absolute;
+  top: calc(5% + 360px);
+  left: 0;
+  width: 83vw;
+  height: 1px;
+  background: black;
+  z-index: 100;
+}
+
+.lines14::after{
+  content: "14";
+}
+
+.lines16{
+  position: absolute;
+  top: calc(5% + 480px);
+  left: 0;
+  width: 83vw;
+  height: 1px;
+  background: black;
+  z-index: 100;
+}
+
+.lines16::after{
+  content: "16";
+}
+
+.lines18{
+  position: absolute;
+  top: calc(5% + 600px);
+  left: 0;
+  width: 83vw;
+  height: 1px;
+  background: black;
+  z-index: 100;
+}
+
+.lines18::after{
+  content: "18";
+}
+
+.lines20{
+  position: absolute;
+  top: calc(5% + 720px);
+  left: 0;
+  width: 83vw;
+  height: 1px;
+  background: black;
+  z-index: 100;
+}
+
+.lines20::after{
+  content: "20";
+}
+
+.lines22{
+  position: absolute;
+  top: calc(5% + 840px);
+  left: 0;
+  width: 83vw;
+  height: 1px;
+  background: black;
+  z-index: 100;
+}
+
+.lines22::after{
+  content: "22";
+}
 
 
 .calendar_field{
+  position: relative;
   height: 100%;
   width: 83%;
   display: flex;
@@ -323,7 +437,7 @@ input{
   border: 1px solid white;
 }
 .timeBar{
-  width: 6.5%;
+  width: 2%;
   height: 100%;
 }
 
@@ -368,6 +482,7 @@ input{
   font-size: 16pt;
   border: 3px solid #ffffff;
   background: #ffb44d;
+  z-index: 150;
 }
 
 .lesson-social-payed{
@@ -380,6 +495,7 @@ input{
   border: 3px solid #ffffff;
   background: blueviolet;
   color: white;
+  z-index: 150;
 }
 
 .lesson-social-not-payed{
@@ -392,6 +508,7 @@ input{
   border: 5px solid firebrick;
   background: blueviolet;
   color: white;
+  z-index: 150;
 }
 
 
@@ -407,7 +524,26 @@ input{
   font-size: 16pt;
   border: 5px solid firebrick;
   background: #ffb44d;
+  z-index: 150;
 }
+
+.repeate-less{
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 20px;
+  height: 20px;
+}
+.non-repeate-less{
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 10px;
+  height: 10px;
+  display: none;
+}
+
+
 
 .preloader-back{
   position: absolute;

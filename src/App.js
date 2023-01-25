@@ -3,6 +3,8 @@ import './App.css';
 import arrowl from '../src/icons/left.png'
 import loader from '../src/preloader/loader.png'
 import arrowr from '../src/icons/right.png'
+import repeatImg from '../src/icons/repeat.png'
+import perenoc from '../src/icons/perenos.png'
 import {Link, NavLink} from "react-router-dom";
 import {useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
@@ -89,8 +91,8 @@ const App = () => {
     useEffect(() => {
         setThisWeek();
         dispatch(getWeekMass());
-        dispatch(getWeekExt(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
-        dispatch(getWeekDec(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
+        dispatch(getWeekExt(fullYear, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
+        dispatch(getWeekDec(fullYear, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
         dispatch(getWeekRep());
         dispatch(fakePlusWeek())
 
@@ -116,10 +118,10 @@ const App = () => {
         dispatch(correctField(fullYear, monthNumber, localStorage.getItem('fDay'), idDay1, startTime1, durMin/5, sub, name, cost, homeW, isPay));
         setTimeout(() => {
             dispatch(getWeekMass());
-            dispatch(getWeekExt(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
-            dispatch(getWeekDec(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
+            dispatch(getWeekExt(fullYear, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
+            dispatch(getWeekDec(fullYear, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
             dispatch(getWeekRep())
-        }, 2000)
+        }, 1000)
 
     }
 
@@ -127,10 +129,10 @@ const App = () => {
         dispatch(correctField(fullYear, monthNumber, localStorage.getItem('fDay'), idDay1, startTime1, durMin/5, sub, name, cost, homeW, true));
         setTimeout(() => {
             dispatch(getWeekMass());
-            dispatch(getWeekExt(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
-            dispatch(getWeekDec(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
+            dispatch(getWeekExt(fullYear, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
+            dispatch(getWeekDec(fullYear, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
             dispatch(getWeekRep())
-        }, 2000)
+        }, 1000)
 
     }
 
@@ -143,11 +145,11 @@ const App = () => {
 
          setTimeout(() => {
             dispatch(getWeekMass());
-            dispatch(getWeekExt(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
-            dispatch(getWeekDec(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
+            dispatch(getWeekExt(fullYear, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
+            dispatch(getWeekDec(fullYear, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
             dispatch(getWeekRep())
 
-         }, 2000)
+         }, 1000)
         setDisplaySpan(false);
     }
 
@@ -161,8 +163,8 @@ const App = () => {
             dispatch(createRep(fullYear, monthNumber, localStorage.getItem('fDay'), localStorage.getItem('createDayWeekSelected'), localStorage.getItem('newCreateStartTime'), dur, subNew, nameNew, cos))
         }
         dispatch(getWeekMass());
-        dispatch(getWeekExt(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
-        dispatch(getWeekDec(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
+        dispatch(getWeekExt(fullYear, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
+        dispatch(getWeekDec(fullYear, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
         dispatch(getWeekRep())
         setDisplaySpanNew(false)
     }
@@ -170,8 +172,8 @@ const App = () => {
     const reductButton = () => {//при клике на корректировать
         dispatch(checkIsRead(fullYear, monthNumber, localStorage.getItem('fDay'), idDay1, startTime1, durMin/5, sub, name, cost, homeW, isPay));
             dispatch(getWeekMass());
-            dispatch(getWeekExt(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
-            dispatch(getWeekDec(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
+            dispatch(getWeekExt(fullYear, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
+            dispatch(getWeekDec(fullYear, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
             dispatch(getWeekRep())
 
     }
@@ -180,8 +182,8 @@ const App = () => {
         dispatch(decayLess(fullYear, monthNumber, localStorage.getItem('fDay'), idDay1, startTime1, durMin/5, sub, name, cost, homeW, isPay));
         setTimeout(() => {
             dispatch(getWeekMass());
-            dispatch(getWeekExt(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
-            dispatch(getWeekDec(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
+            dispatch(getWeekExt(fullYear, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
+            dispatch(getWeekDec(fullYear, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
             dispatch(getWeekRep())
         }, 1000)
 
@@ -292,6 +294,14 @@ const App = () => {
                 <button className="end-work activity-buttons">Удалить текущее и закончить работу с учеником</button>
             </div>
             <div className="calendar_field">
+                    <div className="lines8"></div>
+                    <div className="lines10"></div>
+                    <div className="lines12"></div>
+                    <div className="lines14"></div>
+                    <div className="lines16"></div>
+                    <div className="lines18"></div>
+                    <div className="lines20"></div>
+                    <div className="lines22"></div>
                 <div className="timeBar">
 
                 </div>
@@ -313,6 +323,7 @@ const App = () => {
                                 return <button className={(e.isPayed && e.subj === 'History')? "lesson-history-payed" : (!e.isPayed && e.subj === 'History')? "lesson-history-not-payed" : (e.isPayed)?"lesson-social-payed" : "lesson-social-not-payed" }
                                                style={{ top:`${e.startTime*5}px`, height:`${e.durationTime*5}px`}}
                                 onClick={() => {
+                                    if (e.decidYear !== undefined) console.log(e.decidYear)
                                     setName(e.namePup);
                                     setTimeStH(currentTimeForFirst.getHours())
                                     setTimeStM(currentTimeForFirst.getMinutes())
@@ -336,6 +347,7 @@ const App = () => {
                                     <span>-</span>
                                     <span>{(currentTimeForSecond.getMinutes() === 0)? currentTimeForSecond.getHours()+":"+"00"
                                         : currentTimeForSecond.getHours()+":"+currentTimeForSecond.getMinutes()}</span>
+                                        <img className={(e.decidYear === undefined)? "repeate-less" : "non-repeate-less"} src={perenoc}/>
                                 </button>
                             })}
                         </div>
