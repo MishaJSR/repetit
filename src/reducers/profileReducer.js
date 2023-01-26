@@ -128,6 +128,9 @@ export default  function profileReducer(state= defaultState, action){
             let errExtRep = [] // надо удалить из ext
             let errRep = [] // надо удалить из repeat
             let dif = [] //будет итоговый совмещенный массив
+            let filterRepos = []
+            let stateExt = [...state.ext]
+            let stateRep = [...state.repeateble]
 
             if (state.decExt.length > 0) {
                 for (let i = 0; i < state.decExt.length; i++) {
@@ -142,14 +145,36 @@ export default  function profileReducer(state= defaultState, action){
                         }
                     })
                 }
+
                 let extFilt = _.difference(state.ext, errExtRep);
                 let filtRep = _.difference(state.repeateble, errRep);
-                console.log(extFilt)
-                dif = filtRep.concat(extFilt);
-                console.log("yes")
-            } else dif = state.repeateble.concat(state.ext)
 
+                for (let i = 0; i < extFilt.length; i++) {
+                    filtRep.map((e, index) => {
+                        if ((extFilt[i].idDay === e.idDay) && (extFilt[i].startTime === e.startTime)) {
+                            console.log(e)
+                            filtRep.splice(index, 1);
+                        }
+                    })
+                }
+                // console.log(filtRep)
+                dif = extFilt.concat(filtRep);
+            } else
+            {
+                let extFilt = _.difference(state.ext, errExtRep);
+                let filtRep = _.difference(state.repeateble, errRep);
 
+                for (let i = 0; i < extFilt.length; i++) {
+                    filtRep.map((e, index) => {
+                        if ((extFilt[i].idDay === e.idDay) && (extFilt[i].startTime === e.startTime)) {
+                            console.log(e)
+                            filtRep.splice(index, 1);
+                        }
+                    })
+                }
+
+                dif = extFilt.concat(filtRep)
+            }
 
 
             let mMass = [];
