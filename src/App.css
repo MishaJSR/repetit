@@ -30,10 +30,11 @@
 .date_field{
   width: 83%;
   height: 100%;
-  background: #9b9b9b;
+  background: #700093;
   text-align: center;
   font-weight: bold;
   font-size: 1.5rem;
+  color: white;
 }
 
 
@@ -88,8 +89,8 @@
 }
 
 .timeF_input{
-  width: 9%;
-  height: 20px;
+  width: 10%;
+  height: 30px;
 }
 
 .text-center{
@@ -462,14 +463,15 @@ input{
   align-items: center;
   height: 5%;
   width: 100%;
-  background: #80fc1b;
+  background: #a46aff;
   font-weight: bold;
   font-size: 1.3rem;
+  color: white;
 }
 .lessonsPart{
   height: 95%;
   width: 100%;
-  background: #5b6ff8;
+  background: #f0dbe8;
   position: relative;
 }
 
@@ -481,8 +483,9 @@ input{
   font-weight: bold;
   font-size: 16pt;
   opacity: 50%;
-  background: #ffb44d;
+  background: #ff36ce;
   z-index: 150;
+  color: white;
 }
 
 .lesson-social-payed{
@@ -521,8 +524,9 @@ input{
   width: 100%;
   font-weight: bold;
   font-size: 16pt;
-  background: #ffb44d;
+  background: #ff36ce;
   z-index: 150;
+  color: white;
 }
 
 .repeate-less{

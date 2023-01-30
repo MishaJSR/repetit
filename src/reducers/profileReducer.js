@@ -152,7 +152,7 @@ export default  function profileReducer(state= defaultState, action){
                 for (let i = 0; i < extFilt.length; i++) {
                     filtRep.map((e, index) => {
                         if ((extFilt[i].idDay === e.idDay) && (extFilt[i].startTime === e.startTime)) {
-                            console.log(e)
+
                             filtRep.splice(index, 1);
                         }
                     })
@@ -167,7 +167,7 @@ export default  function profileReducer(state= defaultState, action){
                 for (let i = 0; i < extFilt.length; i++) {
                     filtRep.map((e, index) => {
                         if ((extFilt[i].idDay === e.idDay) && (extFilt[i].startTime === e.startTime)) {
-                            console.log(e)
+
                             filtRep.splice(index, 1);
                         }
                     })

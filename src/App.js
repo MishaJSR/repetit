@@ -126,7 +126,14 @@ const App = () => {
     }
 
     const payedLesson = () => {//при клике на оплатить
-        dispatch(correctField(fullYear, monthNumber, localStorage.getItem('fDay'), idDay1, startTime1, durMin/5, sub, name, cost, homeW, true));
+        if (isPay) {
+            setIsPay(false)
+            dispatch(correctField(fullYear, monthNumber, localStorage.getItem('fDay'), idDay1, startTime1, durMin / 5, sub, name, cost, homeW, false));
+        }
+        else {
+            setIsPay(true)
+            dispatch(correctField(fullYear, monthNumber, localStorage.getItem('fDay'), idDay1, startTime1, durMin / 5, sub, name, cost, homeW, true));
+        }
         setTimeout(() => {
             dispatch(getWeekMass());
             dispatch(getWeekExt(fullYear, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
@@ -140,8 +147,8 @@ const App = () => {
         let dur2 = Number(durMin)
         let cos2 = Number(cost)
         let selWeek = Number(selectedWeek)
-        if (selWeek > 0 ) dispatch(onSaveCorrect(fullYear, localStorage.getItem('monthNumberN'), localStorage.getItem('fDayNext'), localStorage.getItem('dayWeekSelected'), toPushStartTime, dur2, sub, name, cos2, homeW, isPay));
-        else dispatch(onSaveCorrect(fullYear, monthNumber, localStorage.getItem('fDay'), localStorage.getItem('dayWeekSelected'), toPushStartTime, dur2, sub, name, cos2, homeW, isPay));
+        if (selWeek > 0 ) dispatch(onSaveCorrect(fullYear, localStorage.getItem('monthNumberN'), localStorage.getItem('fDayNext'), localStorage.getItem('dayWeekSelected'), toPushStartTime, dur2/5, sub, name, cos2, homeW, isPay));
+        else dispatch(onSaveCorrect(fullYear, monthNumber, localStorage.getItem('fDay'), localStorage.getItem('dayWeekSelected'), toPushStartTime, dur2/5, sub, name, cos2, homeW, isPay));
 
          setTimeout(() => {
             dispatch(getWeekMass());
@@ -149,14 +156,14 @@ const App = () => {
             dispatch(getWeekDec(fullYear, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
             dispatch(getWeekRep())
 
-         }, 1000)
+         }, 2000)
         setDisplaySpan(false);
     }
 
     const createNewButton = () => {//при клике на сохранить в новом занятии
         let dur = Number(durMinNew)
         let cos = Number(costNew)
-        console.log(checkedNew)
+
         if (!checkedNew) {
             dispatch(createExt(fullYear, monthNumber, localStorage.getItem('fDay'), localStorage.getItem('createDayWeekSelected'), localStorage.getItem('newCreateStartTime'), dur, subNew, nameNew, cos));
         } else {
@@ -175,7 +182,7 @@ const App = () => {
             dispatch(getWeekExt(fullYear, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
             dispatch(getWeekDec(fullYear, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
             dispatch(getWeekRep())
-
+            console.log(cost, durMin, sub)
     }
 
     const reductButtonDec = () => {//при клике на отмену
@@ -260,16 +267,15 @@ const App = () => {
                 <input className="input_activity text-center" value={name} onChange={(e) => setName(e.target.value)} placeholder="Имя"/>
                 <div className="timeF">
                     <input className="timeF_input text-center" ref={refStH} value={timeStH} onChange={(e) => setTimeStH(e.target.value)} />
-                    <input className="timeF_input text-center" ref={refStM} value={timeStM} onChange={(e) => setTimeStM(e.target.value)} />
+                    <input className="timeF_input text-center" ref={refStM} value={(timeStM < 10)? "0" + timeStM : timeStM} onChange={(e) => setTimeStM(e.target.value)} />
                     <input className="timeF_input padR-10 text-center" ref={refEnH} value={timeEnH} onChange={(e) => setTimeEnH(e.target.value)} />
-                    <input className="timeF_input text-center" ref={refEnM} value={timeEnM} onChange={(e) => setTimeEnM(e.target.value)} />
+                    <input className="timeF_input text-center" ref={refEnM} value={(timeEnM < 10)? "0" + timeEnM : timeEnM} onChange={(e) => setTimeEnM(e.target.value)} />
                 </div>
-                <input className="input_activity text-center" value={durMin} onChange={(e) => setDurMin(e.target.value)} placeholder="Длительность"/>
+                <input className="input_activity text-center" value={durMin/60 + " ч"} onChange={(e) => setDurMin(e.target.value)} placeholder="Длительность"/>
                 <input className="input_activity text-center" value={sub} onChange={(e) => setSub(e.target.value)} placeholder="Предмет"/>
                 <div className="payField">
                     <input className="input_activity text-center payLabel" value={cost} onChange={(e) => setCost(e.target.value)} placeholder="Стоимость"/>
                     <button className={(isPay)? "payButton green-but": "payButton"} onClick={() => {
-                        setIsPay(true)
                         payedLesson()
                     }
                     }></button>
@@ -343,10 +349,10 @@ const App = () => {
                                     <span>{e.namePup}</span>
                                     <br/>
                                     <span>{(currentTimeForFirst.getMinutes() === 0)? currentTimeForFirst.getHours()+":"+"00"
-                                        : currentTimeForFirst.getHours()+":"+currentTimeForFirst.getMinutes()}</span>
+                                        : (currentTimeForFirst.getMinutes() === 5)? currentTimeForFirst.getHours()+":"+ "0" + currentTimeForFirst.getMinutes() : currentTimeForFirst.getHours()+":"+ currentTimeForFirst.getMinutes()}</span>
                                     <span>-</span>
                                     <span>{(currentTimeForSecond.getMinutes() === 0)? currentTimeForSecond.getHours()+":"+"00"
-                                        : currentTimeForSecond.getHours()+":"+currentTimeForSecond.getMinutes()}</span>
+                                        : (currentTimeForSecond.getMinutes() === 5)? currentTimeForSecond.getHours()+":" + "0" + currentTimeForSecond.getMinutes() : currentTimeForSecond.getHours()+":" + currentTimeForSecond.getMinutes()}</span>
                                         <img className={(e.decidYear === undefined)? "repeate-less" : "non-repeate-less"} src={perenoc}/>
                                 </button>
                             })}
@@ -362,23 +368,11 @@ const App = () => {
                 <input className="input_activity text-center" value={name} onChange={(e) => setName(e.target.value)} placeholder="Имя"/>
                 <div className="time-center">
                     <input className="timeF_input big-pad text-center" value={timeStH} onChange={(e) => setTimeStH(e.target.value)} />
-                    <input className="timeF_input big-pad text-center" value={timeStM} onChange={(e) => setTimeStM(e.target.value)} />
+                    <input className="timeF_input big-pad text-center" value={(timeStM < 10)? "0" + timeStM : timeStM} onChange={(e) => setTimeStM(e.target.value)} />
                 </div>
-                <select className="select-field" name="" id="" onChange={(e) => setDurMin(e.target.value)}>
-                    <option selected disabled>-----</option>
-                    <option value="12">1 час</option>
-                    <option value="18">1.5 часа</option>
-                </select>
-                <select className="select-field" name="" id="" onChange={(e) => setSub(e.target.value)}>
-                    <option selected disabled>-----</option>
-                    <option value="History">История</option>
-                    <option value="Society">Общество</option>
-                </select>
-                <select className="select-field" name="" id="" onChange={(e) => setCostNew(e.target.value)}>
-                    <option selected disabled>-----</option>
-                    <option value="800">800</option>
-                    <option value="1200">1200</option>
-                </select>
+                <input className="input_activity text-center" value={durMin/60+ " ч."} placeholder="Длительность"/>
+                <input className="input_activity text-center" value={sub} placeholder="Предмет"/>
+                <input className="input_activity text-center" value={cost} placeholder="Стоимость"/>
                 <button className="top-auto" onClick={() => {
                     createDate()
                     delayButton()
