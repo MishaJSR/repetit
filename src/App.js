@@ -367,8 +367,38 @@ const App = () => {
             <div className="pupData">
                 <input className="input_activity text-center" value={name} onChange={(e) => setName(e.target.value)} placeholder="Имя"/>
                 <div className="time-center">
-                    <input className="timeF_input big-pad text-center" value={timeStH} onChange={(e) => setTimeStH(e.target.value)} />
-                    <input className="timeF_input big-pad text-center" value={(timeStM < 10)? "0" + timeStM : timeStM} onChange={(e) => setTimeStM(e.target.value)} />
+                    <select className="select-field-time" name="" id="" onChange={(e) => setTimeStH(e.target.value)}>
+                        <option selected disabled>-----</option>
+                        <option value="8">08</option>
+                        <option value="9">09</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                        <option value="13">13</option>
+                        <option value="14">14</option>
+                        <option value="15">15</option>
+                        <option value="16">16</option>
+                        <option value="17">17</option>
+                        <option value="18">18</option>
+                        <option value="19">19</option>
+                        <option value="20">20</option>
+                        <option value="21">21</option>
+                        <option value="22">22</option>
+                    </select>
+                    <select className="select-field-time" name="" id="" onChange={(e) => setTimeStM(e.target.value)}>
+                        <option selected disabled>-----</option>
+                        <option value="5">05</option>
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                        <option value="20">20</option>
+                        <option value="25">25</option>
+                        <option value="30">30</option>
+                        <option value="35">35</option>
+                        <option value="40">40</option>
+                        <option value="45">45</option>
+                        <option value="50">50</option>
+                        <option value="55">55</option>
+                    </select>
                 </div>
                 <input className="input_activity text-center" value={durMin/60+ " ч."} placeholder="Длительность"/>
                 <input className="input_activity text-center" value={sub} placeholder="Предмет"/>
