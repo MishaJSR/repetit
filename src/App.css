@@ -551,6 +551,22 @@ input{
   display: none;
 }
 
+.disYes{
+  position: absolute;
+  top: 3px;
+  left: 5px;
+  width: 30px;
+  height: 30px;
+}
+.disNo{
+  display: none;
+  position: absolute;
+  top: 3px;
+  left: 5px;
+  width: 30px;
+  height: 30px;
+}
+
 
 
 .preloader-back{

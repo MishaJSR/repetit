@@ -4,7 +4,8 @@ import arrowl from '../src/icons/left.png'
 import loader from '../src/preloader/loader.png'
 import arrowr from '../src/icons/right.png'
 import repeatImg from '../src/icons/repeat.png'
-import perenoc from '../src/icons/perenos.png'
+import perenoc from '../src/icons/redIcon.png'
+import zakl from '../src/icons/zaklBlack.png'
 import {Link, NavLink} from "react-router-dom";
 import {useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
@@ -57,7 +58,7 @@ const App = () => {
     const [checkedNew, setCheckedNew] = useState(false);
 
         //create
-    const [name, setName] = useState("And");
+    const [name, setName] = useState("");
     const [timeStH, setTimeStH] = useState("");
     const [timeStM, setTimeStM] = useState("");
     const [timeEnH, setTimeEnH] = useState("");
@@ -98,6 +99,8 @@ const App = () => {
         dispatch(fakePlusWeek())
 
     }, []);
+
+
 
     const createDate = () => {//при формировании даты занятий
         let a = moment({ year :2023, month :0, day :1, hour :8, minute: 0, second :0, millisecond :0});
@@ -315,7 +318,7 @@ const App = () => {
 
                 </div>
                 {dayMass.map((e, index) => {
-                    return <div className="dayWeek_field">
+                    return <div className="dayWeek_field" >
                         <div className="monthPart">
                             <span>{e.date}</span>
                             <span>.</span>
@@ -341,12 +344,13 @@ const App = () => {
                                     setSub(e.subj)
                                     setCost(e.cost)
                                     setIdDay1(e.idDay);
+                                    localStorage.setItem('idChooseLess', e.id)
                                     setStartTime1(e.startTime);
                                     setDurMin(Number(e.durationTime)*5);
                                     setHome(e.homework);
                                     if (!e.id) setIdSelected(0); else setIdSelected(e.id)
                                     if (!e.isPayed) setIsPay(false); else setIsPay(e.isPayed)
-                                    if (!e.homework) setHome("Пусто")
+                                    if (!e.homework) setHome("")
                                 }
                                 }>
                                     <span>{e.namePup}</span>
@@ -357,6 +361,7 @@ const App = () => {
                                     <span>{(currentTimeForSecond.getMinutes() === 0)? currentTimeForSecond.getHours()+":"+"00"
                                         : (currentTimeForSecond.getMinutes() === 5)? currentTimeForSecond.getHours()+":" + "0" + currentTimeForSecond.getMinutes() : currentTimeForSecond.getHours()+":" + currentTimeForSecond.getMinutes()}</span>
                                         <img className={(e.decidYear === undefined)? "repeate-less" : "non-repeate-less"} src={perenoc}/>
+                                    <img  className={(localStorage.getItem('idChooseLess') == e.id)? "disYes": "disNo"} src={zakl}></img>
                                 </button>
                             })}
                         </div>
@@ -437,8 +442,40 @@ const App = () => {
             <div className="pupData">
                 <input className="input_activity text-center" value={nameNew} onChange={(e) => setNameNew(e.target.value)} placeholder="Имя"/>
                 <div className="time-center">
-                    <input className="timeF_input big-pad text-center" ref={refStHNew} value={timeStHNew} onChange={(e) => setTimeStHNew(e.target.value)} />
-                    <input className="timeF_input big-pad text-center" ref={refStMNew} value={timeStMNew} onChange={(e) => setTimeStMNew(e.target.value)} />
+                    <select className="select-field-time" name="" id="" ref={refStHNew} onChange={(e) => setTimeStHNew(e.target.value)}>
+                        <option selected disabled>-----</option>
+                        <option value="8">08</option>
+                        <option value="9">09</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                        <option value="13">13</option>
+                        <option value="14">14</option>
+                        <option value="15">15</option>
+                        <option value="16">16</option>
+                        <option value="17">17</option>
+                        <option value="18">18</option>
+                        <option value="19">19</option>
+                        <option value="20">20</option>
+                        <option value="21">21</option>
+                        <option value="22">22</option>
+                    </select>
+                    <select className="select-field-time" name="" id="" ref={refStMNew} onChange={(e) => setTimeStMNew(e.target.value)}>
+                        <option selected disabled>-----</option>
+                        <option value="5">05</option>
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                        <option value="20">20</option>
+                        <option value="25">25</option>
+                        <option value="30">30</option>
+                        <option value="35">35</option>
+                        <option value="40">40</option>
+                        <option value="45">45</option>
+                        <option value="50">50</option>
+                        <option value="55">55</option>
+                    </select>
+                    {/*<input className="timeF_input big-pad text-center" ref={refStHNew} value={timeStHNew} onChange={(e) => setTimeStHNew(e.target.value)} />*/}
+                    {/*<input className="timeF_input big-pad text-center" ref={refStMNew} value={timeStMNew} onChange={(e) => setTimeStMNew(e.target.value)} />*/}
                 </div>
                 <select className="select-field" name="" id="" onChange={(e) => setDurMinNew(e.target.value)}>
                     <option selected disabled>-----</option>
