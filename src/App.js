@@ -9,6 +9,7 @@ import {Link, NavLink} from "react-router-dom";
 import {useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {
+    fakeMinusWeek,
     fakePlusWeek,
     filtLessons,
     getWeekMass,
@@ -228,6 +229,7 @@ const App = () => {
         dispatch(getWeekExt(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
         dispatch(getWeekDec(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
         dispatch(getWeekRep())
+        dispatch(fakePlusWeek())
 
     }
 
@@ -237,6 +239,7 @@ const App = () => {
         dispatch(getWeekExt(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
         dispatch(getWeekDec(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
         dispatch(getWeekRep())
+        dispatch(fakeMinusWeek())
     }
 
   return (!isFetch && endLessonsMass.length > 0)?(
@@ -449,7 +452,9 @@ const App = () => {
                 </select>
                 <select className="select-field" name="" id="" onChange={(e) => setCostNew(e.target.value)}>
                     <option selected disabled>-----</option>
+                    <option value="700">700</option>
                     <option value="800">800</option>
+                    <option value="1000">1000</option>
                     <option value="1200">1200</option>
                 </select>
                 <button className="top-auto" onClick={() => {

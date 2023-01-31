@@ -22,6 +22,8 @@ const SET_REPEAT_MASS = 'SET_REPEAT_MASS'
 const SET_ERROR_MESS = 'SET_ERROR_MESS'
 const FILTER_END_MASS = 'FILTER_END_MASS'
 const FAKE_PLUS_WEEK = 'FAKE_PLUS_WEEK'
+const FAKE_MINUS_WEEK = 'FAKE_MINUS_WEEK'
+
 
 
 
@@ -225,6 +227,33 @@ export default  function profileReducer(state= defaultState, action){
             }
 
 
+
+        case FAKE_MINUS_WEEK:
+            let yerMin = state.firstWeekDay.slice(0,4);
+            let monhMin = state.firstWeekDay.slice(5,7);
+            let monh2Min  = Number(monhMin) - 1;
+            let day2Min = state.firstWeekDay.slice(8,10);
+            let w11Min = new Date(yerMin, monh2Min, day2Min)
+            w11Min.setDate(w11Min.getDate() + 8);
+
+            let year211Min = state.secondWeekDay.slice(0,4);
+            let month211Min = state.secondWeekDay.slice(5,7);
+            let mon211Min  = Number(month211Min) - 1;
+            let da211Min = state.secondWeekDay.slice(8,10);
+            let y11Min = new Date(year211Min, mon211Min, da211Min)
+            y11Min.setDate(y11Min.getDate() + 8);
+            let monthNameNextMin = w11Min.getMonth();
+            let letToLSWNextMin = (w11Min.getDate() - 1).toString()
+            let letToLSYNextMin = (y11Min.getDate() - 1).toString()
+            localStorage.setItem('fDayNext', letToLSWNextMin);
+            localStorage.setItem('sDayNext', letToLSYNextMin);
+            localStorage.setItem('monthNumberNext', monthName[monthNameNextMin].name )
+            localStorage.setItem('monthNumberN',  monthNameNextMin)
+            return {
+                ...state
+            }
+
+
         case FAKE_PLUS_WEEK:
             let yer = state.firstWeekDay.slice(0,4);
             let monh = state.firstWeekDay.slice(5,7);
@@ -356,6 +385,7 @@ export const setError = (bol) => ({type: SET_ERROR_MESS, payload: bol})
 export const filterEndMass = () => ({type: FILTER_END_MASS})
 export const setDecMass = (bol) => ({type: SET_DEC_EXT_MASS, payload: bol})
 export const fakePlusWeek = () => ({type: FAKE_PLUS_WEEK})
+export const fakeMinusWeek = () => ({type: FAKE_MINUS_WEEK})
 
 
 export const setUsers = (us) => ({type: SET_USERS, payload: us})
