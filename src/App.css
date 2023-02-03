@@ -23,8 +23,57 @@
 
 .pay{
   width: 17%;
-  height: 100%;
-  background: #72ff5c;
+  height: auto;
+  background: #a15dff;
+  padding: 10px 25px;
+  font-size: 16px;
+  font-weight: bold;
+
+
+}
+.month_container{
+  display: flex;
+  flex-direction: row;
+}
+
+.name_pay_field{
+  padding-right: 10px;
+  width: 140px;
+  color: white;
+  padding-bottom: 5px;
+  font-size: 20px;
+}
+
+.progress{
+  width: 160px;
+  height: 24px;
+  background: #ffffff;
+  border-radius: 8px;
+  border: 2px solid black;
+  position: relative;
+  font-size: 16px;
+}
+
+.prog_bar{
+  position: absolute;
+  height: 24px;
+  top: 0;
+  left: 0;
+  background: #54f343;
+  border-radius: 8px;
+}
+
+.start_pay{
+  position: absolute;
+  top: 0;
+  left: 10px;
+  color: black;
+}
+
+.end_pay{
+  position: absolute;
+  top: 0;
+  right: 10px;
 }
 
 .date_field{

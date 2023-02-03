@@ -88,6 +88,10 @@ const App = () => {
     const dayMass = useSelector(state => state.profile.dayMass);
     const endLessonsMass = useSelector(state => state.profile.endLessonsMass);
     const isFetch = useSelector(state => state.profile.isFetch);
+    const payInWeek = useSelector(state => state.profile.payInWeek);
+    const nowPayInWeek = useSelector(state => state.profile.nowPayInWeek);
+    const payInDay = useSelector(state => state.profile.payInDay);
+    const nowPayInDay = useSelector(state => state.profile.nowPayInDay);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -97,6 +101,7 @@ const App = () => {
         dispatch(getWeekDec(fullYear, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
         dispatch(getWeekRep());
         dispatch(fakePlusWeek())
+
 
     }, []);
 
@@ -186,7 +191,6 @@ const App = () => {
             dispatch(getWeekExt(fullYear, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
             dispatch(getWeekDec(fullYear, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
             dispatch(getWeekRep())
-            console.log(cost, durMin, sub)
     }
 
     const reductButtonDec = () => {//при клике на отмену
@@ -249,7 +253,30 @@ const App = () => {
     <div className="app">
       <div className="header">
           <div className="pay">
-
+              <div className="month_container">
+                  <div className="name_pay_field">За месяц</div>
+                  <div className="progress">
+                      <div className="prog_bar" style={{ width:`${162*0}px`}}></div>
+                      <span className="start_pay">0</span>
+                      <span className="end_pay">0</span>
+                  </div>
+              </div>
+              <div className="month_container">
+                  <div className="name_pay_field">За неделю</div>
+                  <div className="progress">
+                      <div className="prog_bar" style={{ width:`${162*(nowPayInWeek/payInWeek)}px`}}></div>
+                      <span className="start_pay">{nowPayInWeek}</span>
+                      <span className="end_pay">{payInWeek}</span>
+                  </div>
+              </div>
+              <div className="month_container">
+                  <div className="name_pay_field">За день</div>
+                  <div className="progress">
+                      <div className="prog_bar" style={{ width:`${162*(nowPayInDay/payInDay)}px`}}></div>
+                      <span className="start_pay">{nowPayInDay}</span>
+                      <span className="end_pay">{payInDay}</span>
+                  </div>
+              </div>
           </div>
           <div className="date_field">
               <Link to="/" onClick={changeWeekMinus}>

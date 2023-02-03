@@ -1,5 +1,6 @@
 import {difference} from "lodash";
 import _ from 'lodash';
+import moment from "moment";
 const SET_USERS = 'SET_USERS'
 const SET_MY_USER = 'SET_MY_USER'
 const SET_MY_USER_INFO = 'SET_MY_USER_INFO'
@@ -23,7 +24,7 @@ const SET_ERROR_MESS = 'SET_ERROR_MESS'
 const FILTER_END_MASS = 'FILTER_END_MASS'
 const FAKE_PLUS_WEEK = 'FAKE_PLUS_WEEK'
 const FAKE_MINUS_WEEK = 'FAKE_MINUS_WEEK'
-
+const CALCULATE_WEEK_PAY = 'CALCULATE_WEEK_PAY'
 
 
 
@@ -54,7 +55,7 @@ const weekName = [
 
 
 const defaultState = {
-    nowDay: Date.now(),
+    nowDay: moment().format('e'),
     firstWeekDay: Date.now(),
     secondWeekDay: Date.now(),
     fDay: null,
@@ -85,7 +86,11 @@ const defaultState = {
     sliderPosition: 0,
     isFetch: true,
     errorMess: null,
-    filterExt: null
+    filterExt: null,
+    payInWeek: null,
+    nowPayInWeek: null,
+    payInDay: null,
+    nowPayInDay: null,
 }
 
 
@@ -178,6 +183,20 @@ export default  function profileReducer(state= defaultState, action){
                 dif = extFilt.concat(filtRep)
             }
 
+            //calcPayWeek
+            const sumOfFullCost = dif.reduce((acc, number) => acc + number.cost, 0);
+
+            const truePayed = dif.filter(e => e.isPayed === true)
+            const sumOfNowCost = truePayed.reduce((acc, number) => acc + number.cost, 0);
+
+            //calcNowDayPay
+            let nowD = Number(state.nowDay)
+
+            const truePayedFildDay = dif.filter(e => e.idDay === nowD)
+            const sumOfFullCostDay = truePayedFildDay.reduce((acc, number) => acc + number.cost, 0);
+            const truePayedDay = truePayedFildDay.filter(e => e.isPayed === true)
+            const sumOfNowCostDay = truePayedDay.reduce((acc, number) => acc + number.cost, 0);
+            console.log(sumOfNowCostDay)
 
             let mMass = [];
             let tuMass = [];
@@ -206,7 +225,11 @@ export default  function profileReducer(state= defaultState, action){
                 setMass: satMass,
                 sunMass: sunMass,
                 filtDecRep: dif,
-                endLessonsMass: [mMass, tuMass, wMass, thMass,frMass, satMass, sunMass, ]
+                endLessonsMass: [mMass, tuMass, wMass, thMass,frMass, satMass, sunMass, ],
+                payInWeek: sumOfFullCost,
+                nowPayInWeek: sumOfNowCost,
+                payInDay: sumOfFullCostDay,
+                nowPayInDay: sumOfNowCostDay
             }
 
 
@@ -365,6 +388,9 @@ export default  function profileReducer(state= defaultState, action){
                 ...state,
                 dayMass: massDays
             }
+
+
+
 
         default:
             return state
