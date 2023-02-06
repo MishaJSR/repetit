@@ -24,6 +24,9 @@ const SET_ERROR_MESS = 'SET_ERROR_MESS'
 const FILTER_END_MASS = 'FILTER_END_MASS'
 const FAKE_PLUS_WEEK = 'FAKE_PLUS_WEEK'
 const FAKE_MINUS_WEEK = 'FAKE_MINUS_WEEK'
+const SET_MONTH_SUM = 'SET_MONTH_SUM'
+const SET_MONTH_PAY = 'SET_MONTH_PAY'
+
 const CALCULATE_WEEK_PAY = 'CALCULATE_WEEK_PAY'
 
 
@@ -58,6 +61,8 @@ const defaultState = {
     nowDay: moment().format('e'),
     firstWeekDay: Date.now(),
     secondWeekDay: Date.now(),
+    nowDate: moment().format('DD'),
+    nowMonth: moment().format('MM'),
     fDay: null,
     sDay: null,
     monthWeek: monthName[new Date().getMonth()].name,
@@ -91,6 +96,8 @@ const defaultState = {
     nowPayInWeek: null,
     payInDay: null,
     nowPayInDay: null,
+    monthSumCost: null,
+    monthPayCost: null
 }
 
 
@@ -112,6 +119,8 @@ export default  function profileReducer(state= defaultState, action){
                 ext: action.payload
             }
 
+
+
         case SET_REPEAT_MASS:
             return {
                 ...state,
@@ -121,6 +130,18 @@ export default  function profileReducer(state= defaultState, action){
             return {
                 ...state,
                 decExt: action.payload
+            }
+
+        case SET_MONTH_SUM:
+            return {
+                ...state,
+                monthSumCost: action.payload
+            }
+
+        case SET_MONTH_PAY:
+            return {
+                ...state,
+                monthPayCost: action.payload
             }
 
 
@@ -412,7 +433,8 @@ export const filterEndMass = () => ({type: FILTER_END_MASS})
 export const setDecMass = (bol) => ({type: SET_DEC_EXT_MASS, payload: bol})
 export const fakePlusWeek = () => ({type: FAKE_PLUS_WEEK})
 export const fakeMinusWeek = () => ({type: FAKE_MINUS_WEEK})
-
+export const setMonthSum = (us) => ({type: SET_MONTH_SUM, payload: us})
+export const setMonthPay = (us) => ({type: SET_MONTH_PAY, payload: us})
 
 export const setUsers = (us) => ({type: SET_USERS, payload: us})
 export const setMyUser = (us) => ({type: SET_MY_USER, payload: us})

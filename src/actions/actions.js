@@ -4,11 +4,44 @@ import {
     filterEndMass, setDecMass,
     setError,
     setExtMass,
-    setIsFetching,
+    setIsFetching, setMonthPay, setMonthSum,
     setNewWeek,
     setRepMass,
     sortLess
 } from "../reducers/profileReducer";
+
+
+export const getMonthPayExt = (idYear, idMonth) => {
+    return async (dispatch) => {
+        dispatch(setIsFetching(true))
+        await axios.post("http://localhost:5000/extentions/calsMonth", {idYear: idYear, idMonth: idMonth})
+            .then(response => {
+                dispatch(setMonthPay(response.data))
+            })
+            .catch(err => {
+                dispatch(setError(err.response.data.message))
+            })
+            .finally(() => {
+                dispatch(setIsFetching(false));
+            })
+    }
+}
+
+export const getMonthPayRep = () => {
+    return async (dispatch) => {
+        dispatch(setIsFetching(true))
+        await axios.get("http://localhost:5000/repeateble/getMonth")
+            .then(response => {
+                dispatch(setMonthSum(response.data))
+            })
+            .catch(err => {
+                dispatch(setError(err.response.data.message))
+            })
+            .finally(() => {
+                dispatch(setIsFetching(false));
+            })
+    }
+}
 
 export const getWeekExt = (idYear, idMonth, idStartDayWeek) => {
     return async (dispatch) => {

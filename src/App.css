@@ -25,7 +25,7 @@
   width: 17%;
   height: auto;
   background: #a15dff;
-  padding: 10px 25px;
+  padding: 10px 20px;
   font-size: 16px;
   font-weight: bold;
 
@@ -45,7 +45,7 @@
 }
 
 .progress{
-  width: 160px;
+  width: 8vw;
   height: 24px;
   background: #ffffff;
   border-radius: 8px;
@@ -93,7 +93,7 @@
   flex-direction: column;
   width: 17%;
   height: 100%;
-  background: #2d5075;
+  background: #39006c;
   gap: 15px;
   align-items: center;
   font-size: 18px;
@@ -110,7 +110,7 @@
   justify-content: center;
   align-items: center;
   gap: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .isRepeat{
@@ -118,11 +118,16 @@
   font-size: 20px;
 }
 
+.nowDayStyle{
+  background: #e5c0e0 !important;
+}
+
 .saveDZ{
   padding: 15px 10px;
   background: #606060;
   color: white;
   font-weight: bold;
+  border-radius: 5px;
 }
 
 .saveDZ:hover{
@@ -325,17 +330,19 @@ input{
 .correct{
   width: 70%;
   height: 60px;
-  background: #9f9700;
+  background: #b024d3;
   color: white;
   font-weight: bold;
+  border-radius: 7px;
 }
 
 .delete-one{
   width: 70%;
   height: 60px;
-  background: #ff683b;
+  background: #b024d3;
   color: white;
   font-weight: bold;
+  border-radius: 7px;
 }
 .create-new{
   width: 70%;
@@ -344,15 +351,17 @@ input{
   background: #0f63c5;
   color: white;
   font-weight: bold;
+  border-radius: 7px;
 }
 .end-work{
   width: 70%;
   height: 60px;
   margin-bottom: 50px;
-  background: #8f000c;
+  background: #0f63c5;
   color: white;
   font-weight: bold;
   font-size: 14px;
+  border-radius: 7px;
 }
 
 .add{

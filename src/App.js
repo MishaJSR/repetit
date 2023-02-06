@@ -25,7 +25,7 @@ import {
     correctLess,
     correctLessWithDel,
     createExt, createRep, decayLess,
-    decExt,
+    decExt, getMonthPayExt, getMonthPayRep,
     getWeekDec,
     getWeekExt,
     getWeekRep, onSaveCorrect
@@ -92,6 +92,10 @@ const App = () => {
     const nowPayInWeek = useSelector(state => state.profile.nowPayInWeek);
     const payInDay = useSelector(state => state.profile.payInDay);
     const nowPayInDay = useSelector(state => state.profile.nowPayInDay);
+    const monthSumCost = useSelector(state => state.profile.monthSumCost);
+    const monthPayCost = useSelector(state => state.profile.monthPayCost);
+    const nowDate = useSelector(state => state.profile.nowDate);
+    const nowMonth = useSelector(state => state.profile.nowMonth);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -101,7 +105,8 @@ const App = () => {
         dispatch(getWeekDec(fullYear, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
         dispatch(getWeekRep());
         dispatch(fakePlusWeek())
-
+        dispatch(getMonthPayExt(fullYear, localStorage.getItem('monthNumber')))
+        dispatch(getMonthPayRep());
 
     }, []);
 
@@ -130,6 +135,8 @@ const App = () => {
             dispatch(getWeekExt(fullYear, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
             dispatch(getWeekDec(fullYear, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
             dispatch(getWeekRep())
+            dispatch(getMonthPayExt(fullYear, localStorage.getItem('monthNumber')))
+            dispatch(getMonthPayRep());
         }, 1000)
 
     }
@@ -148,6 +155,8 @@ const App = () => {
             dispatch(getWeekExt(fullYear, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
             dispatch(getWeekDec(fullYear, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
             dispatch(getWeekRep())
+            dispatch(getMonthPayExt(fullYear, localStorage.getItem('monthNumber')))
+            dispatch(getMonthPayRep());
         }, 1000)
 
     }
@@ -164,6 +173,8 @@ const App = () => {
             dispatch(getWeekExt(fullYear, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
             dispatch(getWeekDec(fullYear, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
             dispatch(getWeekRep())
+             dispatch(getMonthPayExt(fullYear, localStorage.getItem('monthNumber')))
+             dispatch(getMonthPayRep());
 
          }, 2000)
         setDisplaySpan(false);
@@ -182,6 +193,8 @@ const App = () => {
         dispatch(getWeekExt(fullYear, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
         dispatch(getWeekDec(fullYear, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
         dispatch(getWeekRep())
+        dispatch(getMonthPayExt(fullYear, localStorage.getItem('monthNumber')))
+        dispatch(getMonthPayRep());
         setDisplaySpanNew(false)
     }
 
@@ -191,6 +204,8 @@ const App = () => {
             dispatch(getWeekExt(fullYear, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
             dispatch(getWeekDec(fullYear, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
             dispatch(getWeekRep())
+        dispatch(getMonthPayExt(fullYear, localStorage.getItem('monthNumber')))
+        dispatch(getMonthPayRep());
     }
 
     const reductButtonDec = () => {//при клике на отмену
@@ -200,6 +215,8 @@ const App = () => {
             dispatch(getWeekExt(fullYear, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
             dispatch(getWeekDec(fullYear, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
             dispatch(getWeekRep())
+            dispatch(getMonthPayExt(fullYear, localStorage.getItem('monthNumber')))
+            dispatch(getMonthPayRep());
         }, 1000)
 
     }
@@ -237,6 +254,8 @@ const App = () => {
         dispatch(getWeekDec(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
         dispatch(getWeekRep())
         dispatch(fakePlusWeek())
+        dispatch(getMonthPayExt(fullYear, localStorage.getItem('monthNumber')))
+        dispatch(getMonthPayRep());
 
     }
 
@@ -247,6 +266,8 @@ const App = () => {
         dispatch(getWeekDec(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
         dispatch(getWeekRep())
         dispatch(fakeMinusWeek())
+        dispatch(getMonthPayExt(fullYear, localStorage.getItem('monthNumber')))
+        dispatch(getMonthPayRep());
     }
 
   return (!isFetch && endLessonsMass.length > 0)?(
@@ -256,15 +277,15 @@ const App = () => {
               <div className="month_container">
                   <div className="name_pay_field">За месяц</div>
                   <div className="progress">
-                      <div className="prog_bar" style={{ width:`${162*0}px`}}></div>
-                      <span className="start_pay">0</span>
-                      <span className="end_pay">0</span>
+                      <div className="prog_bar" style={{ width:`${8*(monthPayCost/monthSumCost)}vw`}}></div>
+                      <span className="start_pay">{monthPayCost}</span>
+                      <span className="end_pay">{monthSumCost}</span>
                   </div>
               </div>
               <div className="month_container">
                   <div className="name_pay_field">За неделю</div>
                   <div className="progress">
-                      <div className="prog_bar" style={{ width:`${162*(nowPayInWeek/payInWeek)}px`}}></div>
+                      <div className="prog_bar" style={{ width:`${8*(nowPayInWeek/payInWeek)}vw`}}></div>
                       <span className="start_pay">{nowPayInWeek}</span>
                       <span className="end_pay">{payInWeek}</span>
                   </div>
@@ -272,7 +293,7 @@ const App = () => {
               <div className="month_container">
                   <div className="name_pay_field">За день</div>
                   <div className="progress">
-                      <div className="prog_bar" style={{ width:`${162*(nowPayInDay/payInDay)}px`}}></div>
+                      <div className="prog_bar" style={{ width:`${8*(nowPayInDay/payInDay)}vw`}}></div>
                       <span className="start_pay">{nowPayInDay}</span>
                       <span className="end_pay">{payInDay}</span>
                   </div>
@@ -351,7 +372,7 @@ const App = () => {
                             <span>.</span>
                             <span>{e.day}</span>
                         </div>
-                        <div className="lessonsPart">
+                        <div className={(Number(nowDate) === e.date )? "nowDayStyle lessonsPart" : "lessonsPart"}>
                             {endLessonsMass[index].map((e) => {
                                 let currentTimeForFirst = new Date();
                                 currentTimeForFirst.setHours(8, 0);
@@ -359,7 +380,11 @@ const App = () => {
                                 let currentTimeForSecond = new Date();
                                 currentTimeForSecond.setHours(8, 0);
                                 currentTimeForSecond.setMinutes(currentTimeForSecond.getMinutes() + 5*e.durationTime + 5*e.startTime);
-                                return <button className={(e.isPayed && e.subj === 'History')? "lesson-history-payed" : (!e.isPayed && e.subj === 'History')? "lesson-history-not-payed" : (e.isPayed)?"lesson-social-payed" : "lesson-social-not-payed" }
+                                return <button className={
+                                    (e.isPayed && e.subj === 'History')? "lesson-history-payed" :
+                                    (!e.isPayed && e.subj === 'History')? "lesson-history-not-payed" :
+                                        (e.isPayed)?"lesson-social-payed"
+                                            : "lesson-social-not-payed" }
                                                style={{ top:`${e.startTime*5}px`, height:`${e.durationTime*5}px`}}
                                 onClick={() => {
                                     if (e.decidYear !== undefined) console.log(e.decidYear)
