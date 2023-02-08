@@ -163,7 +163,7 @@ export default  function profileReducer(state= defaultState, action){
             let stateExt = [...state.ext]
             let stateRep = [...state.repeateble]
 
-            if (state.decExt.length > 0) {
+            if (state.decExt) {
                 for (let i = 0; i < state.decExt.length; i++) {
                     state.repeateble.map((e) => {
                         if ((state.decExt[i].idDay === e.idDay) && (state.decExt[i].startTime === e.startTime)) {
