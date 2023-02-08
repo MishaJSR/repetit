@@ -26,7 +26,6 @@ const FAKE_PLUS_WEEK = 'FAKE_PLUS_WEEK'
 const FAKE_MINUS_WEEK = 'FAKE_MINUS_WEEK'
 const SET_MONTH_SUM = 'SET_MONTH_SUM'
 const SET_MONTH_PAY = 'SET_MONTH_PAY'
-
 const CALCULATE_WEEK_PAY = 'CALCULATE_WEEK_PAY'
 
 
@@ -58,7 +57,7 @@ const weekName = [
 
 
 const defaultState = {
-    nowDay: moment().format('e'),
+    nowDay: moment().format('e') - 1,
     firstWeekDay: Date.now(),
     secondWeekDay: Date.now(),
     nowDate: moment().format('DD'),
@@ -103,10 +102,6 @@ const defaultState = {
 
 export default  function profileReducer(state= defaultState, action){
     switch (action.type) {
-        case SET_NOW_DAY:
-            return {
-                ...state
-            }
 
         case SET_IS_FETCH:
             return {
@@ -118,6 +113,14 @@ export default  function profileReducer(state= defaultState, action){
                 ...state,
                 ext: action.payload
             }
+
+        case SET_NOW_DAY:
+            return {
+                ...state,
+                nowDay: action.payload
+            }
+
+
 
 
 
@@ -217,7 +220,6 @@ export default  function profileReducer(state= defaultState, action){
             const sumOfFullCostDay = truePayedFildDay.reduce((acc, number) => acc + number.cost, 0);
             const truePayedDay = truePayedFildDay.filter(e => e.isPayed === true)
             const sumOfNowCostDay = truePayedDay.reduce((acc, number) => acc + number.cost, 0);
-            console.log(sumOfNowCostDay)
 
             let mMass = [];
             let tuMass = [];
@@ -418,7 +420,7 @@ export default  function profileReducer(state= defaultState, action){
     }
 }
 
-export const setNowDay = () => ({type: SET_NOW_DAY})
+export const setNowDay = (us) => ({type: SET_NOW_DAY, payload: us})
 export const setNewWeek = (us1, us2) => ({type: WEEK_CHANGE, payload1: us1, payload2: us2})
 export const plusWeek = () => ({type: PLUS_WEEK})
 export const minusWeek = () => ({type: MINUS_WEEK})

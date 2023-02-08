@@ -122,6 +122,10 @@
   background: #e5c0e0 !important;
 }
 
+.nowDayOnClickStyle{
+  background: #d9e0ff !important;
+}
+
 .saveDZ{
   padding: 15px 10px;
   background: #606060;

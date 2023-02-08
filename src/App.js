@@ -107,10 +107,17 @@ const App = () => {
         dispatch(fakePlusWeek())
         dispatch(getMonthPayExt(fullYear, localStorage.getItem('monthNumber')))
         dispatch(getMonthPayRep());
-
     }, []);
 
-
+    const clickOnLessonPart = (ind) => {//при клике на день недели
+        dispatch(setNowDay(ind))
+        dispatch(getWeekMass());
+        dispatch(getWeekExt(fullYear, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
+        dispatch(getWeekDec(fullYear, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
+        dispatch(getWeekRep())
+        dispatch(getMonthPayExt(fullYear, localStorage.getItem('monthNumber')))
+        dispatch(getMonthPayRep());
+    }
 
     const createDate = () => {//при формировании даты занятий
         let a = moment({ year :2023, month :0, day :1, hour :8, minute: 0, second :0, millisecond :0});
@@ -372,7 +379,12 @@ const App = () => {
                             <span>.</span>
                             <span>{e.day}</span>
                         </div>
-                        <div className={(Number(nowDate) === e.date )? "nowDayStyle lessonsPart" : "lessonsPart"}>
+                        <div onClick={() => {
+                            {
+                                clickOnLessonPart(index)
+                                console.log(index, nowDay)
+                            }
+                        }} className={(Number(nowDate) === e.date )? "nowDayStyle lessonsPart" :  (nowDay == index)? "lessonsPart nowDayOnClickStyle" : "lessonsPart"}>
                             {endLessonsMass[index].map((e) => {
                                 let currentTimeForFirst = new Date();
                                 currentTimeForFirst.setHours(8, 0);
@@ -447,6 +459,7 @@ const App = () => {
                     </select>
                     <select className="select-field-time" name="" id="" onChange={(e) => setTimeStM(e.target.value)}>
                         <option selected disabled>-----</option>
+                        <option value="0">00</option>
                         <option value="5">05</option>
                         <option value="10">10</option>
                         <option value="15">15</option>
@@ -514,6 +527,7 @@ const App = () => {
                     </select>
                     <select className="select-field-time" name="" id="" ref={refStMNew} onChange={(e) => setTimeStMNew(e.target.value)}>
                         <option selected disabled>-----</option>
+                        <option value="0">00</option>
                         <option value="5">05</option>
                         <option value="10">10</option>
                         <option value="15">15</option>
