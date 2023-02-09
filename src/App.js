@@ -27,6 +27,8 @@ import {
 } from "./actions/actions";
 import moment from "moment";
 import PreloaderLogin from "./preloader/Preloader";
+import CorrectL from "./components/correctL";
+import {setCorrectVisible} from "./reducers/correctLesson";
 
 
 const App = () => {
@@ -80,6 +82,7 @@ const App = () => {
     const monthSumCost = useSelector(state => state.profile.monthSumCost);
     const monthPayCost = useSelector(state => state.profile.monthPayCost);
     const nowDate = useSelector(state => state.profile.nowDate);
+
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -294,7 +297,7 @@ const App = () => {
 
                 <button className="correct activity-buttons" onClick={() => {
                     reductButton();
-                    setDisplaySpan(true)
+                    dispatch(setCorrectVisible(true))
                 }}>Коррекция занятия</button>
                 <button className="create-new activity-buttons" onClick={() => setDisplaySpanNew(true)}>Создать новое занятие</button>
                 <button className="delete-one activity-buttons" onClick={() => reductButtonDec()}
@@ -375,71 +378,6 @@ const App = () => {
             </div>
         </div>
 
-        <div className={displaySpan? "adderField" : "adderField-none"}>
-            <div className="pupData">
-                <input className="input_activity text-center" value={name} onChange={(e) => setName(e.target.value)} placeholder="Имя"/>
-                <div className="time-center">
-                    <select className="select-field-time" name="" id="" onChange={(e) => setTimeStH(e.target.value)}>
-                        <option selected disabled>-----</option>
-                        <option value="8">08</option>
-                        <option value="9">09</option>
-                        <option value="10">10</option>
-                        <option value="11">11</option>
-                        <option value="12">12</option>
-                        <option value="13">13</option>
-                        <option value="14">14</option>
-                        <option value="15">15</option>
-                        <option value="16">16</option>
-                        <option value="17">17</option>
-                        <option value="18">18</option>
-                        <option value="19">19</option>
-                        <option value="20">20</option>
-                        <option value="21">21</option>
-                        <option value="22">22</option>
-                    </select>
-                    <select className="select-field-time" name="" id="" onChange={(e) => setTimeStM(e.target.value)}>
-                        <option selected disabled>-----</option>
-                        <option value="0">00</option>
-                        <option value="5">05</option>
-                        <option value="10">10</option>
-                        <option value="15">15</option>
-                        <option value="20">20</option>
-                        <option value="25">25</option>
-                        <option value="30">30</option>
-                        <option value="35">35</option>
-                        <option value="40">40</option>
-                        <option value="45">45</option>
-                        <option value="50">50</option>
-                        <option value="55">55</option>
-                    </select>
-                </div>
-                <input className="input_activity text-center" value={durMin/60+ " ч."} placeholder="Длительность"/>
-                <input className="input_activity text-center" value={sub} placeholder="Предмет"/>
-                <input className="input_activity text-center" value={cost} placeholder="Стоимость"/>
-                <button className="top-auto" onClick={() => {
-                    createDate()
-                    delayButton()
-                }}>Сохранить</button>
-            </div>
-            <div className="timeData">
-                <select className="select-field" name="" id="" onChange={(e) => setSlectedWeek(e.target.value)}>
-                    <option value="0">{monthWeek} {localStorage.getItem('fDay')} - {localStorage.getItem('sDay')}</option>
-                    <option value="1">{localStorage.getItem('monthNumberNext')} {localStorage.getItem('fDayNext')} - {localStorage.getItem('sDayNext')}</option>
-                </select>
-                <select className="select-field" name="" id="" onChange={(e) => localStorage.setItem('dayWeekSelected', e.target.value)} >
-                    <option selected disabled>-------</option>
-                    <option value="0">Понедельник</option>
-                    <option value="1">Вторник</option>
-                    <option value="2">Среда</option>
-                    <option value="3">Четверг</option>
-                    <option value="4">Пятница</option>
-                    <option value="5">Суббота</option>
-                    <option value="6">Воскресенье</option>
-                </select>
-                <button className="top-auto-close" onClick={() => setDisplaySpan(false)}>Закрыть</button>
-            </div>
-        </div>
-
         <div className={displaySpanNew? "adderFieldNew" : "adderField-none"}>
             <div className="pupData">
                 <input className="input_activity text-center" value={nameNew} onChange={(e) => setNameNew(e.target.value)} placeholder="Имя"/>
@@ -477,8 +415,6 @@ const App = () => {
                         <option value="50">50</option>
                         <option value="55">55</option>
                     </select>
-                    {/*<input className="timeF_input big-pad text-center" ref={refStHNew} value={timeStHNew} onChange={(e) => setTimeStHNew(e.target.value)} />*/}
-                    {/*<input className="timeF_input big-pad text-center" ref={refStMNew} value={timeStMNew} onChange={(e) => setTimeStMNew(e.target.value)} />*/}
                 </div>
                 <select className="select-field" name="" id="" onChange={(e) => setDurMinNew(e.target.value)}>
                     <option selected disabled>-----</option>
@@ -526,7 +462,7 @@ const App = () => {
                 <button className="top-auto-close" onClick={() => setDisplaySpanNew(false)}>Закрыть</button>
             </div>
         </div>
-
+        <CorrectL fullYear={fullYear} name={name} cost={cost} monthNumber={monthNumber} durMin={durMin} homeW={homeW} isPay={isPay} monthFullName={monthWeek} sub={sub}></CorrectL>
 
     </div>
   ): (<>
