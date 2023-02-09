@@ -1,21 +1,11 @@
-import {difference} from "lodash";
 import _ from 'lodash';
 import moment from "moment";
-const SET_USERS = 'SET_USERS'
-const SET_MY_USER = 'SET_MY_USER'
-const SET_MY_USER_INFO = 'SET_MY_USER_INFO'
-const SET_PROFILE_ERROR = 'SET_PROFILE_ERROR'
-const SET_FULL_SCREEN = 'SET_FULL_SCREEN'
-const SET_SLIDER_ACTIVE = 'SET_SLIDER_ACTIVE'
-const SET_SLIDER_POSITION = 'SET_SLIDER_POSITION'
 
 const SET_NOW_DAY = 'SET_NOW_DAY'
 const WEEK_CHANGE = 'WEEK_CHANGE'
 const PLUS_WEEK = 'PLUS_WEEK'
 const MINUS_WEEK = 'MINUS_WEEK'
 const GET_WEEK_MASS = 'GET_WEEK_MASS'
-const FILTER_LESSONS_MASS = 'FILTER_LESSONS_MASS'
-const SORT_MASS_FOR_DAY = 'SORT_MASS_FOR_DAY'
 const SET_IS_FETCH = 'SET_IS_FETCH'
 const SET_EXT_MASS = 'SET_EXT_MASS'
 const SET_DEC_EXT_MASS = 'SET_DEC_EXT_MASS'
@@ -26,9 +16,6 @@ const FAKE_PLUS_WEEK = 'FAKE_PLUS_WEEK'
 const FAKE_MINUS_WEEK = 'FAKE_MINUS_WEEK'
 const SET_MONTH_SUM = 'SET_MONTH_SUM'
 const SET_MONTH_PAY = 'SET_MONTH_PAY'
-const CALCULATE_WEEK_PAY = 'CALCULATE_WEEK_PAY'
-
-
 
 const monthName = [
     {name: 'January'},
@@ -55,7 +42,6 @@ const weekName = [
     {name: 'Sunday'},
 ]
 
-
 const defaultState = {
     nowDay: moment().format('e') - 1,
     firstWeekDay: Date.now(),
@@ -74,20 +60,8 @@ const defaultState = {
     lessonsFilter: [],
     endLessonsMass: [],
     filtExt: [],
-    monMass: [],
-    tueMass: [],
-    wenMass: [],
-    thusMass: [],
-    friMass: [],
-    setMass: [],
-    sunMass: [],
     dayMass: [],
-    allUsers : [],
-    nowUser:[],
-    nowUserInfo:[],
     errorMessage: null,
-    fullScreen: 8,
-    sliderPosition: 0,
     isFetch: true,
     errorMess: null,
     filterExt: null,
@@ -120,10 +94,6 @@ export default  function profileReducer(state= defaultState, action){
                 nowDay: action.payload
             }
 
-
-
-
-
         case SET_REPEAT_MASS:
             return {
                 ...state,
@@ -147,8 +117,6 @@ export default  function profileReducer(state= defaultState, action){
                 monthPayCost: action.payload
             }
 
-
-
         case SET_ERROR_MESS:
             return {
                 ...state,
@@ -159,11 +127,8 @@ export default  function profileReducer(state= defaultState, action){
             let errExtRep = [] // надо удалить из ext
             let errRep = [] // надо удалить из repeat
             let dif = [] //будет итоговый совмещенный массив
-            let filterRepos = []
-            let stateExt = [...state.ext]
-            let stateRep = [...state.repeateble]
 
-            if (state.decExt) {
+            if (state.decExt.length > 0) {
                 for (let i = 0; i < state.decExt.length; i++) {
                     state.repeateble.map((e) => {
                         if ((state.decExt[i].idDay === e.idDay) && (state.decExt[i].startTime === e.startTime)) {
@@ -188,7 +153,6 @@ export default  function profileReducer(state= defaultState, action){
                         }
                     })
                 }
-                // console.log(filtRep)
                 dif = extFilt.concat(filtRep);
             } else
             {
@@ -221,34 +185,15 @@ export default  function profileReducer(state= defaultState, action){
             const truePayedDay = truePayedFildDay.filter(e => e.isPayed === true)
             const sumOfNowCostDay = truePayedDay.reduce((acc, number) => acc + number.cost, 0);
 
-            let mMass = [];
-            let tuMass = [];
-            let wMass = [];
-            let thMass = [];
-            let frMass = [];
-            let satMass = [];
-            let sunMass = [];
-            dif.map((e) => {
-                if (e.idDay === 0) mMass.push(e)
-                if (e.idDay === 1) tuMass.push(e)
-                if (e.idDay === 2) wMass.push(e)
-                if (e.idDay === 3) thMass.push(e)
-                if (e.idDay === 4) frMass.push(e)
-                if (e.idDay === 5) satMass.push(e)
-                if (e.idDay === 6) sunMass.push(e)
-            })
+            let dM = [[],[],[],[],[],[],[]]
+
+            dif.map((e) => dM[e.idDay].push(e))
+
             return {
                 ...state,
                 errorMess: errRep,
-                monMass: mMass,
-                tueMass: tuMass,
-                wenMass: wMass,
-                thusMass: thMass,
-                friMass: frMass,
-                setMass: satMass,
-                sunMass: sunMass,
                 filtDecRep: dif,
-                endLessonsMass: [mMass, tuMass, wMass, thMass,frMass, satMass, sunMass, ],
+                endLessonsMass: dM,
                 payInWeek: sumOfFullCost,
                 nowPayInWeek: sumOfNowCost,
                 payInDay: sumOfFullCostDay,
@@ -412,9 +357,6 @@ export default  function profileReducer(state= defaultState, action){
                 dayMass: massDays
             }
 
-
-
-
         default:
             return state
     }
@@ -425,8 +367,6 @@ export const setNewWeek = (us1, us2) => ({type: WEEK_CHANGE, payload1: us1, payl
 export const plusWeek = () => ({type: PLUS_WEEK})
 export const minusWeek = () => ({type: MINUS_WEEK})
 export const getWeekMass = () => ({type: GET_WEEK_MASS})
-export const filtLessons = () => ({type: FILTER_LESSONS_MASS})
-export const sortLess = () => ({type: SORT_MASS_FOR_DAY})
 export const setIsFetching = (bol) => ({type: SET_IS_FETCH, payload: bol})
 export const setExtMass = (bol) => ({type: SET_EXT_MASS, payload: bol})
 export const setRepMass = (bol) => ({type: SET_REPEAT_MASS, payload: bol})
@@ -437,12 +377,4 @@ export const fakePlusWeek = () => ({type: FAKE_PLUS_WEEK})
 export const fakeMinusWeek = () => ({type: FAKE_MINUS_WEEK})
 export const setMonthSum = (us) => ({type: SET_MONTH_SUM, payload: us})
 export const setMonthPay = (us) => ({type: SET_MONTH_PAY, payload: us})
-
-export const setUsers = (us) => ({type: SET_USERS, payload: us})
-export const setMyUser = (us) => ({type: SET_MY_USER, payload: us})
-export const setMyUserInfo = (us) => ({type: SET_MY_USER_INFO, payload: us})
-export const setProfileError = (err) => ({type: SET_PROFILE_ERROR, payload: err})
-export const setFullScreen = (bool) => ({type: SET_FULL_SCREEN, payload: bool})
-export const setSliderActive = (num, len) => ({type: SET_SLIDER_ACTIVE, payload: num, len: len})
-export const setSliderPosition = (num) => ({type: SET_SLIDER_POSITION, payload: num})
 

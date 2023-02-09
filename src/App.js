@@ -3,29 +3,24 @@ import './App.css';
 import arrowl from '../src/icons/left.png'
 import loader from '../src/preloader/loader.png'
 import arrowr from '../src/icons/right.png'
-import repeatImg from '../src/icons/repeat.png'
 import perenoc from '../src/icons/redIcon.png'
 import zakl from '../src/icons/zaklBlack.png'
-import {Link, NavLink} from "react-router-dom";
+import {Link} from "react-router-dom";
 import {useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {
     fakeMinusWeek,
     fakePlusWeek,
-    filtLessons,
     getWeekMass,
     minusWeek,
     plusWeek,
     setNewWeek,
     setNowDay,
-    sortLess
 } from "./reducers/profileReducer";
 import {
     checkIsRead, correctField,
-    correctLess,
-    correctLessWithDel,
     createExt, createRep, decayLess,
-    decExt, getMonthPayExt, getMonthPayRep,
+    getMonthPayExt, getMonthPayRep,
     getWeekDec,
     getWeekExt,
     getWeekRep, onSaveCorrect
@@ -41,11 +36,8 @@ const App = () => {
     const refEnM = useRef()
 
         //create
-
     const refStHNew = useRef()
     const refStMNew = useRef()
-    const refEnHNew = useRef()
-    const refEnMNew = useRef()
 
     const [nameNew, setNameNew] = useState("");
     const [timeStHNew, setTimeStHNew] = useState("");
@@ -53,7 +45,6 @@ const App = () => {
     const [durMinNew, setDurMinNew] = useState("");
     const [subNew, setSubNew] = useState("");
     const [costNew, setCostNew] = useState("");
-    const [idDay1New, setIdDay1New] = useState("");
     const [selectedWeekNew, setSelectedWeekNew] = useState("");
     const [checkedNew, setCheckedNew] = useState(false);
 
@@ -69,17 +60,11 @@ const App = () => {
     const [isPay, setIsPay] = useState("");
     const [idDay1, setIdDay1] = useState("");
     const [startTime1, setStartTime1] = useState("");
-    const [toPushStartTime, setToPushStartTime] = useState(0);
     const [displaySpan, setDisplaySpan] = useState(false);
     const [displaySpanNew, setDisplaySpanNew] = useState(false);
     const [homeW, setHome] = useState("");
     const [selectedWeek, setSlectedWeek] = useState(0);
-    const [selected, setSelected] = useState("");
-    const [idSelected, setIdSelected] = useState("");
     const nowDay = useSelector(state => state.profile.nowDay);
-    const firstWeekDay = useSelector(state => state.profile.firstWeekDay);
-    const secondWeekDay = useSelector(state => state.profile.secondWeekDay);
-    const [checked, setChecked] = useState(false);
     const fDay = useSelector(state => state.profile.fDay);
     const sDay = useSelector(state => state.profile.sDay);
     const monthWeek = useSelector(state => state.profile.monthWeek);
@@ -95,28 +80,26 @@ const App = () => {
     const monthSumCost = useSelector(state => state.profile.monthSumCost);
     const monthPayCost = useSelector(state => state.profile.monthPayCost);
     const nowDate = useSelector(state => state.profile.nowDate);
-    const nowMonth = useSelector(state => state.profile.nowMonth);
     const dispatch = useDispatch();
 
     useEffect(() => {
         setThisWeek();
-        dispatch(getWeekMass());
-        dispatch(getWeekExt(fullYear, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
-        dispatch(getWeekDec(fullYear, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
-        dispatch(getWeekRep());
         dispatch(fakePlusWeek())
-        dispatch(getMonthPayExt(fullYear, localStorage.getItem('monthNumber')))
-        dispatch(getMonthPayRep());
+        toStartLoader(fullYear)
     }, []);
+
+    const toStartLoader = (fullY) => {
+        dispatch(getWeekMass());
+        dispatch(getWeekExt(fullY, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
+        dispatch(getWeekDec(fullY, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
+        dispatch(getWeekRep())
+        dispatch(getMonthPayExt(fullY, localStorage.getItem('monthNumber')))
+        dispatch(getMonthPayRep());
+    }
 
     const clickOnLessonPart = (ind) => {//при клике на день недели
         dispatch(setNowDay(ind))
-        dispatch(getWeekMass());
-        dispatch(getWeekExt(fullYear, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
-        dispatch(getWeekDec(fullYear, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
-        dispatch(getWeekRep())
-        dispatch(getMonthPayExt(fullYear, localStorage.getItem('monthNumber')))
-        dispatch(getMonthPayRep());
+        toStartLoader(fullYear)
     }
 
     const createDate = () => {//при формировании даты занятий
@@ -138,12 +121,7 @@ const App = () => {
     const correctSome = () => {//при сохранении дз
         dispatch(correctField(fullYear, monthNumber, localStorage.getItem('fDay'), idDay1, startTime1, durMin/5, sub, name, cost, homeW, isPay));
         setTimeout(() => {
-            dispatch(getWeekMass());
-            dispatch(getWeekExt(fullYear, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
-            dispatch(getWeekDec(fullYear, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
-            dispatch(getWeekRep())
-            dispatch(getMonthPayExt(fullYear, localStorage.getItem('monthNumber')))
-            dispatch(getMonthPayRep());
+            toStartLoader(fullYear)
         }, 1000)
 
     }
@@ -158,12 +136,7 @@ const App = () => {
             dispatch(correctField(fullYear, monthNumber, localStorage.getItem('fDay'), idDay1, startTime1, durMin / 5, sub, name, cost, homeW, true));
         }
         setTimeout(() => {
-            dispatch(getWeekMass());
-            dispatch(getWeekExt(fullYear, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
-            dispatch(getWeekDec(fullYear, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
-            dispatch(getWeekRep())
-            dispatch(getMonthPayExt(fullYear, localStorage.getItem('monthNumber')))
-            dispatch(getMonthPayRep());
+            toStartLoader(fullYear)
         }, 1000)
 
     }
@@ -172,17 +145,11 @@ const App = () => {
         let dur2 = Number(durMin)
         let cos2 = Number(cost)
         let selWeek = Number(selectedWeek)
-        if (selWeek > 0 ) dispatch(onSaveCorrect(fullYear, localStorage.getItem('monthNumberN'), localStorage.getItem('fDayNext'), localStorage.getItem('dayWeekSelected'), toPushStartTime, dur2/5, sub, name, cos2, homeW, isPay));
-        else dispatch(onSaveCorrect(fullYear, monthNumber, localStorage.getItem('fDay'), localStorage.getItem('dayWeekSelected'), toPushStartTime, dur2/5, sub, name, cos2, homeW, isPay));
+        if (selWeek > 0 ) dispatch(onSaveCorrect(fullYear, localStorage.getItem('monthNumberN'), localStorage.getItem('fDayNext'), localStorage.getItem('dayWeekSelected'), dur2/5, sub, name, cos2, homeW, isPay));
+        else dispatch(onSaveCorrect(fullYear, monthNumber, localStorage.getItem('fDay'), localStorage.getItem('dayWeekSelected'), dur2/5, sub, name, cos2, homeW, isPay));
 
          setTimeout(() => {
-            dispatch(getWeekMass());
-            dispatch(getWeekExt(fullYear, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
-            dispatch(getWeekDec(fullYear, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
-            dispatch(getWeekRep())
-             dispatch(getMonthPayExt(fullYear, localStorage.getItem('monthNumber')))
-             dispatch(getMonthPayRep());
-
+             toStartLoader(fullYear)
          }, 2000)
         setDisplaySpan(false);
     }
@@ -196,34 +163,19 @@ const App = () => {
         } else {
             dispatch(createRep(fullYear, monthNumber, localStorage.getItem('fDay'), localStorage.getItem('createDayWeekSelected'), localStorage.getItem('newCreateStartTime'), dur, subNew, nameNew, cos))
         }
-        dispatch(getWeekMass());
-        dispatch(getWeekExt(fullYear, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
-        dispatch(getWeekDec(fullYear, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
-        dispatch(getWeekRep())
-        dispatch(getMonthPayExt(fullYear, localStorage.getItem('monthNumber')))
-        dispatch(getMonthPayRep());
+        toStartLoader(fullYear)
         setDisplaySpanNew(false)
     }
 
     const reductButton = () => {//при клике на корректировать
         dispatch(checkIsRead(fullYear, monthNumber, localStorage.getItem('fDay'), idDay1, startTime1, durMin/5, sub, name, cost, homeW, isPay));
-            dispatch(getWeekMass());
-            dispatch(getWeekExt(fullYear, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
-            dispatch(getWeekDec(fullYear, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
-            dispatch(getWeekRep())
-        dispatch(getMonthPayExt(fullYear, localStorage.getItem('monthNumber')))
-        dispatch(getMonthPayRep());
+        toStartLoader(fullYear)
     }
 
     const reductButtonDec = () => {//при клике на отмену
         dispatch(decayLess(fullYear, monthNumber, localStorage.getItem('fDay'), idDay1, startTime1, durMin/5, sub, name, cost, homeW, isPay));
         setTimeout(() => {
-            dispatch(getWeekMass());
-            dispatch(getWeekExt(fullYear, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
-            dispatch(getWeekDec(fullYear, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
-            dispatch(getWeekRep())
-            dispatch(getMonthPayExt(fullYear, localStorage.getItem('monthNumber')))
-            dispatch(getMonthPayRep());
+            toStartLoader(fullYear)
         }, 1000)
 
     }
@@ -256,25 +208,14 @@ const App = () => {
 
     const changeWeekPlus = () => {
         dispatch(plusWeek());
-        dispatch(getWeekMass());
-        dispatch(getWeekExt(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
-        dispatch(getWeekDec(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
-        dispatch(getWeekRep())
         dispatch(fakePlusWeek())
-        dispatch(getMonthPayExt(fullYear, localStorage.getItem('monthNumber')))
-        dispatch(getMonthPayRep());
-
+        toStartLoader(fullYear)
     }
 
     const changeWeekMinus = () => {
         dispatch(minusWeek());
-        dispatch(getWeekMass());
-        dispatch(getWeekExt(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
-        dispatch(getWeekDec(2023, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
-        dispatch(getWeekRep())
         dispatch(fakeMinusWeek())
-        dispatch(getMonthPayExt(fullYear, localStorage.getItem('monthNumber')))
-        dispatch(getMonthPayRep());
+        toStartLoader(fullYear)
     }
 
   return (!isFetch && endLessonsMass.length > 0)?(
@@ -412,7 +353,6 @@ const App = () => {
                                     setStartTime1(e.startTime);
                                     setDurMin(Number(e.durationTime)*5);
                                     setHome(e.homework);
-                                    if (!e.id) setIdSelected(0); else setIdSelected(e.id)
                                     if (!e.isPayed) setIsPay(false); else setIsPay(e.isPayed)
                                     if (!e.homework) setHome("")
                                 }
@@ -486,10 +426,7 @@ const App = () => {
                     <option value="0">{monthWeek} {localStorage.getItem('fDay')} - {localStorage.getItem('sDay')}</option>
                     <option value="1">{localStorage.getItem('monthNumberNext')} {localStorage.getItem('fDayNext')} - {localStorage.getItem('sDayNext')}</option>
                 </select>
-                <select className="select-field" name="" id="" onChange={(e) => {
-                    localStorage.setItem('dayWeekSelected', e.target.value)
-                    setSelected(e.target.value)
-                }} >
+                <select className="select-field" name="" id="" onChange={(e) => localStorage.setItem('dayWeekSelected', e.target.value)} >
                     <option selected disabled>-------</option>
                     <option value="0">Понедельник</option>
                     <option value="1">Вторник</option>

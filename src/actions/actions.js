@@ -5,9 +5,7 @@ import {
     setError,
     setExtMass,
     setIsFetching, setMonthPay, setMonthSum,
-    setNewWeek,
     setRepMass,
-    sortLess
 } from "../reducers/profileReducer";
 
 
@@ -260,7 +258,7 @@ export const checkIsRead = (idYear, idMonth, idStartDayWeek, idDay, startTime, d
     }
 }
 
-export const onSaveCorrect = (idYear, idMonth, idStartDayWeek, idDay, startTime, durationTime, subj, namePup, cost, homework, isPayed) => { // декеит старое занятие по айди из ЛС и добавляет новое со всеми данными значениями
+export const onSaveCorrect = (idYear, idMonth, idStartDayWeek, idDay, durationTime, subj, namePup, cost, homework, isPayed) => { // декеит старое занятие по айди из ЛС и добавляет новое со всеми данными значениями
     return async (dispatch) => {
         dispatch(setIsFetching(true));
         await axios.post("http://localhost:5000/extentions", {
@@ -297,22 +295,6 @@ export const onSaveCorrect = (idYear, idMonth, idStartDayWeek, idDay, startTime,
     }
 }
 
-export const decExt = (idExt) => {
-    return async (dispatch) => {
-        dispatch(setIsFetching(true))
-        await axios.post("http://localhost:5000/extentions/decayID", {idExt: idExt})
-            .then(response => {
-                //alert("kk")
-            })
-            .catch(err => {
-                dispatch(setError(err.response.data.message))
-                alert("bad")
-            })
-            .finally(() => {
-                dispatch(setIsFetching(false));
-            })
-    }
-}
 
 export const createExt = (idYear, idMonth, idStartDayWeek, idDay, startTime, durationTime, subj, namePup, cost) => {
     return async (dispatch) => {
@@ -372,86 +354,4 @@ export const createRep = (idYear, idMonth, idStartDayWeek, idDay, startTime, dur
     }
 }
 
-export const correctLessWithDel = (idYear, idMonth, idStartDayWeek, idDay, startTime, durationTime, subj, namePup, cost, homework, isPayed, isDecayed, lastDay) => {
-    return async (dispatch) => {
-        dispatch(setIsFetching(true))
-        await axios.post("http://localhost:5000/extentions/reduct",
-            {
-                idYear: idYear,
-                idMonth: idMonth,
-                idStartDayWeek: idStartDayWeek,
-                idDay: idDay,
-                startTime: startTime,
-                durationTime: durationTime,
-                subj: subj,
-                namePup: namePup,
-                cost: cost,
-                homework: homework,
-                isPayed: isPayed,
-                isDecayed: isDecayed
-            }
-        )
-            .then(response => {
-                axios.post("http://localhost:5000/extentions/reduct", {
-                    idYear: idYear,
-                    idMonth: idMonth,
-                    idStartDayWeek: idStartDayWeek,
-                    idDay: lastDay,
-                    startTime: startTime,
-                    durationTime: durationTime,
-                    subj: subj,
-                    namePup: namePup,
-                    cost: cost,
-                    homework: homework,
-                    isPayed: isPayed,
-                    isDecayed: true
-                })
-                    .then(response => {
-                    })
-                    .catch(err => {
-                        dispatch(setError(err.response.data.message))
-                        alert("bad")
-                    })
-                    .finally(() => {
-                        dispatch(setIsFetching(false));
-                    })
-            })
-            .catch(err => {
-                alert("bad")
-                dispatch(setError(err.response.data.message))
-            })
-            .finally(() => {
-                dispatch(setIsFetching(false));
-            })
-    }
-}
-
-export const correctLess = (idYear, idMonth, idStartDayWeek, idDay, startTime, durationTime, subj, namePup, cost, homework, isPayed, isDecayed) => {
-    return async (dispatch) => {
-        dispatch(setIsFetching(true))
-        await axios.post("http://localhost:5000/extentions/reduct",
-            {
-                idYear: idYear,
-                idMonth: idMonth,
-                idStartDayWeek: idStartDayWeek,
-                idDay: idDay,
-                startTime: startTime,
-                durationTime: durationTime,
-                subj: subj,
-                namePup: namePup,
-                cost: cost,
-                homework: homework,
-                isPayed: isPayed,
-                isDecayed: isDecayed
-            }
-        )
-            .catch(err => {
-                alert("bad")
-                dispatch(setError(err.response.data.message))
-            })
-            .finally(() => {
-                dispatch(setIsFetching(false));
-            })
-    }
-}
 
