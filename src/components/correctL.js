@@ -2,7 +2,7 @@ import {useEffect, useRef, useState} from "react";
 import React from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {getMonthPayExt, getMonthPayRep, getWeekDec, getWeekExt, getWeekRep, onSaveCorrect} from "../actions/actions";
-import {getWeekMass} from "../reducers/profileReducer";
+import {getWeekMass, setIsFetching} from "../reducers/profileReducer";
 import {setCorrectVisible} from "../reducers/correctLesson";
 import moment from "moment";
 
@@ -24,23 +24,24 @@ const CorrectL = ({fullYear, monthNumber, name, durMin, sub, cost, monthFullName
         localStorage.setItem('newStartTime', pushStartTime)
     }
 
-    const delayButton = () => {//при корректирвке и нажатии на сохранить
+    const delayButton = async () => {//при корректирвке и нажатии на сохранить
+        dispatch(setIsFetching(true));
         let dur2 = Number(durMin)
         let cos2 = Number(cost)
         let selWeek = Number(selectedWeek)
         console.log(dur2, cos2, selWeek)
-        if (selWeek > 0 ) dispatch(onSaveCorrect(fullYear, localStorage.getItem('monthNumberN'), localStorage.getItem('fDayNext'), localStorage.getItem('dayWeekSelected'), dur2/5, sub, name, cos2, homeW, isPay));
-        else dispatch(onSaveCorrect(fullYear, monthNumber, localStorage.getItem('fDay'), localStorage.getItem('dayWeekSelected'), dur2/5, sub, name, cos2, homeW, isPay));
-
-        setTimeout(() => {
+        if (selWeek > 0 ) await dispatch(onSaveCorrect(fullYear, localStorage.getItem('monthNumberN'), localStorage.getItem('fDayNext'), localStorage.getItem('dayWeekSelected'), dur2/5, sub, name, cos2, homeW, isPay));
+        else await dispatch(onSaveCorrect(fullYear, monthNumber, localStorage.getItem('fDay'), localStorage.getItem('dayWeekSelected'), dur2/5, sub, name, cos2, homeW, isPay));
+        setTimeout(async () => {
             dispatch(getWeekMass());
-            dispatch(getWeekExt(fullYear, monthNumber, localStorage.getItem('fDay')))
-            dispatch(getWeekDec(fullYear, monthNumber, localStorage.getItem('fDay')));
-            dispatch(getWeekRep())
-            dispatch(getMonthPayExt(fullYear, monthNumber))
-            dispatch(getMonthPayRep());
+            await  dispatch(getWeekExt(fullYear, monthNumber, localStorage.getItem('fDay')))
+            await dispatch(getWeekDec(fullYear, monthNumber, localStorage.getItem('fDay')));
+            await dispatch(getWeekRep())
+            await dispatch(getMonthPayExt(fullYear, monthNumber))
+            await dispatch(getMonthPayRep());
+            dispatch(setCorrectVisible(false));
+            dispatch(setIsFetching(false));
         }, 2000)
-        dispatch(setCorrectVisible(false));
     }
 
     return(

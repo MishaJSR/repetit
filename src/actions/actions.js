@@ -11,7 +11,6 @@ import {
 
 export const getMonthPayExt = (idYear, idMonth) => {
     return async (dispatch) => {
-        dispatch(setIsFetching(true))
         await axios.post("http://localhost:5000/extentions/calsMonth", {idYear: idYear, idMonth: idMonth})
             .then(response => {
                 dispatch(setMonthPay(response.data))
@@ -19,15 +18,11 @@ export const getMonthPayExt = (idYear, idMonth) => {
             .catch(err => {
                 dispatch(setError(err.response.data.message))
             })
-            .finally(() => {
-                dispatch(setIsFetching(false));
-            })
     }
 }
 
 export const getMonthPayRep = () => {
     return async (dispatch) => {
-        dispatch(setIsFetching(true))
         await axios.get("http://localhost:5000/repeateble/getMonth")
             .then(response => {
                 dispatch(setMonthSum(response.data))
@@ -35,15 +30,11 @@ export const getMonthPayRep = () => {
             .catch(err => {
                 dispatch(setError(err.response.data.message))
             })
-            .finally(() => {
-                dispatch(setIsFetching(false));
-            })
     }
 }
 
 export const getWeekExt = (idYear, idMonth, idStartDayWeek) => {
     return async (dispatch) => {
-        dispatch(setIsFetching(true))
         await axios.post("http://localhost:5000/extentions/getWeek", {idYear: idYear, idMonth: idMonth, idStartDayWeek: idStartDayWeek})
             .then(response => {
                 dispatch(setExtMass(response.data))
@@ -51,15 +42,11 @@ export const getWeekExt = (idYear, idMonth, idStartDayWeek) => {
             .catch(err => {
                 dispatch(setError(err.response.data.message))
             })
-            .finally(() => {
-                dispatch(setIsFetching(false));
-            })
     }
 }
 
 export const getWeekDec = (idYear, idMonth, idStartDayWeek) => {
     return async (dispatch) => {
-        dispatch(setIsFetching(true))
         await axios.post("http://localhost:5000/extentions/getWeekDecayed", {idYear: idYear, idMonth: idMonth, idStartDayWeek: idStartDayWeek})
             .then(response => {
                 dispatch(setDecMass(response.data));
@@ -67,15 +54,11 @@ export const getWeekDec = (idYear, idMonth, idStartDayWeek) => {
             .catch(err => {
                 dispatch(setError(err.response.data.message))
             })
-            .finally(() => {
-                dispatch(setIsFetching(false));
-            })
     }
 }
 
 export const getWeekRep = () => {
     return async (dispatch) => {
-        dispatch(setIsFetching(true))
         await axios.get("http://localhost:5000/repeateble/getWeek")
             .then(response => {
                 dispatch(setRepMass(response.data))
@@ -85,7 +68,6 @@ export const getWeekRep = () => {
             })
             .finally(() => {
                 dispatch(filterEndMass())
-                dispatch(setIsFetching(false));
             })
     }
 }

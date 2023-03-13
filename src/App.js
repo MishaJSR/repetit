@@ -13,7 +13,7 @@ import {
     fakePlusWeek,
     getWeekMass,
     minusWeek,
-    plusWeek,
+    plusWeek, setIsFetching,
     setNewWeek,
     setNowDay,
 } from "./reducers/profileReducer";
@@ -91,13 +91,15 @@ const App = () => {
         toStartLoader(fullYear)
     }, []);
 
-    const toStartLoader = (fullY) => {
+    const toStartLoader = async (fullY) => {
+        dispatch(setIsFetching(true));
         dispatch(getWeekMass());
-        dispatch(getWeekExt(fullY, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
-        dispatch(getWeekDec(fullY, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
-        dispatch(getWeekRep())
-        dispatch(getMonthPayExt(fullY, localStorage.getItem('monthNumber')))
-        dispatch(getMonthPayRep());
+        await dispatch(getWeekExt(fullY, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
+        await dispatch(getWeekDec(fullY, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
+        await dispatch(getWeekRep())
+        await dispatch(getMonthPayExt(fullY, localStorage.getItem('monthNumber')))
+        await dispatch(getMonthPayRep());
+        dispatch(setIsFetching(false));
     }
 
     const clickOnLessonPart = (ind) => {//при клике на день недели
@@ -105,15 +107,7 @@ const App = () => {
         toStartLoader(fullYear)
     }
 
-    const createDate = () => {//при формировании даты занятий
-        let a = moment({ year :2023, month :0, day :1, hour :8, minute: 0, second :0, millisecond :0});
-        let b = moment({ year :2023, month :0, day :1, hour :refStH.current.value, minute: refStM.current.value, second :0, millisecond :0});
-        let diffMin = b.diff(a, 'minutes');
-        let pushStartTime = diffMin / 5;
-        localStorage.setItem('newStartTime', pushStartTime)
-    }
-
-    const createNewDate = () => {//при формировании даты занятий для новых
+        const createNewDate = () => {//при формировании даты занятий для новых
         let a = moment({ year :2023, month :0, day :1, hour :8, minute: 0, second :0, millisecond :0});
         let b = moment({ year :2023, month :0, day :1, hour :refStHNew.current.value, minute: refStMNew.current.value, second :0, millisecond :0});
         let diffMin = b.diff(a, 'minutes');
@@ -142,19 +136,6 @@ const App = () => {
             toStartLoader(fullYear)
         }, 1000)
 
-    }
-
-    const delayButton = () => {//при корректирвке и нажатии на сохранить
-        let dur2 = Number(durMin)
-        let cos2 = Number(cost)
-        let selWeek = Number(selectedWeek)
-        if (selWeek > 0 ) dispatch(onSaveCorrect(fullYear, localStorage.getItem('monthNumberN'), localStorage.getItem('fDayNext'), localStorage.getItem('dayWeekSelected'), dur2/5, sub, name, cos2, homeW, isPay));
-        else dispatch(onSaveCorrect(fullYear, monthNumber, localStorage.getItem('fDay'), localStorage.getItem('dayWeekSelected'), dur2/5, sub, name, cos2, homeW, isPay));
-
-         setTimeout(() => {
-             toStartLoader(fullYear)
-         }, 2000)
-        setDisplaySpan(false);
     }
 
     const createNewButton = () => {//при клике на сохранить в новом занятии
