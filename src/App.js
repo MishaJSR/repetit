@@ -23,7 +23,7 @@ import {
     getMonthPayExt, getMonthPayRep,
     getWeekDec,
     getWeekExt,
-    getWeekRep, onSaveCorrect
+    getWeekRep
 } from "./actions/actions";
 import moment from "moment";
 import PreloaderLogin from "./preloader/Preloader";
@@ -42,12 +42,9 @@ const App = () => {
     const refStMNew = useRef()
 
     const [nameNew, setNameNew] = useState("");
-    const [timeStHNew, setTimeStHNew] = useState("");
-    const [timeStMNew, setTimeStMNew] = useState("");
     const [durMinNew, setDurMinNew] = useState("");
     const [subNew, setSubNew] = useState("");
     const [costNew, setCostNew] = useState("");
-    const [selectedWeekNew, setSelectedWeekNew] = useState("");
     const [checkedNew, setCheckedNew] = useState(false);
 
         //create
@@ -62,10 +59,8 @@ const App = () => {
     const [isPay, setIsPay] = useState("");
     const [idDay1, setIdDay1] = useState("");
     const [startTime1, setStartTime1] = useState("");
-    const [displaySpan, setDisplaySpan] = useState(false);
     const [displaySpanNew, setDisplaySpanNew] = useState(false);
     const [homeW, setHome] = useState("");
-    const [selectedWeek, setSlectedWeek] = useState(0);
     const nowDay = useSelector(state => state.profile.nowDay);
     const fDay = useSelector(state => state.profile.fDay);
     const sDay = useSelector(state => state.profile.sDay);
@@ -85,10 +80,10 @@ const App = () => {
 
     const dispatch = useDispatch();
 
-    useEffect(() => {
+    useEffect(async () => {
         setThisWeek();
         dispatch(fakePlusWeek())
-        toStartLoader(fullYear)
+        await toStartLoader(fullYear)
     }, []);
 
     const toStartLoader = async (fullY) => {
@@ -102,9 +97,9 @@ const App = () => {
         dispatch(setIsFetching(false));
     }
 
-    const clickOnLessonPart = (ind) => {//при клике на день недели
+    const clickOnLessonPart =  async (ind) => {//при клике на день недели
         dispatch(setNowDay(ind))
-        toStartLoader(fullYear)
+        await toStartLoader(fullYear)
     }
 
         const createNewDate = () => {//при формировании даты занятий для новых
@@ -115,53 +110,49 @@ const App = () => {
         localStorage.setItem('newCreateStartTime', pushNew)
     }
 
-    const correctSome = () => {//при сохранении дз
-        dispatch(correctField(fullYear, monthNumber, localStorage.getItem('fDay'), idDay1, startTime1, durMin/5, sub, name, cost, homeW, isPay));
-        setTimeout(() => {
-            toStartLoader(fullYear)
-        }, 1000)
+    const correctSome = async () => {//при сохранении дз
+        await dispatch(correctField(fullYear, monthNumber, localStorage.getItem('fDay'), idDay1, startTime1, durMin/5, sub, name, cost, homeW, isPay));
+        await toStartLoader(fullYear)
 
     }
 
-    const payedLesson = () => {//при клике на оплатить
+    const payedLesson = async () => {//при клике на оплатить
         if (isPay) {
             setIsPay(false)
-            dispatch(correctField(fullYear, monthNumber, localStorage.getItem('fDay'), idDay1, startTime1, durMin / 5, sub, name, cost, homeW, false));
+            await  dispatch(correctField(fullYear, monthNumber, localStorage.getItem('fDay'), idDay1, startTime1, durMin / 5, sub, name, cost, homeW, false));
         }
         else {
             setIsPay(true)
-            dispatch(correctField(fullYear, monthNumber, localStorage.getItem('fDay'), idDay1, startTime1, durMin / 5, sub, name, cost, homeW, true));
+            await dispatch(correctField(fullYear, monthNumber, localStorage.getItem('fDay'), idDay1, startTime1, durMin / 5, sub, name, cost, homeW, true));
         }
-        setTimeout(() => {
-            toStartLoader(fullYear)
-        }, 1000)
+          await  toStartLoader(fullYear)
 
     }
 
-    const createNewButton = () => {//при клике на сохранить в новом занятии
+    const createNewButton = async () => {//при клике на сохранить в новом занятии
         let dur = Number(durMinNew)
         let cos = Number(costNew)
 
         if (!checkedNew) {
-            dispatch(createExt(fullYear, monthNumber, localStorage.getItem('fDay'), localStorage.getItem('createDayWeekSelected'), localStorage.getItem('newCreateStartTime'), dur, subNew, nameNew, cos));
+            await dispatch(createExt(fullYear, monthNumber, localStorage.getItem('fDay'), localStorage.getItem('createDayWeekSelected'), localStorage.getItem('newCreateStartTime'), dur, subNew, nameNew, cos));
         } else {
-            dispatch(createRep(fullYear, monthNumber, localStorage.getItem('fDay'), localStorage.getItem('createDayWeekSelected'), localStorage.getItem('newCreateStartTime'), dur, subNew, nameNew, cos))
+            await dispatch(createRep(fullYear, monthNumber, localStorage.getItem('fDay'), localStorage.getItem('createDayWeekSelected'), localStorage.getItem('newCreateStartTime'), dur, subNew, nameNew, cos))
         }
-        toStartLoader(fullYear)
+        await toStartLoader(fullYear)
         setDisplaySpanNew(false)
     }
 
-    const reductButton = () => {//при клике на корректировать
-        dispatch(checkIsRead(fullYear, monthNumber, localStorage.getItem('fDay'), idDay1, startTime1, durMin/5, sub, name, cost, homeW, isPay));
-        toStartLoader(fullYear)
+    const reductButton = async () => {//при клике на корректировать
+        await dispatch(checkIsRead(fullYear, monthNumber, localStorage.getItem('fDay'), idDay1, startTime1, durMin/5, sub, name, cost, homeW, isPay));
+        await toStartLoader(fullYear)
     }
 
-    const reductButtonDec = () => {//при клике на отмену
-        dispatch(decayLess(fullYear, monthNumber, localStorage.getItem('fDay'), idDay1, startTime1, durMin/5, sub, name, cost, homeW, isPay));
-        setTimeout(() => {
-            toStartLoader(fullYear)
-        }, 1000)
-
+    const reductButtonDec = async () => {//при клике на отмену
+        dispatch(setIsFetching(true));
+        await dispatch(decayLess(fullYear, monthNumber, localStorage.getItem('fDay'), idDay1, startTime1, durMin/5, sub, name, cost, homeW, isPay));
+        setTimeout(async () => {
+            await toStartLoader(fullYear)
+        }, 2000)
     }
 
 
@@ -190,16 +181,16 @@ const App = () => {
         }
     }
 
-    const changeWeekPlus = () => {
+    const changeWeekPlus = async () => {
         dispatch(plusWeek());
         dispatch(fakePlusWeek())
-        toStartLoader(fullYear)
+        await toStartLoader(fullYear)
     }
 
-    const changeWeekMinus = () => {
+    const changeWeekMinus = async () => {
         dispatch(minusWeek());
         dispatch(fakeMinusWeek())
-        toStartLoader(fullYear)
+        await toStartLoader(fullYear)
     }
 
   return (!isFetch && endLessonsMass.length > 0)?(
@@ -363,7 +354,7 @@ const App = () => {
             <div className="pupData">
                 <input className="input_activity text-center" value={nameNew} onChange={(e) => setNameNew(e.target.value)} placeholder="Имя"/>
                 <div className="time-center">
-                    <select className="select-field-time" name="" id="" ref={refStHNew} onChange={(e) => setTimeStHNew(e.target.value)}>
+                    <select className="select-field-time" name="" id="" ref={refStHNew}>
                         <option selected disabled>-----</option>
                         <option value="8">08</option>
                         <option value="9">09</option>
@@ -381,7 +372,7 @@ const App = () => {
                         <option value="21">21</option>
                         <option value="22">22</option>
                     </select>
-                    <select className="select-field-time" name="" id="" ref={refStMNew} onChange={(e) => setTimeStMNew(e.target.value)}>
+                    <select className="select-field-time" name="" id="" ref={refStMNew} >
                         <option selected disabled>-----</option>
                         <option value="0">00</option>
                         <option value="5">05</option>
@@ -424,10 +415,7 @@ const App = () => {
                     <option value="this">{monthWeek} {localStorage.getItem('fDay')} - {localStorage.getItem('sDay')}</option>
                     <option value="next">Следующая</option>
                 </select>
-                <select className="select-field" name="" id="" onChange={(e) => {
-                    localStorage.setItem('createDayWeekSelected', e.target.value)
-                    setSelectedWeekNew(e.target.value)
-                }} >
+                <select className="select-field" name="" id="" onChange={(e) =>localStorage.setItem('createDayWeekSelected', e.target.value)} >
                     <option selected disabled>-----</option>
                     <option value="0">Понедельник</option>
                     <option value="1">Вторник</option>

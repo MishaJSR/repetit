@@ -323,7 +323,9 @@ export default  function profileReducer(state= defaultState, action){
 
             localStorage.setItem('fDay', letToLSW2);
             localStorage.setItem('sDay', letToLSY2);
-            localStorage.setItem('monthNumber', monthName1)
+            localStorage.setItem('monthNumber', monthName1);
+            let sDate = moment(y4).format('DD');
+            console.log(sDate);
 
             return {
                 ...state,

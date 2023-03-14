@@ -139,10 +139,8 @@ export const correctField = (idYear, idMonth, idStartDayWeek, idDay, startTime, 
 
 export const decayLess = (idYear, idMonth, idStartDayWeek, idDay, startTime, durationTime, subj, namePup, cost, homework, isPayed) => { // проверяет есть ли занятие в массиве Ext, если нет, то создает занятия с декеем равным фолс, если есть то редактирует с деккеем фолс
     return async (dispatch) => {
-        dispatch(setIsFetching(true))
         await axios.post("http://localhost:5000/extentions/checkIsRead", {idYear: idYear, idMonth: idMonth, idStartDayWeek: idStartDayWeek, idDay: idDay, startTime: startTime})
             .then(response => {
-                //alert('уже существует, будем его редактировать');
                 localStorage.setItem('idReductLess', response.data.id);
                 axios.post("http://localhost:5000/extentions/reductByID", { //простое редактирование по айди и всеми параметрами
                     idYear: idYear,
@@ -161,7 +159,6 @@ export const decayLess = (idYear, idMonth, idStartDayWeek, idDay, startTime, dur
                 })
                     .then(response => {
                         //alert('заредактировал старое с декей фолс');
-
                     })
                     .catch(err => {
                         dispatch(setError(err.response.data.message))
@@ -192,9 +189,6 @@ export const decayLess = (idYear, idMonth, idStartDayWeek, idDay, startTime, dur
                         dispatch(setError(err.response.data.message))
                         alert("не смог создать новое с декеем фолс")
                     })
-            })
-            .finally(() => {
-
             })
     }
 }
