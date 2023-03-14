@@ -61,6 +61,7 @@ const App = () => {
     const [startTime1, setStartTime1] = useState("");
     const [displaySpanNew, setDisplaySpanNew] = useState(false);
     const [homeW, setHome] = useState("");
+    const [selectedWeek, setSelectedWeek] = useState("");
     const nowDay = useSelector(state => state.profile.nowDay);
     const fDay = useSelector(state => state.profile.fDay);
     const sDay = useSelector(state => state.profile.sDay);
@@ -91,7 +92,7 @@ const App = () => {
         dispatch(getWeekMass());
         await dispatch(getWeekExt(fullY, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
         await dispatch(getWeekDec(fullY, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')));
-        await dispatch(getWeekRep())
+        await dispatch(getWeekRep(fullY, localStorage.getItem('monthNumber'), localStorage.getItem('fDay')))
         await dispatch(getMonthPayExt(fullY, localStorage.getItem('monthNumber')))
         await dispatch(getMonthPayRep());
         dispatch(setIsFetching(false));
@@ -132,11 +133,13 @@ const App = () => {
     const createNewButton = async () => {//при клике на сохранить в новом занятии
         let dur = Number(durMinNew)
         let cos = Number(costNew)
-
+        let selWeek = Number(selectedWeek);
         if (!checkedNew) {
-            await dispatch(createExt(fullYear, monthNumber, localStorage.getItem('fDay'), localStorage.getItem('createDayWeekSelected'), localStorage.getItem('newCreateStartTime'), dur, subNew, nameNew, cos));
+            if (selWeek === 0) await dispatch(createExt(fullYear, monthNumber, localStorage.getItem('fDay'), localStorage.getItem('createDayWeekSelected'), localStorage.getItem('newCreateStartTime'), dur, subNew, nameNew, cos));
+            else await dispatch(createExt(fullYear, localStorage.getItem('monthNumberN'), localStorage.getItem('fDayNext'),localStorage.getItem('createDayWeekSelected'), localStorage.getItem('newCreateStartTime'), dur, subNew, nameNew, cos));
         } else {
-            await dispatch(createRep(fullYear, monthNumber, localStorage.getItem('fDay'), localStorage.getItem('createDayWeekSelected'), localStorage.getItem('newCreateStartTime'), dur, subNew, nameNew, cos))
+            if (selWeek === 0) await dispatch(createRep(fullYear, monthNumber, localStorage.getItem('fDay'), localStorage.getItem('createDayWeekSelected'), localStorage.getItem('newCreateStartTime'), dur, subNew, nameNew, cos));
+            else await dispatch(createRep(fullYear, localStorage.getItem('monthNumberN'), localStorage.getItem('fDayNext'),localStorage.getItem('createDayWeekSelected'), localStorage.getItem('newCreateStartTime'), dur, subNew, nameNew, cos));
         }
         await toStartLoader(fullYear)
         setDisplaySpanNew(false)
@@ -411,9 +414,9 @@ const App = () => {
                 }}>Сохранить</button>
             </div>
             <div className="timeData">
-                <select className="select-field" name="" id="">
-                    <option value="this">{monthWeek} {localStorage.getItem('fDay')} - {localStorage.getItem('sDay')}</option>
-                    <option value="next">Следующая</option>
+                <select className="select-field" name="" id="" onChange={(e) => setSelectedWeek(e.target.value)}>
+                    <option value="0">{monthWeek} {localStorage.getItem('fDay')} - {localStorage.getItem('sDay')}</option>
+                    <option value="1">{localStorage.getItem('monthNumberNext')} {localStorage.getItem('fDayNext')} - {localStorage.getItem('sDayNext')}</option>
                 </select>
                 <select className="select-field" name="" id="" onChange={(e) =>localStorage.setItem('createDayWeekSelected', e.target.value)} >
                     <option selected disabled>-----</option>
